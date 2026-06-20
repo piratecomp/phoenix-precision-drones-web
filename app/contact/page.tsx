@@ -1,45 +1,62 @@
+import Link from "next/link";
+
 export default function ContactPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <span className="pill">Contact</span>
-          <h1><span className="gradient">Request a quote</span> or reach the operations team.</h1>
-          <p className="lead">Use this public contact flow for customer inquiries, pilot interest, telecom and construction opportunities, partnerships, and general company communication.</p>
+      <section className="page-hero section-pad">
+        <div className="container page-hero-inner">
+          <span className="section-kicker">Contact</span>
+          <h1>Request aerial intelligence, inspections, or portal-supported drone services.</h1>
+          <p className="lead-copy">
+            Reach out for construction progress capture, cell tower inspections, mapping support,
+            thermal work, real estate media, or pilot network opportunities.
+          </p>
         </div>
       </section>
-      <section className="section">
-        <div className="container contact-grid">
-          <div>
-            <div className="section-head">
-              <h2>Contact Phoenix Precision Drones</h2>
-              <p>
-                Email: sales@phoenixprecisiondrones.com
-                <br />
-                Phone: not listed yet
-              </p>
-              <p>
-                This form is still a front-end placeholder. The next step is wiring it to Supabase and your communication/email workflow.
-              </p>
+      <section className="section-pad section-divider">
+        <div className="container contact-layout">
+          <div className="panel-card contact-panel">
+            <h3>Direct contact</h3>
+            <p><strong>Email:</strong> sales@phoenixprecisiondrones.com</p>
+            <p><strong>Location:</strong> Phoenix, Arizona</p>
+            <p><strong>Primary focus:</strong> Commercial drone services, customer deliverables, and pilot mission workflows.</p>
+            <div className="hero-actions">
+              <Link className="primary-btn" href="mailto:sales@phoenixprecisiondrones.com">Send Email</Link>
             </div>
           </div>
-          <form className="form">
-            <label>Name</label>
-            <input placeholder="Your name" />
-            <label>Email</label>
-            <input placeholder="you@example.com" />
-            <label>Inquiry Type</label>
-            <select defaultValue="">
-              <option value="" disabled>Select one</option>
-              <option>Customer quote</option>
-              <option>Cell tower inspection inquiry</option>
-              <option>Pilot network</option>
-              <option>Partnership</option>
-              <option>General question</option>
-            </select>
-            <label>Message</label>
-            <textarea placeholder="Tell us what you need..." />
-            <button className="btn btn-primary" type="button">Send Message</button>
+          <form className="panel-card contact-form">
+            <div className="form-grid">
+              <div>
+                <label>Name</label>
+                <input type="text" placeholder="Your name" />
+              </div>
+              <div>
+                <label>Email</label>
+                <input type="email" placeholder="you@example.com" />
+              </div>
+            </div>
+            <div className="form-grid">
+              <div>
+                <label>Company</label>
+                <input type="text" placeholder="Company name" />
+              </div>
+              <div>
+                <label>Service interest</label>
+                <select defaultValue="">
+                  <option value="" disabled>Select a service</option>
+                  <option>Construction Monitoring</option>
+                  <option>Cell Tower & Telecom Inspections</option>
+                  <option>LiDAR Mapping & Surveying</option>
+                  <option>Thermal Inspections</option>
+                  <option>Customer Portal / Deliverables</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label>Project details</label>
+              <textarea placeholder="Tell us about your project, inspection need, or portal workflow request." />
+            </div>
+            <button className="primary-btn" type="submit">Request Contact</button>
           </form>
         </div>
       </section>

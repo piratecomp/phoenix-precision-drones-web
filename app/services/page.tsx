@@ -1,29 +1,43 @@
-import { RadioTower, Building2, Camera, Flame, Map, ShieldCheck } from "lucide-react";
+import {
+  Activity,
+  Building2,
+  Camera,
+  Flame,
+  Map,
+  RadioTower,
+  ShieldCheck,
+  Sun,
+} from "lucide-react";
 
 const items = [
-  ["Construction Progress", "Recurring aerial progress documentation, jobsite visibility, stakeholder updates, and timeline capture.", Building2],
-  ["Cell Tower Inspections", "Inspection support for telecom towers, rooftop communication assets, and cellular infrastructure projects.", RadioTower],
-  ["Aerial Mapping Support", "Orthomosaic capture support, route overlays, acreage visibility, and planning intelligence.", Map],
-  ["Roof & Property Inspections", "Safer aerial review for roofs, structures, insurance support, and difficult-access property conditions.", ShieldCheck],
-  ["Thermal & Solar Support", "Thermal-ready workflows for solar arrays, infrastructure, roofs, and specialty inspection projects.", Flame],
-  ["Real Estate Photo & Video", "Aerial media for residential, commercial, land, and development marketing.", Camera],
-];
+  ["Construction Monitoring", "Recurring aerial progress capture, site documentation, stakeholder updates, and visual history for contractors and owners.", Building2],
+  ["LiDAR Mapping & Surveying", "Terrain visibility, mapping support, orthomosaic capture, and site-planning intelligence for real projects.", Map],
+  ["Thermal Inspections", "Thermal-ready inspection workflows for roofs, structures, solar assets, and infrastructure diagnostics.", Flame],
+  ["Infrastructure & Utility Inspections", "Aerial inspection support for bridges, roads, utilities, pipelines, and hard-to-access assets.", ShieldCheck],
+  ["Cell Tower & Telecom Inspections", "Visual documentation and inspection support for tower owners, telecom contractors, rooftop assets, and 5G infrastructure.", RadioTower],
+  ["Solar Farm Inspections", "Aerial and thermal support for panel health, asset documentation, and ongoing solar maintenance visibility.", Sun],
+  ["Insurance & Disaster Documentation", "Rapid post-event aerial imagery and organized reporting support for claims, property condition, and recovery documentation.", Activity],
+  ["Real Estate & Marketing Media", "Photo and video capture for listings, developments, land, and commercial marketing packages.", Camera],
+] as const;
 
 export default function ServicesPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <span className="pill">Services</span>
-          <h1><span className="gradient">Commercial drone services</span> with contract-ready positioning.</h1>
-          <p className="lead">Phoenix Precision Drones is structured around repeatable service lines that support construction, telecom, property inspection, mapping, thermal capture, and media workflows.</p>
+      <section className="page-hero section-pad">
+        <div className="container page-hero-inner">
+          <span className="section-kicker">Services</span>
+          <h1>Commercial drone services presented with a bold mission-control aesthetic.</h1>
+          <p className="lead-copy">
+            Phoenix Precision Drones combines field-ready services with a polished operations layer,
+            making it easier to sell, deliver, and support recurring commercial drone work.
+          </p>
         </div>
       </section>
-      <section className="section">
-        <div className="container cards">
-          {items.map(([title, text, Icon]: any) => (
-            <article className="card" key={title}>
-              <div className="iconbox"><Icon size={24} /></div>
+      <section className="section-pad section-divider">
+        <div className="container service-detail-grid">
+          {items.map(([title, text, Icon]) => (
+            <article className="detail-card panel-card" key={title}>
+              <div className="detail-icon"><Icon size={28} /></div>
               <h3>{title}</h3>
               <p>{text}</p>
             </article>

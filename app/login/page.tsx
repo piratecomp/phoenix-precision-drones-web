@@ -2,18 +2,20 @@ import Link from "next/link";
 
 export default function LoginPage() {
   return (
-    <>
-      <section className="page-hero">
-        <div className="container">
-          <span className="pill">Login</span>
-          <h1><span className="gradient">Portal access</span> for customers and pilots.</h1>
-          <p className="lead">Authentication is not connected yet in this version. Use the preview links below to review the intended customer and pilot portal designs.</p>
-          <div className="hero-actions">
-            <Link className="btn btn-primary" href="/customer-portal">Customer portal preview</Link>
-            <Link className="btn" href="/dashboard">Pilot dashboard preview</Link>
+    <section className="page-hero section-pad">
+      <div className="container narrow-center">
+        <div className="panel-card login-panel">
+          <span className="section-kicker">Portal access</span>
+          <h1>Choose the experience you want to preview.</h1>
+          <p className="lead-copy">
+            Customer and pilot pages each have their own dedicated interface and workflow focus.
+          </p>
+          <div className="hero-actions centered-actions">
+            <Link className="primary-btn" href="/customer-portal">Customer Portal</Link>
+            <Link className="ghost-btn" href="/dashboard">Pilot Dashboard</Link>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

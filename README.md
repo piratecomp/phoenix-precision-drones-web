@@ -1,17 +1,30 @@
-# Phoenix Precision Drones Website - Version 3 Fix
+# Phoenix Precision Drones Web Rebuild
 
-This update corrects the problems found after reviewing the live Version 2 mobile layout.
+Updated Next.js website rebuild using the futuristic mission-control visual theme.
 
-## Fixed
+## Included updates
+- Rebuilt header using the cleaned company banner and emblem
+- Stronger orange glow styling and brighter interface accents
+- Reworked homepage with a commercial drone services focus
+- Matching customer portal and pilot portal preview pages
+- Corrected platform definitions for public website, customer portal, and pilot portal
+- Removed grant-ready language and internal/developer-style notes from page content
 
-- Replaced the fake/checkerboard logo with a cleaned transparent PNG.
-- Removed wording that described internal page changes instead of customer-facing marketing.
-- Removed “updated layout” and “this version” language from public pages.
-- Prevented dashboard screenshots from being squeezed/stretched on mobile.
-- Dashboard preview pages now use a horizontal scroll container on phones.
-- Homepage wording is more public/customer-facing and less developer-change-log style.
-- Services still include Cell Tower Inspections.
+## Main routes
+- `/` Home
+- `/services`
+- `/industries`
+- `/pilots`
+- `/customer-portal`
+- `/dashboard`
+- `/about`
+- `/contact`
+- `/login`
 
-## Deploy
+## Run locally
+```bash
+npm install
+npm run dev
+```
 
-Replace the current GitHub repo files with this package and commit. Vercel will redeploy automatically.
+Then open `http://localhost:3000`.

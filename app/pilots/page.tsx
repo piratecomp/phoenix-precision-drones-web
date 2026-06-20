@@ -1,44 +1,38 @@
 import Image from "next/image";
 import Link from "next/link";
 
-const requirements = [
-  "FAA Part 107 certification, or ability to obtain it before commercial missions.",
-  "Drone equipment suitable for photo/video, inspection, mapping, or thermal work.",
-  "Professional communication and ability to follow mission requirements, upload deliverables, and work safely.",
-  "Interest in a growing pilot network with app-style mission workflows and support resources."
+const bullets = [
+  "Mission offers with route context and payout visibility",
+  "Deliverable upload workflow and field support resources",
+  "Equipment, safety, and certification awareness in one portal",
+  "Designed for pilots doing real field work, not generic account management",
 ];
 
 export default function PilotsPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <span className="pill">Pilot network</span>
-          <h1><span className="gradient">Pilots need a dashboard built for field work, not just a generic portal.</span></h1>
-          <p className="lead">The pilot side of Phoenix Precision Drones is designed around missions, route visibility, equipment readiness, deliverables, safety, and support.</p>
-          <div className="hero-actions">
-            <Link className="btn btn-primary" href="/dashboard">View pilot dashboard</Link>
-            <Link className="btn" href="/contact">Apply / contact us</Link>
-          </div>
-        </div>
-      </section>
-      <section className="section">
-        <div className="container split">
-          <div className="panel showcase">
-            <div className="dashboard-scroll">
-              <Image src="/images/pilot-dashboard-v2.png" alt="Pilot dashboard preview" width={1448} height={1086} />
-            </div>
-            <p className="scroll-hint">Swipe sideways to view the full dashboard preview.</p>
-          </div>
+      <section className="page-hero section-pad">
+        <div className="container two-col-hero">
           <div>
-            <div className="section-head">
-              <h2>What the pilot experience should include</h2>
-              <p>Mission acceptance, mission route details, deliverable checklist items, equipment status, recent activity, and communication from operations.</p>
-            </div>
-            <div className="text-list">
-              {requirements.map((item) => (
-                <div className="list-item" key={item}><span className="check">✓</span><div>{item}</div></div>
+            <span className="section-kicker">Pilot network</span>
+            <h1>Pilots need a dashboard built for field work.</h1>
+            <p className="lead-copy">
+              Phoenix Precision Drones is building a pilot network experience around missions,
+              maps, uploads, support, and organized operational flow.
+            </p>
+            <ul className="mini-list large-list">
+              {bullets.map((item) => (
+                <li key={item}>{item}</li>
               ))}
+            </ul>
+            <div className="hero-actions">
+              <Link className="primary-btn" href="/dashboard">View Pilot Dashboard</Link>
+              <Link className="ghost-btn" href="/contact">Join Pilot Network</Link>
+            </div>
+          </div>
+          <div className="screenshot-shell tall-shot">
+            <div className="screenshot-track tall-shot-track">
+              <Image src="/images/pilot-portal-preview.png" alt="Pilot portal preview" width={1055} height={1491} className="portal-shot" priority />
             </div>
           </div>
         </div>

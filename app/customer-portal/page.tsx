@@ -1,26 +1,38 @@
 import Image from "next/image";
 
+const features = [
+  ["Project visibility", "Customers can see active jobs, milestones, project status, and site activity from one clean dashboard."],
+  ["Deliverables & reports", "Reports, maps, downloads, invoices, and documents are organized in a polished customer-facing experience."],
+  ["Communication", "Messages, status updates, and project correspondence stay connected to the work being delivered."],
+];
+
 export default function CustomerPortalPage() {
   return (
     <>
-      <section className="page-hero">
-        <div className="container">
-          <span className="pill">Customer portal preview</span>
-          <h1><span className="gradient">Project status, deliverables, site media, and approvals</span> in a customer-facing interface.</h1>
-          <p className="lead">
-            A customer-focused portal concept for construction companies, telecom customers, property owners, and commercial clients
-            who need project visibility, reports, files, quotes, invoices, and communication in one place.
+      <section className="page-hero section-pad">
+        <div className="container page-hero-inner">
+          <span className="section-kicker">Customer portal</span>
+          <h1>A customer-facing dashboard with stronger glow, clarity, and deliverable structure.</h1>
+          <p className="lead-copy">
+            This portal preview is designed for project owners and buyers who want visibility,
+            documentation, reporting, and communication without seeing internal company metrics.
           </p>
-          <div className="full-preview">
-            <div className="dashboard-scroll">
-              <Image src="/images/customer-dashboard-v2.png" alt="Phoenix Precision Drones customer dashboard preview" width={1448} height={1086} priority />
+        </div>
+      </section>
+      <section className="section-pad section-divider">
+        <div className="container portal-page-layout">
+          <div className="screenshot-shell tall-shot large-shot">
+            <div className="screenshot-track tall-shot-track">
+              <Image src="/images/customer-portal-preview.png" alt="Phoenix Precision Drones customer portal" width={1055} height={1491} className="portal-shot" priority />
             </div>
-            <p className="scroll-hint">Swipe sideways to view the full dashboard preview.</p>
           </div>
-          <div className="info-strip">
-            <div className="info-tile"><h4>Project overview</h4><p>Status, location, progress, next flight, and media gathered around the project itself.</p></div>
-            <div className="info-tile"><h4>Deliverables</h4><p>Inspection reports, orthomosaic maps, point clouds, media files, and download history.</p></div>
-            <div className="info-tile"><h4>Client communication</h4><p>Messages, quote approval, invoice tracking, and project-specific updates from one place.</p></div>
+          <div className="feature-stack">
+            {features.map(([title, text]) => (
+              <article className="detail-card panel-card" key={title}>
+                <h3>{title}</h3>
+                <p>{text}</p>
+              </article>
+            ))}
           </div>
         </div>
       </section>
