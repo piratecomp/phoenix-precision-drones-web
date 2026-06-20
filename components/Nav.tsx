@@ -6,7 +6,7 @@ export default function Nav() {
     <header className="nav">
       <div className="nav-inner">
         <Link href="/" className="brand-wrap" aria-label="Phoenix Precision Drones home">
-          <Image className="brand-icon" src="/images/logo-emblem.png" alt="Phoenix Precision Drones emblem" width={160} height={160} priority />
+          <Image className="brand-icon" src="/images/logo-emblem-transparent.png" alt="Phoenix Precision Drones emblem" width={320} height={220} priority />
           <Image className="brand-banner" src="/images/phoenix-banner.png" alt="Phoenix Precision Drones banner" width={1536} height={1024} priority />
         </Link>
 

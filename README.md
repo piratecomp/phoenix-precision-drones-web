@@ -1,39 +1,17 @@
-# Phoenix Precision Drones Website - Version 2
+# Phoenix Precision Drones Website - Version 3 Fix
 
-Updated Vercel-ready Next.js website for Phoenix Precision Drones.
+This update corrects the problems found after reviewing the live Version 2 mobile layout.
 
-## What's new in Version 2
+## Fixed
 
-- Uses the transparent emblem properly.
-- Uses the banner in the header instead of treating it like a mid-page hero image.
-- Replaces the owner-view homepage mockup with dedicated customer and pilot portal previews.
-- Adds a new customer portal preview page.
-- Rebuilds the pilot dashboard page around the full dashboard screenshot.
-- Adds cell tower inspections to services and industry positioning.
-- Pushes the look closer to the dark futuristic mockup style.
+- Replaced the fake/checkerboard logo with a cleaned transparent PNG.
+- Removed wording that described internal page changes instead of customer-facing marketing.
+- Removed “updated layout” and “this version” language from public pages.
+- Prevented dashboard screenshots from being squeezed/stretched on mobile.
+- Dashboard preview pages now use a horizontal scroll container on phones.
+- Homepage wording is more public/customer-facing and less developer-change-log style.
+- Services still include Cell Tower Inspections.
 
-## Routes
+## Deploy
 
-- `/` Home
-- `/services`
-- `/industries`
-- `/pilots`
-- `/about`
-- `/contact`
-- `/login`
-- `/customer-portal`
-- `/dashboard`
-
-## Deploy update to existing Vercel project
-
-1. Replace the files in your GitHub repo with the contents of this Version 2 package.
-2. Commit and push.
-3. Vercel will auto-deploy the update.
-4. Refresh `phoenixprecisiondrones.com` after deployment completes.
-
-## Next likely step after this update
-
-- Build a dedicated customer mobile app mockup.
-- Build live Supabase auth.
-- Wire the contact form to email / queue.
-- Add role-based dashboards later.
+Replace the current GitHub repo files with this package and commit. Vercel will redeploy automatically.

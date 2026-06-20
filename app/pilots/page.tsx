@@ -25,7 +25,10 @@ export default function PilotsPage() {
       <section className="section">
         <div className="container split">
           <div className="panel showcase">
-            <Image src="/images/pilot-dashboard-v2.png" alt="Pilot dashboard preview" width={1448} height={1086} />
+            <div className="dashboard-scroll">
+              <Image src="/images/pilot-dashboard-v2.png" alt="Pilot dashboard preview" width={1448} height={1086} />
+            </div>
+            <p className="scroll-hint">Swipe sideways to view the full dashboard preview.</p>
           </div>
           <div>
             <div className="section-head">

@@ -21,8 +21,8 @@ export default function HomePage() {
             <span className="pill"><span className="dot" /> AI-driven commercial drone operations</span>
             <h1><span className="gradient">Aerial data, inspections, and mission intelligence</span> built for modern field operations.</h1>
             <p className="lead">
-              Phoenix Precision Drones is building a dark-future mission platform around commercial drone services, customer portals,
-              pilot workflows, and organized deliverables for construction, telecom, mapping, inspection, and media work.
+              Phoenix Precision Drones is building a commercial drone services platform for construction progress, cell tower inspections,
+              mapping support, property inspections, thermal services, real estate media, customer portals, and pilot mission workflows.
             </p>
             <div className="hero-actions">
               <Link className="btn btn-primary" href="/contact">Request a Quote</Link>
@@ -37,7 +37,7 @@ export default function HomePage() {
           </div>
 
           <div className="hero-visual">
-            <Image src="/images/logo-emblem.png" alt="Phoenix Precision Drones transparent emblem" width={1600} height={1200} priority />
+            <Image className="hero-logo" src="/images/logo-emblem-transparent.png" alt="Phoenix Precision Drones emblem" width={1000} height={700} priority />
           </div>
         </div>
       </section>
@@ -48,7 +48,8 @@ export default function HomePage() {
             <span className="pill">Portal previews</span>
             <h2>Public website outside. Mission-control experience inside.</h2>
             <p>
-              The updated layout replaces the owner-view mockup with dedicated customer and pilot portal previews that better match the brand style and futuristic interface direction.
+              Customers can review projects, reports, deliverables, quotes, and messages. Pilots can manage missions, route areas,
+              equipment readiness, uploads, and support resources.
             </p>
           </div>
           <div className="preview-grid">
@@ -95,16 +96,17 @@ export default function HomePage() {
         <div className="container split">
           <div>
             <div className="section-head">
-              <span className="pill">Why this layout</span>
-              <h2>Better brand flow. Better portal separation. Better fit for PPD.</h2>
+              <span className="pill">Platform direction</span>
+              <h2>One brand experience for public pages, customers, and pilots.</h2>
               <p>
-                This version moves the banner into the header, uses the transparent logo correctly, removes the owner-view mockup from public-facing pages, and gives the website a more immersive, game-like control-center look.
+                The site is designed to grow from a public grant-ready company presence into role-based portals for customers,
+                pilots, employees, and internal operations.
               </p>
             </div>
             <div className="text-list">
               <div className="list-item"><span className="check">✓</span><div><strong>Customer-facing</strong><br />Project oversight, reports, downloads, messages, and quote visibility without exposing internal owner metrics.</div></div>
               <div className="list-item"><span className="check">✓</span><div><strong>Pilot-facing</strong><br />Mission routes, deliverables, equipment, support resources, and flight workflow aligned to field work.</div></div>
-              <div className="list-item"><span className="check">✓</span><div><strong>Contract-ready services</strong><br />Cell tower inspections are now called out clearly along with construction, mapping, thermal, and real estate services.</div></div>
+              <div className="list-item"><span className="check">✓</span><div><strong>Contract-ready services</strong><br />Cell tower inspections are called out clearly alongside construction, mapping, thermal, and real estate services.</div></div>
             </div>
           </div>
           <div className="panel showcase">
