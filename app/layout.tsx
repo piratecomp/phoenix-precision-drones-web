@@ -4,21 +4,18 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Phoenix Precision Drones | AI-Driven Drone Operations",
+  title: "Phoenix Precision Drones | Commercial Drone Services & Portals",
   description:
-    "Phoenix Precision Drones provides commercial drone services for construction progress, aerial mapping, inspections, thermal imaging, real estate, emergency response support, and AI-assisted operations.",
+    "Phoenix Precision Drones provides commercial drone services for construction progress, mapping support, cell tower inspections, thermal inspections, real estate media, and AI-assisted mission operations.",
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body>
         <div className="site-shell">
-          <div className="grid-bg" />
+          <div className="background-grid" />
+          <div className="background-glow" />
           <Nav />
           <main className="main">{children}</main>
           <Footer />

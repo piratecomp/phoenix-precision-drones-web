@@ -1,54 +1,39 @@
-# Phoenix Precision Drones Website
+# Phoenix Precision Drones Website - Version 2
 
-Vercel-ready Next.js website for Phoenix Precision Drones.
+Updated Vercel-ready Next.js website for Phoenix Precision Drones.
 
-## Current Version
+## What's new in Version 2
 
-Version 1 includes:
+- Uses the transparent emblem properly.
+- Uses the banner in the header instead of treating it like a mid-page hero image.
+- Replaces the owner-view homepage mockup with dedicated customer and pilot portal previews.
+- Adds a new customer portal preview page.
+- Rebuilds the pilot dashboard page around the full dashboard screenshot.
+- Adds cell tower inspections to services and industry positioning.
+- Pushes the look closer to the dark futuristic mockup style.
 
-- Public homepage
-- Services page
-- Industries page
-- Pilot network page
-- About page
-- Contact page
-- Login preview
-- Dashboard preview
-- Brand assets placed in `/public/images`
+## Routes
 
-## Deployment Steps
+- `/` Home
+- `/services`
+- `/industries`
+- `/pilots`
+- `/about`
+- `/contact`
+- `/login`
+- `/customer-portal`
+- `/dashboard`
 
-1. Create a GitHub repository named:
+## Deploy update to existing Vercel project
 
-   `phoenix-precision-drones-web`
+1. Replace the files in your GitHub repo with the contents of this Version 2 package.
+2. Commit and push.
+3. Vercel will auto-deploy the update.
+4. Refresh `phoenixprecisiondrones.com` after deployment completes.
 
-2. Upload all files from this folder to that GitHub repository.
+## Next likely step after this update
 
-3. Go to Vercel.
-
-4. Choose:
-
-   `Add New` → `Project` → import the GitHub repo.
-
-5. Use these Vercel settings:
-
-   - Framework Preset: Next.js
-   - Build Command: `npm run build`
-   - Install Command: `npm install`
-   - Output Directory: leave blank/default
-
-6. Deploy.
-
-7. Add the custom domain:
-
-   `phoenixprecisiondrones.com`
-
-8. In GoDaddy DNS, point the domain to Vercel using the DNS records Vercel gives you.
-
-## Next Build Phase
-
-- Connect Supabase Auth.
-- Connect contact form to Supabase/Resend.
-- Protect `/dashboard`.
-- Add customer, employee, pilot, and admin dashboard modes.
-- Connect live PPD tables and AI workflows.
+- Build a dedicated customer mobile app mockup.
+- Build live Supabase auth.
+- Wire the contact form to email / queue.
+- Add role-based dashboards later.

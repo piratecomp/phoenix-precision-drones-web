@@ -1,35 +1,43 @@
+import Image from "next/image";
 import Link from "next/link";
 
 const requirements = [
-  "FAA Part 107 certification or willingness to obtain it before commercial missions.",
-  "Professional drone equipment suited for photo/video, thermal, mapping, inspection, or specialty work.",
-  "Reliable communication, safe flight habits, insurance readiness, and ability to upload deliverables.",
-  "Interest in joining a growing AI-assisted drone operations network."
+  "FAA Part 107 certification, or ability to obtain it before commercial missions.",
+  "Drone equipment suitable for photo/video, inspection, mapping, or thermal work.",
+  "Professional communication and ability to follow mission requirements, upload deliverables, and work safely.",
+  "Interest in a growing pilot network with app-style mission workflows and support resources."
 ];
 
 export default function PilotsPage() {
   return (
     <>
       <section className="page-hero">
-        <span className="eyebrow">Pilot Network</span>
-        <h1><span className="gradient-text">Join the Phoenix Precision Drones pilot network.</span></h1>
-        <p className="lead">Phoenix Precision Drones is building a network of qualified commercial drone pilots for local and future nationwide mission coverage.</p>
-        <div className="hero-actions">
-          <Link className="btn btn-primary" href="/contact">Apply / Contact Us</Link>
-          <Link className="btn" href="/dashboard">View Pilot Dashboard Preview</Link>
-        </div>
-      </section>
-      <section className="section split">
-        <div>
-          <div className="section-header">
-            <h2>What we are building</h2>
-            <p>A platform where qualified pilots can receive mission opportunities, manage equipment, accept jobs, upload photos/video/mapping data, and track earnings.</p>
+        <div className="container">
+          <span className="pill">Pilot network</span>
+          <h1><span className="gradient">Pilots need a dashboard built for field work, not just a generic portal.</span></h1>
+          <p className="lead">The pilot side of Phoenix Precision Drones is designed around missions, route visibility, equipment readiness, deliverables, safety, and support.</p>
+          <div className="hero-actions">
+            <Link className="btn btn-primary" href="/dashboard">View pilot dashboard</Link>
+            <Link className="btn" href="/contact">Apply / contact us</Link>
           </div>
         </div>
-        <div className="list">
-          {requirements.map((item) => (
-            <div className="list-item" key={item}><span className="check">✓</span><div>{item}</div></div>
-          ))}
+      </section>
+      <section className="section">
+        <div className="container split">
+          <div className="panel showcase">
+            <Image src="/images/pilot-dashboard-v2.png" alt="Pilot dashboard preview" width={1448} height={1086} />
+          </div>
+          <div>
+            <div className="section-head">
+              <h2>What the pilot experience should include</h2>
+              <p>Mission acceptance, mission route details, deliverable checklist items, equipment status, recent activity, and communication from operations.</p>
+            </div>
+            <div className="text-list">
+              {requirements.map((item) => (
+                <div className="list-item" key={item}><span className="check">✓</span><div>{item}</div></div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
     </>

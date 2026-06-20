@@ -2,44 +2,46 @@ export default function ContactPage() {
   return (
     <>
       <section className="page-hero">
-        <span className="eyebrow">Contact</span>
-        <h1><span className="gradient-text">Request a drone service quote</span> or contact the operations team.</h1>
-        <p className="lead">Use this first public contact flow for customer inquiries, pilot interest, partnerships, and general business communication.</p>
-      </section>
-
-      <section className="section contact-panel">
-        <div>
-          <div className="section-header">
-            <h2>Contact Phoenix Precision Drones</h2>
-            <p>
-              Email: sales@phoenixprecisiondrones.com
-              <br />
-              Phone: Not listed yet
-            </p>
-            <p>
-              This Version 1 form is front-end only. The next build step is connecting it to Supabase and the PPD communication/email queue.
-            </p>
-          </div>
+        <div className="container">
+          <span className="pill">Contact</span>
+          <h1><span className="gradient">Request a quote</span> or reach the operations team.</h1>
+          <p className="lead">Use this public contact flow for customer inquiries, pilot interest, telecom and construction opportunities, partnerships, and general company communication.</p>
         </div>
-
-        <form className="form">
-          <label>Name</label>
-          <input placeholder="Your name" />
-          <label>Email</label>
-          <input placeholder="you@example.com" />
-          <label>Inquiry Type</label>
-          <select defaultValue="">
-            <option value="" disabled>Select one</option>
-            <option>Customer quote</option>
-            <option>Pilot network</option>
-            <option>Partnership</option>
-            <option>General question</option>
-          </select>
-          <label>Message</label>
-          <textarea placeholder="Tell us what you need..." />
-          <button className="btn btn-primary" type="button">Send Message</button>
-          <p className="legal">Form connection will be activated after Supabase/Resend email integration is added.</p>
-        </form>
+      </section>
+      <section className="section">
+        <div className="container contact-grid">
+          <div>
+            <div className="section-head">
+              <h2>Contact Phoenix Precision Drones</h2>
+              <p>
+                Email: sales@phoenixprecisiondrones.com
+                <br />
+                Phone: not listed yet
+              </p>
+              <p>
+                This form is still a front-end placeholder. The next step is wiring it to Supabase and your communication/email workflow.
+              </p>
+            </div>
+          </div>
+          <form className="form">
+            <label>Name</label>
+            <input placeholder="Your name" />
+            <label>Email</label>
+            <input placeholder="you@example.com" />
+            <label>Inquiry Type</label>
+            <select defaultValue="">
+              <option value="" disabled>Select one</option>
+              <option>Customer quote</option>
+              <option>Cell tower inspection inquiry</option>
+              <option>Pilot network</option>
+              <option>Partnership</option>
+              <option>General question</option>
+            </select>
+            <label>Message</label>
+            <textarea placeholder="Tell us what you need..." />
+            <button className="btn btn-primary" type="button">Send Message</button>
+          </form>
+        </div>
       </section>
     </>
   );
