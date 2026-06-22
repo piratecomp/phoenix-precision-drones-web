@@ -42,3 +42,8 @@ Do you do cell tower inspections?
 ```
 
 You should receive the Supabase-powered company response.
+
+
+## V10 chat form visibility fix
+
+This version fixes the chat window layout so the typed prompt/input area stays visible after long AI responses. The chat message history scrolls, while the quick buttons, lead fields, input box, and Send button stay accessible.

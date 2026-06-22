@@ -901,3 +901,65 @@ button, input, textarea, select { font: inherit; }
     grid-template-columns: 1fr;
   }
 }
+
+
+/* V10 chat form visibility fix: keep input area pinned and make only messages scroll. */
+.ppd-chat-window {
+  display: flex;
+  flex-direction: column;
+  height: min(640px, calc(100vh - 96px));
+  max-height: calc(100vh - 96px);
+  overflow: hidden;
+}
+
+.ppd-chat-window *,
+.ppd-chat-window *::before,
+.ppd-chat-window *::after {
+  box-sizing: border-box;
+}
+
+.ppd-chat-header {
+  flex: 0 0 auto;
+}
+
+.ppd-chat-body {
+  flex: 1 1 auto;
+  min-height: 0;
+  max-height: none;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ppd-chat-quick,
+.ppd-chat-lead-toggle,
+.ppd-chat-lead-fields,
+.ppd-chat-form,
+.ppd-chat-note {
+  flex: 0 0 auto;
+}
+
+.ppd-chat-quick {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: thin;
+}
+
+.ppd-chat-form {
+  align-items: stretch;
+}
+
+.ppd-chat-form input {
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .ppd-chat-window {
+    height: min(610px, calc(100vh - 82px));
+    max-height: calc(100vh - 82px);
+  }
+
+  .ppd-chat-body {
+    max-height: none;
+  }
+}
