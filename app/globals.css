@@ -568,3 +568,122 @@ button, input, textarea, select { font: inherit; }
   .service-grid { display: grid; }
   .service-tile h3 { font-size: 18px; }
 }
+
+
+/* V7 header/footer fix: single combined brand image, larger mobile logo, smaller quote button. */
+.nav-bar {
+  min-height: 104px;
+  grid-template-columns: minmax(360px, 560px) minmax(0, 1fr) auto;
+  gap: 16px;
+}
+
+.combined-brand {
+  width: min(560px, 38vw);
+  min-width: 360px;
+  display: flex;
+  align-items: center;
+}
+
+.combined-header-logo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(255, 140, 22, 0.38));
+}
+
+.nav-actions {
+  gap: 10px;
+}
+
+.nav-quote {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 14px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.nav-contact {
+  min-height: 42px;
+  padding: 0 14px;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.footer-emblem {
+  width: 96px;
+  height: auto;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(255, 140, 22, 0.42));
+}
+
+@media (max-width: 1320px) {
+  .nav-bar {
+    grid-template-columns: minmax(330px, 500px) 1fr auto;
+  }
+
+  .combined-brand {
+    width: min(500px, 40vw);
+    min-width: 330px;
+  }
+
+  .desktop-nav {
+    gap: 14px;
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 1250px) {
+  .nav-bar {
+    grid-template-columns: 1fr auto;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .combined-brand {
+    width: min(540px, 60vw);
+    min-width: 330px;
+  }
+}
+
+@media (max-width: 760px) {
+  .nav-bar {
+    min-height: 88px;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+  }
+
+  .combined-brand {
+    width: min(315px, calc(100vw - 132px));
+    min-width: 225px;
+  }
+
+  .combined-header-logo {
+    filter: drop-shadow(0 0 10px rgba(255, 140, 22, 0.42));
+  }
+
+  .nav-quote {
+    min-height: 40px;
+    padding: 0 12px;
+    font-size: 13px;
+    border-radius: 12px;
+  }
+
+  .nav-contact {
+    display: none;
+  }
+}
+
+@media (max-width: 390px) {
+  .combined-brand {
+    width: min(270px, calc(100vw - 120px));
+    min-width: 205px;
+  }
+
+  .nav-quote {
+    padding: 0 9px;
+    font-size: 12px;
+  }
+}

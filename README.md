@@ -1,30 +1,13 @@
-# Phoenix Precision Drones Web Rebuild
+# Phoenix Precision Drones Website - V7 Header/Footer Fix
 
-Updated Next.js website rebuild using the futuristic mission-control visual theme.
+This package adjusts only the brand/header/footer problem areas.
 
-## Included updates
-- Rebuilt header using the cleaned company banner and emblem
-- Stronger orange glow styling and brighter interface accents
-- Reworked homepage with a commercial drone services focus
-- Matching customer portal and pilot portal preview pages
-- Corrected platform definitions for public website, customer portal, and pilot portal
-- Removed grant-ready language and internal/developer-style notes from page content
+## Changes
+- Replaces the separate small header logo and banner with one combined header image
+- Enlarges the brand image on mobile so the emblem is recognizable
+- Reduces the Request Quote button size so it does not crowd the header
+- Replaces the footer emblem with the newer cleaned logo asset
+- Keeps the existing futuristic page theme and portal pages
 
-## Main routes
-- `/` Home
-- `/services`
-- `/industries`
-- `/pilots`
-- `/customer-portal`
-- `/dashboard`
-- `/about`
-- `/contact`
-- `/login`
-
-## Run locally
-```bash
-npm install
-npm run dev
-```
-
-Then open `http://localhost:3000`.
+## Deploy
+Upload/replace these files in the GitHub repository and commit to `main`. Vercel should redeploy automatically.

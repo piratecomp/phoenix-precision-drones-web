@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="container footer-grid">
         <div className="footer-brand">
-          <Image src="/images/logo-emblem-transparent.png" alt="Phoenix Precision Drones emblem" width={76} height={76} className="footer-emblem" />
+          <Image src="/images/logo-emblem-clean.png" alt="Phoenix Precision Drones emblem" width={96} height={96} className="footer-emblem" />
           <div>
             <strong>Phoenix Precision Drones</strong>
             <p>Aviation intelligence, precision data, and mission-ready deliverables.</p>

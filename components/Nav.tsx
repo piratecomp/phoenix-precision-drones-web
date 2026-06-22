@@ -15,13 +15,15 @@ export default function Nav() {
   return (
     <header className="nav-shell">
       <div className="container nav-bar">
-        <Link href="/" className="brand-lockup" aria-label="Phoenix Precision Drones home">
-          <div className="brand-emblem-wrap">
-            <Image src="/images/logo-emblem-transparent.png" alt="Phoenix Precision Drones emblem" width={120} height={120} className="brand-emblem" priority />
-          </div>
-          <div className="brand-banner-wrap">
-            <Image src="/images/banner-transparent.png" alt="Phoenix Precision Drones" width={560} height={186} className="brand-banner" priority />
-          </div>
+        <Link href="/" className="brand-lockup combined-brand" aria-label="Phoenix Precision Drones home">
+          <Image
+            src="/images/header-brand-combined.png"
+            alt="Phoenix Precision Drones"
+            width={1128}
+            height={296}
+            className="combined-header-logo"
+            priority
+          />
         </Link>
 
         <nav className="desktop-nav" aria-label="Primary">
@@ -37,7 +39,7 @@ export default function Nav() {
             Contact
           </Link>
           <Link className="primary-btn nav-quote" href="/contact">
-            Request a Quote
+            Request Quote
           </Link>
         </div>
       </div>
