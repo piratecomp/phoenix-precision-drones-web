@@ -19,30 +19,51 @@ function cleanText(value: unknown, maxLength: number) {
   return cleaned.slice(0, maxLength);
 }
 
+function normalizeWeatherLocation(raw: string) {
+  return raw
+    .replace(/[?.!]+$/g, "")
+    .replace(/\b(today|tomorrow|this week|right now|now|currently|please)\b/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
 function detectWeatherIntent(message: string): WeatherIntent {
-  const normalized = message.trim();
+  const normalized = message
+    .trim()
+    .replace(/[’]/g, "'")
+    .replace(/\s+/g, " ");
 
   const weatherWords =
-    /\b(weather|forecast|temperature|temp|wind|rain|storm|snow|humidity|conditions|hot|cold)\b/i;
+    /\b(weather|forecast|temperature|temp|wind|rain|storm|snow|humidity|conditions|hot|cold|cloudy|sunny)\b/i;
 
   if (!weatherWords.test(normalized)) {
     return { isWeather: false, location: null };
   }
 
   const locationPatterns = [
-    /\b(?:weather|forecast|temperature|temp|wind|rain|conditions)\s+(?:in|for|at|near)\s+(.+)$/i,
-    /\b(?:in|for|at|near)\s+([A-Za-z][A-Za-z\s.'-]+,\s*[A-Za-z]{2,}|[A-Za-z][A-Za-z\s.'-]+)\s*(?:weather|forecast|temperature|temp|wind|rain|conditions)\b/i,
-    /\bwhat(?:'s| is)?\s+the\s+(?:weather|forecast|temperature|temp|wind|rain)\s+(?:in|for|at|near)\s+(.+)$/i,
-    /\bhow(?:'s| is)?\s+the\s+weather\s+(?:in|for|at|near)\s+(.+)$/i,
+    // What's the weather like in Phoenix?
+    /\bwhat(?:'s|s| is)?\s+the\s+weather\s+like\s+(?:in|for|at|near)\s+(.+)$/i,
+
+    // What is the weather in Phoenix?
+    /\bwhat(?:'s|s| is)?\s+the\s+(?:weather|forecast|temperature|temp|wind|rain|conditions)\s+(?:like\s+)?(?:in|for|at|near)\s+(.+)$/i,
+
+    // How is the weather in Phoenix?
+    /\bhow(?:'s|s| is)?\s+the\s+weather\s+(?:in|for|at|near)\s+(.+)$/i,
+
+    // Forecast for Phoenix / weather in Phoenix
+    /\b(?:weather|forecast|temperature|temp|wind|rain|conditions)\s+(?:like\s+)?(?:in|for|at|near)\s+(.+)$/i,
+
+    // Phoenix weather / Phoenix forecast
+    /^([A-Za-z][A-Za-z\s.'-]+,\s*[A-Za-z]{2,}|[A-Za-z][A-Za-z\s.'-]+)\s+(?:weather|forecast|temperature|temp|wind|rain|conditions)\b/i,
+
+    // Is it windy in Tucson? / Is it raining in Dallas?
+    /\bis\s+it\s+(?:windy|raining|snowing|hot|cold|cloudy|sunny|stormy)\s+(?:in|for|at|near)\s+(.+)$/i,
   ];
 
   for (const pattern of locationPatterns) {
     const match = normalized.match(pattern);
     if (match?.[1]) {
-      const location = match[1]
-        .replace(/[?.!]+$/g, "")
-        .replace(/\b(today|tomorrow|this week|right now|now|currently)\b/gi, "")
-        .trim();
+      const location = normalizeWeatherLocation(match[1]);
 
       if (location.length >= 2) {
         return { isWeather: true, location };

@@ -67,3 +67,18 @@ Changed file:
 Existing Supabase environment variables are still required for all non-weather PPD AI questions:
 - `SUPABASE_URL`
 - `SUPABASE_SERVICE_ROLE_KEY`
+
+
+## V12 weather phrasing fix
+
+This version improves weather question detection for natural phrasing such as:
+- Whats the weather like in phoenix?
+- What's the weather like in Phoenix?
+- Is it windy in Tucson?
+- Phoenix weather
+- Forecast for Dallas, TX
+
+Changed file:
+- `app/api/chat/route.ts`
+
+The weather forecast still runs server-side before normal Supabase chat routing.
