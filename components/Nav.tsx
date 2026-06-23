@@ -42,6 +42,14 @@ export default function Nav() {
             Request Quote
           </Link>
         </div>
+
+        <nav className="mobile-nav" aria-label="Mobile primary">
+          {links.map(([label, href]) => (
+            <Link key={href} href={href}>
+              {label}
+            </Link>
+          ))}
+        </nav>
       </div>
     </header>
   );
