@@ -1,35 +1,40 @@
 import Link from "next/link";
 import {
+  BadgeCheck,
   BrainCircuit,
-  Building2,
   ClipboardCheck,
+  CloudSun,
+  DollarSign,
   FileText,
   Map,
   Network,
-  RadioTower,
+  PlaneTakeoff,
+  Route,
   ShieldCheck,
   Users,
 } from "lucide-react";
 
 const focusAreas = [
-  ["Construction progress", "Repeatable site capture, progress documentation, earthwork visibility, and stakeholder reporting for contractors, developers, and owners.", Building2],
-  ["LiDAR & mapping support", "High-value mapping workflows designed for terrain intelligence, site planning, orthomosaic deliverables, and survey-support documentation.", Map],
-  ["Inspections & documentation", "Thermal, roof, solar, infrastructure, insurance, and asset inspection support with organized photos, reports, and project records.", ClipboardCheck],
-  ["Telecom & towers", "Cell tower, rooftop communications asset, and infrastructure inspection workflows built for repeatable commercial documentation.", RadioTower],
+  ["AI operations backbone", "Communication, lead intake, dispatch scoring, safety routing, pricing support, follow-up drafts, and internal task queues are designed around one connected operating model.", BrainCircuit],
+  ["Pilot network model", "The company is built as both Phoenix-area operations and a scalable network for qualified 1099 pilots as service coverage expands.", Users],
+  ["Safety-aware dispatch", "Pilot match logic can consider Part 107 status, insurance, drone capability, safety scores, workload, fatigue windows, weather, distance, and job fit.", ShieldCheck],
+  ["Mission and deliverable flow", "Jobs connect to mission planning, DJI-compatible workflows, waypoints, flight logs, media uploads, customer deliverables, invoices, payouts, and records.", PlaneTakeoff],
 ] as const;
 
 const platformPieces = [
-  ["Public service intake", "The website explains services, captures project interest, routes safety-sensitive requests for review, and keeps customer-facing answers inside safe boundaries."],
-  ["Customer portal", "Customers are meant to see project status, reports, deliverables, messages, invoices, and documentation in one organized workspace."],
-  ["Pilot workflow", "Pilots are meant to work from mission context, route information, safety reminders, uploads, equipment readiness, and support tools."],
-  ["AI operations layer", "The backend is being built to support communication, lead intake, dispatch planning, safety routing, pricing intelligence, and repeatable workflows."],
+  ["Public website", "Explains services, collects project details, answers safe public questions, and routes quote requests or safety-sensitive items into review workflows."],
+  ["Customer portal", "Organizes project visibility, reports, deliverables, invoices, documents, messages, and follow-up so customers receive more than loose files."],
+  ["Pilot dashboard", "Gives pilots mission context, offer visibility, route information, safety reminders, upload support, equipment awareness, and field-ready workflow structure."],
+  ["Dispatch engine", "Ranks eligible pilots, supports small-wave job offers, tracks responses, expires competing offers after acceptance, and keeps assignment history tied to each job."],
+  ["Safety layer", "Uses weather awareness, operating limits, no-fly controls, manual-review gates, certification tracking, insurance tracking, and fatigue/workload logic."],
+  ["Business AI", "Supports pricing intelligence, competitor research, marketing queues, funding research, payroll, pilot payouts, maintenance, and administrative operations."],
 ] as const;
 
 const principles = [
-  ["Safety before speed", "Airport, airspace, over-people, spraying, insurance, legal, and active-dispatch requests are routed for human review instead of being auto-approved."],
-  ["Field-first design", "The business is built around real jobsite and inspection workflows, not only creative aerial media."],
-  ["Professional deliverables", "The goal is clean project records, useful reports, organized files, and data customers can actually use."],
-  ["Scalable network model", "Phoenix Precision Drones is designed to grow from Arizona service operations into a larger pilot-supported commercial drone platform."],
+  ["AI-assisted, human-supervised", "The system supports decisions, but the website does not claim automatic flight approval, legal advice, insurance issuance, or active dispatch confirmation."],
+  ["Field-first design", "PPD is built for real commercial field work: construction, mapping, inspections, telecom, solar, utility, emergency response, and recurring jobs."],
+  ["Pilot protection", "Workload, fatigue, daily flight time, weekly flight time, insurance, certification, and safety scoring are part of the platform design."],
+  ["Customer-ready data", "The target output is organized aerial intelligence: photos, videos, maps, thermal evidence, inspection records, reports, and deliverables."],
 ] as const;
 
 export default function AboutPage() {
@@ -38,13 +43,13 @@ export default function AboutPage() {
       <section className="page-hero section-pad about-hero">
         <div className="container page-hero-inner">
           <span className="section-kicker">About Phoenix Precision Drones</span>
-          <h1>Built to turn drone flights into organized aerial intelligence.</h1>
+          <h1>An AI-driven drone operations platform, not just an aerial media company.</h1>
           <p className="lead-copy">
-            Phoenix Precision Drones is being built as an AI-assisted commercial drone service platform for construction, mapping, inspections, telecom, solar, insurance documentation, and field operations. The goal is not just to capture photos from the sky. The goal is to deliver repeatable mission workflows, clean deliverables, customer visibility, and pilot-ready operations.
+            Phoenix Precision Drones is being built as a commercial drone service provider and scalable pilot network powered by an AI-assisted operating system. The platform is designed to connect customers, pilots, drones, missions, safety, dispatch, pricing, maintenance, payroll, funding research, competitor intelligence, marketing, and deliverables into one organized workflow.
           </p>
           <div className="hero-actions">
             <Link className="primary-btn" href="/services">Review Services</Link>
-            <Link className="ghost-btn" href="/contact">Request Project Review</Link>
+            <Link className="ghost-btn" href="/pilots">Pilot Network</Link>
           </div>
         </div>
       </section>
@@ -52,21 +57,21 @@ export default function AboutPage() {
       <section className="section-pad section-divider">
         <div className="container about-story-grid">
           <article className="panel-card about-story-card">
-            <span className="section-kicker">What we are building</span>
-            <h2>A drone business with an operations backbone.</h2>
+            <span className="section-kicker">The operating model</span>
+            <h2>Customers request work. AI organizes the operation. Pilots capture the data.</h2>
             <p>
-              Phoenix Precision Drones is designed around the work customers actually need after the flight: progress records, inspection evidence, maps, reports, photos, thermal data, LiDAR-ready mapping support, communication, and documentation that can be reviewed later.
+              PPD is designed so a drone job does not stop at “go fly and send photos.” The platform can collect project details, evaluate service requirements, review safety context, support pricing, match pilots, prepare mission workflows, track uploads, organize deliverables, and keep finance and follow-up connected to the job.
             </p>
             <p>
-              The platform combines a public website, customer portal, pilot dashboard, Communication AI, lead routing, safety boundaries, and administrative workflows so customer requests can move from intake to review in an organized way.
+              Phoenix-area work can be supported by in-house operations first. As the network grows, qualified 1099 pilots can receive matched opportunities through a marketplace-style dispatch model.
             </p>
           </article>
 
           <article className="panel-card about-story-card highlight-card">
             <BrainCircuit size={34} />
-            <h2>AI-assisted, not AI-uncontrolled.</h2>
+            <h2>Built as an AI company from the beginning.</h2>
             <p>
-              The system is being built to use AI for intake, routing, communication support, weather context, service guidance, pricing support, and workflow organization. Safety-sensitive items are not treated as automatic approvals. Human review remains required for regulated, legal, insurance, and operational decisions.
+              The backend is designed to support dispatch, Communication AI, safety, mission planning, weather awareness, pilot verification, competitor pricing research, marketing, funding research, finance, payroll, maintenance, and administrative workflows with human review where it matters.
             </p>
           </article>
         </div>
@@ -75,10 +80,10 @@ export default function AboutPage() {
       <section className="section-pad section-divider">
         <div className="container">
           <div className="section-heading centered">
-            <span className="section-kicker">Service direction</span>
-            <h2>Focused on commercial work where repeatable data matters.</h2>
+            <span className="section-kicker">Core platform capabilities</span>
+            <h2>Designed around the real workflow of commercial drone operations.</h2>
             <p>
-              Phoenix Precision Drones is positioned for customers who need more than a one-time aerial image. The platform is aimed at recurring site documentation, inspections, mapping support, and structured deliverables.
+              PPD’s value is the operating system behind the flight: how jobs are requested, reviewed, routed, flown, uploaded, delivered, billed, paid, and learned from.
             </p>
           </div>
           <div className="service-detail-grid">
@@ -97,10 +102,10 @@ export default function AboutPage() {
         <div className="container ecosystem-layout">
           <div>
             <div className="section-heading">
-              <span className="section-kicker">Platform model</span>
-              <h2>One brand, multiple operating layers.</h2>
+              <span className="section-kicker">Platform layers</span>
+              <h2>One brand, multiple operating systems working together.</h2>
               <p>
-                The public website is only the front door. Behind it, the system is being shaped around customer records, pilot workflows, safety routing, and administrative review.
+                The public website explains the company. The portals serve customers and pilots. The AI backend supports the business engine behind both.
               </p>
             </div>
             <div className="definition-list">
@@ -129,24 +134,44 @@ export default function AboutPage() {
       <section className="section-pad section-divider">
         <div className="container about-credentials-grid">
           <article className="panel-card detail-card">
-            <ShieldCheck size={32} />
-            <h3>Safety and compliance aware</h3>
-            <p>Public chat and intake workflows are designed to avoid approving flights, dispatching pilots, issuing insurance documents, or making legal/FAA decisions without review.</p>
+            <Route size={32} />
+            <h3>Smart dispatch model</h3>
+            <p>Network jobs can be ranked and offered in small waves to eligible pilots instead of broadcasting every opportunity to everyone at once.</p>
+          </article>
+          <article className="panel-card detail-card">
+            <CloudSun size={32} />
+            <h3>Weather-aware operations</h3>
+            <p>Wind, gusts, heat, precipitation, visibility, and weather status are treated as operational factors, not afterthoughts.</p>
+          </article>
+          <article className="panel-card detail-card">
+            <BadgeCheck size={32} />
+            <h3>Qualification monitoring</h3>
+            <p>Part 107, insurance, drone verification, skills, safety profile, and drone capability are part of pilot-network readiness.</p>
+          </article>
+          <article className="panel-card detail-card">
+            <Map size={32} />
+            <h3>DJI-compatible planning</h3>
+            <p>The system supports AI-assisted mission planning and command-based drone workflows while preserving safe human oversight.</p>
           </article>
           <article className="panel-card detail-card">
             <FileText size={32} />
             <h3>Deliverable focused</h3>
-            <p>The business is built around useful outputs: photos, videos, mapping products, inspection evidence, reports, documentation, and project history.</p>
+            <p>Photos, videos, maps, inspection evidence, reports, documentation, and customer history stay tied to project records.</p>
           </article>
           <article className="panel-card detail-card">
-            <Users size={32} />
-            <h3>Customer and pilot workflows</h3>
-            <p>The platform direction includes both sides of the operation: customers who need organized project visibility and pilots who need mission-ready field tools.</p>
+            <DollarSign size={32} />
+            <h3>Business automation</h3>
+            <p>Pricing intelligence, pilot payouts, payroll, maintenance costs, invoices, funding research, and competitor tracking support business growth.</p>
+          </article>
+          <article className="panel-card detail-card">
+            <ClipboardCheck size={32} />
+            <h3>Human review gates</h3>
+            <p>Legal, insurance, active dispatch, airport/airspace, night operations, over-people, spraying, and sensitive-site topics are routed carefully.</p>
           </article>
           <article className="panel-card detail-card">
             <Network size={32} />
             <h3>Built to scale</h3>
-            <p>The long-term model is a structured drone service network that can support multiple services, locations, pilots, and commercial industries.</p>
+            <p>The long-term goal is a nationwide AI-assisted drone network with local operations and qualified pilot marketplace coverage.</p>
           </article>
         </div>
       </section>

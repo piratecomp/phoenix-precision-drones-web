@@ -6,10 +6,9 @@ export default function ContactPage() {
       <section className="page-hero section-pad">
         <div className="container page-hero-inner">
           <span className="section-kicker">Contact</span>
-          <h1>Request aerial intelligence, inspections, or portal-supported drone services.</h1>
+          <h1>Request project review, pilot network info, or AI-supported drone services.</h1>
           <p className="lead-copy">
-            Reach out for construction progress capture, cell tower inspections, mapping support,
-            thermal work, real estate media, or pilot network opportunities.
+            Reach out for construction progress capture, mapping support, LiDAR-ready workflows, thermal work, telecom inspections, insurance documentation, real estate media, customer portal questions, or pilot network opportunities.
           </p>
         </div>
       </section>
@@ -19,7 +18,8 @@ export default function ContactPage() {
             <h3>Direct contact</h3>
             <p><strong>Email:</strong> sales@phoenixprecisiondrones.com</p>
             <p><strong>Location:</strong> Phoenix, Arizona</p>
-            <p><strong>Primary focus:</strong> Commercial drone services, customer deliverables, and pilot mission workflows.</p>
+            <p><strong>Primary focus:</strong> Commercial drone services, AI-assisted operations, customer deliverables, and pilot mission workflows.</p>
+            <p><strong>Prelaunch note:</strong> Website requests collect details for review. They do not automatically confirm scheduling, pilot dispatch, flight approval, insurance documents, or active service availability.</p>
             <div className="hero-actions">
               <Link className="primary-btn" href="mailto:sales@phoenixprecisiondrones.com">Send Email</Link>
             </div>
@@ -41,22 +41,25 @@ export default function ContactPage() {
                 <input type="text" placeholder="Company name" />
               </div>
               <div>
-                <label>Service interest</label>
+                <label>Request type</label>
                 <select defaultValue="">
-                  <option value="" disabled>Select a service</option>
+                  <option value="" disabled>Select a request type</option>
                   <option>Construction Monitoring</option>
                   <option>Cell Tower & Telecom Inspections</option>
                   <option>LiDAR Mapping & Surveying</option>
                   <option>Thermal Inspections</option>
+                  <option>Insurance / Property Documentation</option>
                   <option>Customer Portal / Deliverables</option>
+                  <option>Pilot Network Application</option>
+                  <option>Partnership / Enterprise Work</option>
                 </select>
               </div>
             </div>
             <div>
-              <label>Project details</label>
-              <textarea placeholder="Tell us about your project, inspection need, or portal workflow request." />
+              <label>Project or pilot details</label>
+              <textarea placeholder="Tell us about the project location, service need, timing, deliverables, pilot qualifications, drone capability, or portal workflow request." />
             </div>
-            <button className="primary-btn" type="submit">Request Contact</button>
+            <button className="primary-btn" type="submit">Request Review</button>
           </form>
         </div>
       </section>
