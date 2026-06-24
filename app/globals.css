@@ -1085,7 +1085,7 @@ button, input, textarea, select { font: inherit; }
   background:
     linear-gradient(90deg, rgba(5, 6, 7, 0.98) 0%, rgba(5, 7, 11, 0.88) 42%, rgba(5, 7, 11, 0.4) 100%),
     radial-gradient(circle at 72% 36%, rgba(255, 141, 22, 0.22), transparent 23rem),
-    url('/images/hero-drone-city-scan.png') right center / min(70vw, 920px) auto no-repeat;
+    url('/images/hero-drone-powerline-scan.png') right center / min(70vw, 920px) auto no-repeat;
   opacity: 0.55;
   filter: saturate(1.15) contrast(1.08);
 }
@@ -1328,7 +1328,7 @@ button, input, textarea, select { font: inherit; }
   .v15-hero-bg {
     background:
       linear-gradient(180deg, rgba(5, 6, 7, 0.88), rgba(5, 6, 7, 0.98)),
-      url('/images/hero-drone-city-scan.png') top center / 980px auto no-repeat;
+      url('/images/hero-drone-powerline-scan.png') top center / 980px auto no-repeat;
   }
   .v15-drone-scan-preview {
     transform: none;

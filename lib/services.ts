@@ -7,7 +7,8 @@ export type ServiceSlug =
   | "solar-farm-inspections"
   | "insurance-disaster-documentation"
   | "emergency-response-support"
-  | "real-estate-marketing-media";
+  | "real-estate-marketing-media"
+  | "agriculture-drone-services";
 
 export type ServiceDefinition = {
   slug: ServiceSlug;
@@ -123,17 +124,32 @@ export const serviceDefinitions: ServiceDefinition[] = [
   },
   {
     slug: "emergency-response-support",
-    title: "Emergency Response Support",
+    title: "Emergency Response & Thermal Search Support",
     shortTitle: "Emergency Support",
-    eyebrow: "Authorized documentation support",
-    hero: "Drone documentation support for disaster recovery, incident documentation, and authorized response coordination.",
+    eyebrow: "Authorized emergency documentation and thermal search support",
+    hero: "Drone documentation and thermal search-and-rescue support for authorized response, disaster recovery, incident documentation, and large-area visibility.",
     summary:
-      "Emergency response support is positioned carefully as documentation and aerial visibility support after proper authorization. The website chat is not an emergency dispatch system.",
-    uses: ["Disaster documentation", "Post-incident visibility", "Recovery site records", "Authorized agency or contractor support", "Damage overview imagery", "Large-area documentation"],
-    deliverables: ["Aerial photos and video", "Site overview media", "Condition documentation", "Location-linked files", "Recovery records", "Organized delivery packages"],
-    workflow: ["Confirm this is not an active life-safety emergency", "Route sensitive requests for human review", "Confirm authorization and site conditions", "Coordinate appropriate pilot and equipment", "Capture and organize documentation"],
+      "Emergency response support is positioned carefully as authorized aerial visibility and documentation support. Thermal-equipped drones can assist qualified teams with search-area visibility, heat-signature awareness, disaster documentation, and post-incident records when proper authorization and command coordination are in place. The website chat is not an emergency dispatch system.",
+    uses: ["Thermal search-and-rescue support", "Disaster documentation", "Post-incident visibility", "Recovery site records", "Authorized agency or contractor support", "Damage overview imagery", "Large-area documentation", "Night or low-visibility thermal support where allowed"],
+    deliverables: ["Aerial photos and video", "Thermal imagery when appropriate", "Site overview media", "Condition documentation", "Location-linked files", "Recovery records", "Organized delivery packages"],
+    workflow: ["Confirm this is not an active life-safety emergency through website chat", "Route emergency or safety-sensitive requests for human review", "Confirm authorization, incident command coordination, and site conditions", "Coordinate appropriate pilot, thermal-capable equipment, and safety requirements", "Capture and organize documentation for authorized review"],
     safetyNote:
-      "If there is an active emergency, life-safety issue, fire, medical emergency, police matter, or rescue situation, contact emergency services or the proper public authority immediately.",
+      "If there is an active emergency, life-safety issue, fire, medical emergency, police matter, rescue situation, missing person, or search-and-rescue event, contact emergency services or the proper public authority immediately. Drone support must be coordinated through authorized response channels.",
+  },
+
+  {
+    slug: "agriculture-drone-services",
+    title: "Agriculture Drone Services",
+    shortTitle: "Agriculture",
+    eyebrow: "Farm mapping, crop monitoring, and regulated spraying support",
+    hero: "Drone support for farms, ranches, fields, irrigation visibility, crop health mapping, livestock area documentation, and regulated agricultural spraying workflows.",
+    summary:
+      "Agriculture drone services can support growers and land managers with aerial visibility, crop health indicators, field mapping, irrigation and drainage observation, livestock-area documentation, storm or drought records, and regulated spraying workflows. Spraying or chemical application is treated as a regulated service path and requires proper authority, pilot qualifications, equipment, insurance, weather review, drift review, label compliance, and state or local requirements.",
+    uses: ["Farm and field mapping", "Crop health and stress indicators", "Irrigation and drainage visibility", "Livestock-area and fence-line documentation", "Plant count or stand assessment support", "Storm, drought, and damage documentation", "Vegetation and weed-pressure visibility", "Regulated drone spraying or spreading support where authorized"],
+    deliverables: ["Aerial field imagery", "Map-ready capture", "Thermal or multispectral-ready workflow support where equipment allows", "Field condition documentation", "Issue-area notes", "Repeat monitoring records", "Spraying project intake for human review"],
+    workflow: ["Collect crop, field, acreage, boundary, access, and deliverable needs", "Review weather, wind, temperature, drift risk, surrounding properties, and safety constraints", "Confirm whether the request is mapping, monitoring, documentation, or regulated application", "Match pilot, drone capability, payload capability, and authorization requirements", "Organize imagery, mapping records, application documentation, or follow-up tasks"],
+    safetyNote:
+      "Agricultural spraying, seeding, spreading, pesticide, herbicide, fertilizer, or chemical dispensing can be regulated and may require FAA Part 137 authority, waivers or exemptions, aircraft registration, chemical-label compliance, state/local licensing, insurance, drift review, weather review, and human approval before any operation. Website chat cannot approve agricultural spraying.",
   },
   {
     slug: "real-estate-marketing-media",

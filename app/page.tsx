@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import PortalCard from "@/components/PortalCard";
 import { serviceDefinitions } from "@/lib/services";
 import {
   Activity,
@@ -21,6 +20,7 @@ import {
   Zap,
   Camera,
   ArrowRight,
+  Sprout,
 } from "lucide-react";
 
 const iconBySlug = {
@@ -33,6 +33,7 @@ const iconBySlug = {
   "insurance-disaster-documentation": ShieldCheck,
   "emergency-response-support": Activity,
   "real-estate-marketing-media": Camera,
+  "agriculture-drone-services": Sprout,
 };
 
 const platformCards = [
@@ -96,7 +97,7 @@ export default function HomePage() {
               Commercial drone solutions <span className="accent-text">powered by AI intelligence</span>.
             </h1>
             <p className="lead-copy">
-              Phoenix Precision Drones delivers AI-supported aerial intelligence for construction, inspections, mapping, thermal imaging, utilities, real estate, emergency documentation, and commercial operations.
+              Phoenix Precision Drones delivers AI-supported aerial intelligence for construction, inspections, mapping, thermal imaging, utilities, agriculture, real estate, emergency documentation, and commercial operations.
             </p>
             <div className="hero-actions">
               <Link className="primary-btn" href="/contact">
@@ -128,7 +129,7 @@ export default function HomePage() {
               <span>Drone + city data capture</span>
             </div>
             <div className="browser-preview v15-browser-preview">
-              <Image src="/images/hero-drone-city-scan.png" alt="Drone scanning a city with AI aerial data overlay" width={1440} height={560} className="preview-image" priority />
+              <Image src="/images/hero-drone-powerline-scan.png" alt="Two drones scanning desert power-line infrastructure with LiDAR and thermal inspection beams at sunset" width={1792} height={1024} className="preview-image" priority />
             </div>
           </div>
         </div>
@@ -144,7 +145,7 @@ export default function HomePage() {
             </p>
           </div>
           <div className="service-grid v15-service-grid">
-            {serviceDefinitions.slice(0, 8).map((service) => {
+            {serviceDefinitions.map((service) => {
               const Icon = iconBySlug[service.slug];
               return (
                 <Link className="service-tile panel-card service-card-link" href={`/services/${service.slug}`} key={service.slug}>
@@ -195,46 +196,6 @@ export default function HomePage() {
                 <p>{text}</p>
               </article>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section id="portals" className="section-pad section-divider">
-        <div className="container">
-          <div className="section-heading">
-            <span className="section-kicker">Customer + pilot workspaces</span>
-            <h2>Organized project visibility for customers and mission workflow for pilots.</h2>
-            <p>
-              Customers can review project visibility, deliverables, reports, and communication. Pilots can work from mission opportunities, route context, safety requirements, uploads, equipment readiness, and support.
-            </p>
-          </div>
-          <div className="portal-grid">
-            <PortalCard
-              eyebrow="Customer portal"
-              title="Project visibility with polished deliverables"
-              text="A customer-facing dashboard for active projects, reports, invoices, documents, messages, and milestone progress."
-              image="/images/customer-portal-preview.png"
-              href="/customer-portal"
-              cta="View Customer Portal"
-              highlights={[
-                "Projects and deliverables",
-                "Reports, invoices, and documents",
-                "Messages and activity tracking",
-              ]}
-            />
-            <PortalCard
-              eyebrow="Pilot portal"
-              title="Field workflow built for pilots"
-              text="A mission-focused dashboard for receiving work, seeing route context, managing uploads, and staying equipment-ready."
-              image="/images/pilot-portal-preview.png"
-              href="/pilot-dashboard"
-              cta="View Pilot Dashboard"
-              highlights={[
-                "Mission queue and live route map",
-                "Equipment and safety readiness",
-                "Deliverables, messages, and support",
-              ]}
-            />
           </div>
         </div>
       </section>

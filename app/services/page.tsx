@@ -6,6 +6,7 @@ import {
   Building2,
   Camera,
   ClipboardCheck,
+  Sprout,
   Flame,
   Map,
   RadioTower,
@@ -25,6 +26,7 @@ const iconBySlug = {
   "insurance-disaster-documentation": ShieldCheck,
   "emergency-response-support": Activity,
   "real-estate-marketing-media": Camera,
+  "agriculture-drone-services": Sprout,
 };
 
 const ops = [
@@ -44,7 +46,7 @@ export default function ServicesPage() {
           <span className="section-kicker">Services</span>
           <h1>Commercial drone services backed by an AI operations platform.</h1>
           <p className="lead-copy">
-            Phoenix Precision Drones is positioned for customers who need organized aerial data, not just a one-time flight. Select a service below to open a dedicated page with use cases, deliverables, workflow, and safety notes.
+            Phoenix Precision Drones is positioned for customers who need organized aerial data, not just a one-time flight, including construction, utilities, agriculture, emergency support, mapping, inspections, and commercial media. Select a service below to open a dedicated page with use cases, deliverables, workflow, and safety notes.
           </p>
         </div>
       </section>
