@@ -16,7 +16,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const iconBySlug = {
+const iconBySlug: Record<string, React.ComponentType<{ size?: number }>> = {
   "construction-monitoring": Building2,
   "lidar-mapping-surveying": Map,
   "thermal-inspections": Flame,
@@ -27,6 +27,8 @@ const iconBySlug = {
   "emergency-response-support": Activity,
   "real-estate-marketing-media": Camera,
   "agriculture-drone-services": Sprout,
+  "agriculture-drone-spraying": Sprout,
+  "farm-mapping": Map,
 };
 
 const ops = [
@@ -54,7 +56,7 @@ export default function ServicesPage() {
       <section className="section-pad section-divider">
         <div className="container service-detail-grid v15-service-directory">
           {serviceDefinitions.map((service) => {
-            const Icon = iconBySlug[service.slug];
+            const Icon = iconBySlug[service.slug] ?? ClipboardCheck;
             return (
               <Link className="detail-card panel-card service-directory-card" key={service.slug} href={`/services/${service.slug}`}>
                 <div className="detail-icon"><Icon size={28} /></div>
