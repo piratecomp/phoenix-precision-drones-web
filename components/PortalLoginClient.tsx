@@ -1,27 +1,28 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import { LockKeyhole, Radio, ShieldCheck, UserRound, UsersRound, LayoutDashboard, Loader2 } from "lucide-react";
+import { ArrowRight, LayoutDashboard, Loader2, LockKeyhole, Radio, Shield, UserRound, UsersRound } from "lucide-react";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseClient";
 import { checkDashboardAccess, getPortalBootstrap } from "@/lib/portalApi";
 
 const accessCards = [
   {
-    title: "Customer Login",
-    text: "Project visibility, deliverables, reports, invoices, documents, and communication in one secure portal experience.",
+    title: "Customer",
+    text: "Projects, files, reports, invoices",
     Icon: UserRound,
     href: "/portal/customer",
   },
   {
-    title: "Pilot Login",
-    text: "Mission opportunities, dispatch context, safety notes, route details, uploads, equipment status, and payout support.",
+    title: "Pilot",
+    text: "Missions, safety, uploads, payouts",
     Icon: Radio,
     href: "/portal/pilot-network",
   },
   {
-    title: "Operations Portal",
-    text: "Owner, admin, finance, maintenance, safety, sales, pilot, observer, and customer dashboards now route through Supabase.",
+    title: "Operations",
+    text: "Owner, admin, finance, safety",
     Icon: UsersRound,
     href: "/portal",
   },
@@ -67,7 +68,7 @@ export default function PortalLoginClient() {
     event.preventDefault();
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
-      setMessage("Supabase browser variables are not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel.");
+      setMessage("Supabase public environment variables are required before live login testing.");
       return;
     }
 
@@ -97,32 +98,54 @@ export default function PortalLoginClient() {
   }
 
   return (
-    <section className="page-hero section-pad login-page-v15">
-      <div className="container login-layout-v15">
-        <div className="panel-card login-panel login-console-card">
-          <span className="section-kicker">V17.1 secure portal access</span>
-          <h1>Login to the Phoenix Precision Drones platform.</h1>
-          <p className="lead-copy">
-            This login is wired for Supabase Auth. After sign-in, the portal calls the backend route guard and redirects each user to their role-based dashboard.
-          </p>
+    <section className="page-hero section-pad login-page-v15 login-gui-page">
+      <div className="container login-gui-layout">
+        <div className="panel-card login-panel login-console-card login-gui-card">
+          <div className="login-gui-topline">
+            <span className="login-gui-dot" />
+            <span>Secure Portal</span>
+            <span className="login-gui-live">V17.1</span>
+          </div>
+
+          <div className="login-brand-stage">
+            <Image
+              src="/images/header-brand-mobile-combined-clean.png"
+              alt="Phoenix Precision Drones"
+              width={1128}
+              height={296}
+              className="login-brand-image"
+              priority
+            />
+          </div>
+
+          <div className="login-title-row">
+            <div>
+              <span className="section-kicker">Owner / Team Access</span>
+              <h1>Portal Login</h1>
+            </div>
+            <div className="login-security-chip"><Shield size={16} /> Live RPC</div>
+          </div>
 
           {checkingSession ? (
             <div className="portal-login-loading"><Loader2 className="portal-spin" size={22} /> Checking session...</div>
           ) : primaryPath ? (
-            <div className="portal-session-ready">
-              <p>You already have an active Supabase session.</p>
+            <div className="portal-session-ready login-session-gui">
+              <div>
+                <strong>Active session</strong>
+                <p>Continue to your dashboard or sign out.</p>
+              </div>
               <div className="hero-actions centered-actions">
-                <Link className="primary-btn" href={primaryPath}><LayoutDashboard size={18} /> Continue to Dashboard</Link>
+                <Link className="primary-btn" href={primaryPath}><LayoutDashboard size={18} /> Continue</Link>
                 <button className="ghost-btn" type="button" onClick={handleSignOut}>Sign out</button>
               </div>
             </div>
           ) : (
-            <form className="login-form-preview" onSubmit={handleSubmit}>
+            <form className="login-form-preview login-gui-form" onSubmit={handleSubmit}>
               <label>
                 Email
                 <input
                   type="email"
-                  placeholder="you@example.com"
+                  placeholder="piratecomp@icloud.com"
                   value={email}
                   onChange={(event) => setEmail(event.target.value)}
                   disabled={!configured || loading}
@@ -133,16 +156,17 @@ export default function PortalLoginClient() {
                 Password
                 <input
                   type="password"
-                  placeholder="Password"
+                  placeholder="Enter password"
                   value={password}
                   onChange={(event) => setPassword(event.target.value)}
                   disabled={!configured || loading}
                   required
                 />
               </label>
-              <button className="primary-btn full-width-btn" type="submit" disabled={!configured || loading}>
+              <button className="primary-btn full-width-btn login-submit-gui" type="submit" disabled={!configured || loading}>
                 {loading ? <Loader2 className="portal-spin" size={18} /> : <LockKeyhole size={18} />}
                 {configured ? "Login" : "Supabase not configured"}
+                {configured && !loading ? <ArrowRight size={18} /> : null}
               </button>
             </form>
           )}
@@ -150,32 +174,38 @@ export default function PortalLoginClient() {
           {message && <p className="portal-error-note">{message}</p>}
           {!configured && (
             <p className="login-note">
-              Add the Supabase anon public key in Vercel before live login testing. The service role key must stay server-only and is not used by this browser login form.
+              Supabase public environment variables are required before live login testing.
             </p>
           )}
-          <div className="hero-actions centered-actions">
-            <Link className="primary-btn" href="/portal"><LayoutDashboard size={18} /> View Portal</Link>
+
+          <div className="login-gui-actions">
+            <Link className="ghost-btn" href="/portal"><LayoutDashboard size={18} /> View Portal</Link>
             <Link className="ghost-btn" href="/contact">Request Access</Link>
           </div>
         </div>
 
-        <div className="login-access-stack">
-          {accessCards.map(({ title, text, Icon, href }) => (
-            <Link href={href} className="panel-card login-access-card" key={title}>
-              <Icon size={30} />
-              <div>
-                <h3>{title}</h3>
-                <p>{text}</p>
-              </div>
-            </Link>
-          ))}
-          <article className="panel-card login-access-card login-safety-card">
-            <ShieldCheck size={30} />
-            <div>
-              <h3>Private data boundary</h3>
-              <p>Route access, dashboard modules, tasks, notifications, and profile links are controlled by Supabase Auth and RLS-backed RPCs.</p>
-            </div>
-          </article>
+        <div className="login-gui-side panel-card">
+          <div className="login-side-header">
+            <span className="section-kicker">Portal Areas</span>
+            <h2>One secure gateway.</h2>
+          </div>
+          <div className="login-access-stack login-gui-access-stack">
+            {accessCards.map(({ title, text, Icon, href }) => (
+              <Link href={href} className="login-gui-access-card" key={title}>
+                <Icon size={24} />
+                <div>
+                  <h3>{title}</h3>
+                  <p>{text}</p>
+                </div>
+                <ArrowRight size={18} />
+              </Link>
+            ))}
+          </div>
+          <div className="login-gui-status-grid">
+            <span><strong>Auth</strong> Supabase</span>
+            <span><strong>Route</strong> Guarded</span>
+            <span><strong>Data</strong> Live RPC</span>
+          </div>
         </div>
       </div>
     </section>
