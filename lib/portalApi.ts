@@ -1,0 +1,151 @@
+import type { SupabaseClient } from "@supabase/supabase-js";
+
+export type PortalModule = {
+  dashboard_key?: string;
+  module_key: string;
+  module_type?: string;
+  title: string;
+  subtitle?: string | null;
+  body?: string | null;
+  status_label?: string | null;
+  status_level?: string | null;
+  metric_value?: string | null;
+  metric_label?: string | null;
+  action_label?: string | null;
+  action_path?: string | null;
+  icon_key?: string | null;
+  sort_order?: number;
+};
+
+export type PortalQuickAction = {
+  dashboard_key?: string;
+  action_key: string;
+  action_label: string;
+  action_path?: string | null;
+  action_type?: string | null;
+  description?: string | null;
+  icon_key?: string | null;
+  sort_order?: number;
+};
+
+export type PortalTask = {
+  id: string;
+  task_title: string;
+  task_summary?: string | null;
+  department_key?: string | null;
+  department_name?: string | null;
+  dashboard_key?: string | null;
+  role_key?: string | null;
+  task_type?: string | null;
+  task_status?: string | null;
+  priority?: string | null;
+  severity?: string | null;
+  ai_generated?: boolean;
+  requires_human_review?: boolean;
+  created_at?: string;
+};
+
+export type PortalNotification = {
+  id: string;
+  notification_title: string;
+  notification_body?: string | null;
+  notification_type?: string | null;
+  notification_status?: string | null;
+  priority?: string | null;
+  dashboard_key?: string | null;
+  action_label?: string | null;
+  action_path?: string | null;
+  related_task_id?: string | null;
+  created_at?: string;
+};
+
+export type PortalDashboardAccess = {
+  authenticated: boolean;
+  can_access: boolean;
+  reason: string;
+  requested_dashboard_path?: string;
+  primary_dashboard_path?: string;
+  dashboard_key?: string | null;
+  redirect_to?: string | null;
+  event_id?: string;
+};
+
+export type PortalBootstrap = {
+  authenticated: boolean;
+  can_access: boolean;
+  reason: string;
+  current_user?: {
+    user_id: string;
+    email: string;
+    first_name?: string;
+    last_name?: string;
+    full_name?: string;
+    legacy_role?: string;
+    pilot_type?: string;
+    status?: string;
+  } | null;
+  primary_dashboard_path?: string;
+  requested_dashboard_path?: string;
+  dashboard_key?: string | null;
+  feature_flags?: any[];
+  dashboards?: any[];
+  permissions?: any[];
+  modules?: PortalModule[];
+  quick_actions?: PortalQuickAction[];
+  tasks?: PortalTask[];
+  notifications?: PortalNotification[];
+  entity_links?: any[];
+  counts?: {
+    open_tasks?: number;
+    unread_notifications?: number;
+    entity_links?: number;
+  };
+};
+
+export async function rpc<T>(supabase: SupabaseClient, name: string, args?: Record<string, any>) {
+  const { data, error } = await supabase.rpc(name, args || {});
+  if (error) throw error;
+  return data as T;
+}
+
+export async function checkDashboardAccess(
+  supabase: SupabaseClient,
+  dashboardPath: string
+): Promise<PortalDashboardAccess> {
+  return rpc<PortalDashboardAccess>(supabase, "portal_check_dashboard_access", {
+    p_dashboard_path: dashboardPath,
+    p_metadata: { source: "v17_1_portal_data_wiring" },
+  });
+}
+
+export async function getPortalBootstrap(
+  supabase: SupabaseClient,
+  dashboardPath: string
+): Promise<PortalBootstrap> {
+  return rpc<PortalBootstrap>(supabase, "portal_get_bootstrap", {
+    p_dashboard_path: dashboardPath,
+  });
+}
+
+export async function markNotificationRead(supabase: SupabaseClient, notificationId: string) {
+  return rpc<boolean>(supabase, "portal_mark_notification_read", {
+    p_notification_id: notificationId,
+  });
+}
+
+export async function completeTask(supabase: SupabaseClient, taskId: string, resolution?: string) {
+  return rpc<boolean>(supabase, "portal_complete_task", {
+    p_task_id: taskId,
+    p_resolution: resolution || "Completed from portal dashboard.",
+  });
+}
+
+export async function addTaskComment(supabase: SupabaseClient, taskId: string, comment: string) {
+  return rpc<string>(supabase, "portal_add_task_comment", {
+    p_task_id: taskId,
+    p_comment_body: comment,
+    p_comment_type: "note",
+    p_internal_only: true,
+    p_metadata: { source: "v17_1_portal_data_wiring" },
+  });
+}
