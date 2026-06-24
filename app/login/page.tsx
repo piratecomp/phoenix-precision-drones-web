@@ -40,7 +40,7 @@ export default function LoginPage() {
             </label>
             <label>
               Password
-              <input type="password" placeholder="Portal access coming soon" disabled />
+              <input type="password" placeholder="Password" disabled />
             </label>
             <button className="primary-btn full-width-btn" type="button" disabled>
               <LockKeyhole size={18} /> Login Coming Soon
@@ -48,7 +48,7 @@ export default function LoginPage() {
           </form>
 
           <p className="login-note">
-            Portal access is currently being prepared. Use the contact page or PPD AI chat for early access, project intake, or pilot network questions.
+            Portal access is controlled. Customers, pilots, and partners can use the contact page or PPD AI chat to request access, project intake, or pilot network information.
           </p>
           <div className="hero-actions centered-actions">
             <Link className="ghost-btn" href="/contact">Request Access</Link>

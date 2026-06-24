@@ -10,7 +10,6 @@ import {
   Clock3,
   DollarSign,
   Flame,
-  LockKeyhole,
   Map,
   Network,
   RadioTower,
@@ -106,9 +105,6 @@ export default function HomePage() {
               <Link className="ghost-btn" href="/services">
                 Explore Services
               </Link>
-              <Link className="ghost-btn" href="/login">
-                Portal Login
-              </Link>
             </div>
             <div className="hero-metrics v15-console-strip">
               <div className="metric-card">
@@ -126,13 +122,13 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="hero-visual panel-card v15-platform-preview">
+          <div className="hero-visual panel-card v15-drone-scan-preview">
             <div className="visual-topline">
-              <span>Platform preview</span>
-              <span>Mission-control style interface</span>
+              <span>Aerial intelligence scan</span>
+              <span>Drone + city data capture</span>
             </div>
             <div className="browser-preview v15-browser-preview">
-              <Image src="/images/website-preview.png" alt="Phoenix Precision Drones platform preview" width={1448} height={1086} className="preview-image" priority />
+              <Image src="/images/hero-drone-city-scan.png" alt="Drone scanning a city with AI aerial data overlay" width={1440} height={560} className="preview-image" priority />
             </div>
           </div>
         </div>
@@ -142,9 +138,9 @@ export default function HomePage() {
         <div className="container">
           <div className="section-heading centered">
             <span className="section-kicker">Our Services</span>
-            <h2>Press a service tile to open its full mission page.</h2>
+            <h2>Choose the aerial service that fits your project.</h2>
             <p>
-              Each service page explains what the service is, common uses, customer deliverables, AI-supported workflow, and safety boundaries.
+              Open any service page for common uses, deliverables, AI-supported workflow, and safety-aware project intake.
             </p>
           </div>
           <div className="service-grid v15-service-grid">
@@ -206,10 +202,10 @@ export default function HomePage() {
       <section id="portals" className="section-pad section-divider">
         <div className="container">
           <div className="section-heading">
-            <span className="section-kicker">Customer + pilot portals</span>
-            <h2>Two role-based portal experiences connected to one operating system.</h2>
+            <span className="section-kicker">Customer + pilot workspaces</span>
+            <h2>Organized project visibility for customers and mission workflow for pilots.</h2>
             <p>
-              Customers see project visibility, deliverables, reports, and communication. Pilots see mission opportunities, route context, safety requirements, uploads, equipment readiness, and support.
+              Customers can review project visibility, deliverables, reports, and communication. Pilots can work from mission opportunities, route context, safety requirements, uploads, equipment readiness, and support.
             </p>
           </div>
           <div className="portal-grid">
@@ -247,7 +243,7 @@ export default function HomePage() {
         <div className="container ecosystem-layout">
           <div>
             <div className="section-heading">
-              <span className="section-kicker">Platform definitions</span>
+              <span className="section-kicker">Company model</span>
               <h2>One company serving customers, pilots, and operations.</h2>
               <p>
                 PPD is built as a two-in-one model: Phoenix-area in-house operations plus a scalable network marketplace for qualified pilots as service areas expand.
@@ -285,16 +281,6 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-pad section-divider v15-login-cta">
-        <div className="container panel-card login-cta-panel">
-          <div>
-            <span className="section-kicker">Portal access</span>
-            <h2>Customer and pilot login are now part of the final public shell.</h2>
-            <p>Portal authentication can be connected after the public site is complete. For now, the login page matches the final theme and routes visitors toward customer, pilot, and operations access.</p>
-          </div>
-          <Link className="primary-btn" href="/login"><LockKeyhole size={18} /> Open Login Page</Link>
-        </div>
-      </section>
     </>
   );
 }

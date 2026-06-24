@@ -1,8 +1,8 @@
-# Phoenix Precision Drones Web - V15 Final Public Site Shell
+# Phoenix Precision Drones Web - V15.2 Public Route + Hero Fix
 
-## What changed in V15
+## What changed in V15.2
 
-V15 rebuilds the public-facing site around the `website-preview.png` mission-control style so the live homepage feels like the final PPD brand direction instead of a temporary informational site.
+V15.2 rebuilds the public-facing site around the mission-control visual style while replacing the homepage preview image with a drone scanning a city hero image.
 
 ### Homepage
 - Rebuilt hero around the preview image style: black/copper mission-control background, service tiles, portal preview, AI operations sections.
@@ -49,3 +49,17 @@ V15 rebuilds the public-facing site around the `website-preview.png` mission-con
 This package updates only the website files. It does not change Supabase, website chat SQL, API behavior, authentication, portals, pilot dispatch, payments, or backend operations.
 
 I could not run a full `next build` in this container because `node_modules` are not installed in the runtime. The package keeps the existing project structure and dependency list.
+
+
+## V15.1 service route fix
+
+This package adds explicit App Router pages under each `/services/<slug>` route in addition to the dynamic `/services/[slug]` route. This avoids deployment environments failing to serve the service detail pages and fixes 404s for individual service buttons.
+
+## V15.2 fixes
+
+- Replaced homepage platform-preview image with `/images/hero-drone-city-scan.png`.
+- Removed the bottom portal-access update section from the homepage.
+- Kept login access in the header.
+- Kept PPD AI chat available globally.
+- Kept explicit service route folders for every service page.
+- The `/services/thermal-inspections` route exists as `app/services/thermal-inspections/page.tsx`.

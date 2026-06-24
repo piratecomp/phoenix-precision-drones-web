@@ -1085,7 +1085,7 @@ button, input, textarea, select { font: inherit; }
   background:
     linear-gradient(90deg, rgba(5, 6, 7, 0.98) 0%, rgba(5, 7, 11, 0.88) 42%, rgba(5, 7, 11, 0.4) 100%),
     radial-gradient(circle at 72% 36%, rgba(255, 141, 22, 0.22), transparent 23rem),
-    url('/images/website-preview.png') right center / min(72vw, 980px) auto no-repeat;
+    url('/images/hero-drone-city-scan.png') right center / min(70vw, 920px) auto no-repeat;
   opacity: 0.55;
   filter: saturate(1.15) contrast(1.08);
 }
@@ -1107,7 +1107,7 @@ button, input, textarea, select { font: inherit; }
   max-width: 860px;
   text-shadow: 0 0 28px rgba(255, 122, 0, 0.12);
 }
-.v15-platform-preview {
+.v15-drone-scan-preview {
   backdrop-filter: blur(16px);
   transform: perspective(1100px) rotateY(-3deg) rotateX(1deg);
   box-shadow: 0 26px 90px rgba(0, 0, 0, 0.55), 0 0 45px rgba(255, 120, 0, 0.18);
@@ -1328,9 +1328,9 @@ button, input, textarea, select { font: inherit; }
   .v15-hero-bg {
     background:
       linear-gradient(180deg, rgba(5, 6, 7, 0.88), rgba(5, 6, 7, 0.98)),
-      url('/images/website-preview.png') top center / 1000px auto no-repeat;
+      url('/images/hero-drone-city-scan.png') top center / 980px auto no-repeat;
   }
-  .v15-platform-preview {
+  .v15-drone-scan-preview {
     transform: none;
   }
   .service-detail-layout,
@@ -1357,7 +1357,7 @@ button, input, textarea, select { font: inherit; }
     padding-top: 56px;
     padding-bottom: 58px;
   }
-  .v15-platform-preview {
+  .v15-drone-scan-preview {
     padding: 12px;
   }
   .login-console-card,
@@ -1370,4 +1370,12 @@ button, input, textarea, select { font: inherit; }
   .login-access-card {
     display: grid;
   }
+}
+
+.v15-drone-scan-preview .browser-preview {
+  min-height: 300px;
+}
+.v15-drone-scan-preview .preview-image {
+  object-fit: cover;
+  height: 100%;
 }
