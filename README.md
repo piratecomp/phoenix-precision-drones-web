@@ -1,28 +1,18 @@
-# Phoenix Precision Drones Web - V16.1 Tight Desktop Layout Fix
+# Phoenix Precision Drones Web - V16.2 Vercel Build Fix
 
-## What changed in V16.1
+This package fixes the V16.1 Vercel build failure.
 
-V16.1 tightens the desktop/laptop layout after live review of the V16 homepage.
+## What changed in V16.2
 
-### Homepage / hero
+- Removed the dynamic `/app/services/[slug]/page.tsx` route.
+- Kept explicit service pages for every service route so Vercel does not have to resolve both dynamic and static service pages.
+- Corrected `/services/agriculture-drone-spraying` so it loads the Agriculture Drone Spraying Intake content.
+- Corrected `/services/farm-mapping` so it loads the Farm Mapping & Crop Monitoring content.
+- Kept the tightened desktop layout from V16.1.
+- Kept the new drone/desert/powerline hero image.
+- Kept agriculture services and thermal search-and-rescue emergency support.
 
-- Reduced the desktop header height so the logo, nav, Login, and Request Quote buttons take less vertical space.
-- Reduced desktop headline size so the left hero text no longer overwhelms laptop screens.
-- Changed the hero headline to: **Commercial drone intelligence powered by AI.**
-- Removed the mockup/dashboard frame treatment around the hero image.
-- The new drone/desert/powerline LiDAR + thermal image is now treated as a cinematic hero image instead of a platform-preview card.
-- Removed public-facing update/portal shell language.
-- Added compact hero service pills for Thermal, LiDAR, Utilities, and Agriculture.
-
-### Services
-
-- Kept clickable service cards.
-- Added Agriculture Drone Services.
-- Added separate Agriculture Drone Spraying Intake service page.
-- Added separate Farm Mapping & Crop Monitoring service page.
-- Emergency Response includes thermal search-and-rescue support with public-safety boundaries.
-
-### Routes included
+## Service routes included
 
 - `/services/construction-monitoring`
 - `/services/lidar-mapping-surveying`
@@ -37,13 +27,8 @@ V16.1 tightens the desktop/laptop layout after live review of the V16 homepage.
 - `/services/agriculture-drone-spraying`
 - `/services/farm-mapping`
 
-### Safety language
+## Why this should fix the deployment
 
-- Drone spraying is described as a regulated, human-reviewed intake path.
-- Website chat and the public site do not approve chemical application, Part 137 operations, airspace-sensitive flights, emergency operations, or insurance documents.
-- DJI wording remains AI-assisted planning and command-based workflow support, not uncontrolled autonomous flight approval.
+V16.1 included both a dynamic service route (`/services/[slug]`) and explicit static service route folders (`/services/thermal-inspections`, etc.). Depending on the Next.js/Vercel version, that can create a conflicting app route build error. V16.2 removes the dynamic route and relies only on explicit static pages.
 
-## Deployment note
-
-If any `/services/...` route still returns 404 after deployment, the deployed project is not receiving the nested route folders under `app/services/.../page.tsx`. Confirm those folders exist in the deployed GitHub/Vercel source.
-
+If Vercel still fails, open the Vercel build log and copy the exact red error text so the next fix can target the actual failing file and line.
