@@ -3,30 +3,9 @@
 import Image from "next/image";
 import Link from "next/link";
 import { FormEvent, useEffect, useState } from "react";
-import { ArrowRight, LayoutDashboard, Loader2, LockKeyhole, Radio, Shield, UserRound, UsersRound } from "lucide-react";
+import { ArrowRight, Loader2, LockKeyhole, Shield, UserPlus } from "lucide-react";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseClient";
 import { checkDashboardAccess, getPortalBootstrap } from "@/lib/portalApi";
-
-const accessCards = [
-  {
-    title: "Customer",
-    text: "Projects, files, reports, invoices",
-    Icon: UserRound,
-    href: "/portal/customer",
-  },
-  {
-    title: "Pilot",
-    text: "Missions, safety, uploads, payouts",
-    Icon: Radio,
-    href: "/portal/pilot-network",
-  },
-  {
-    title: "Operations",
-    text: "Owner, admin, finance, safety",
-    Icon: UsersRound,
-    href: "/portal",
-  },
-] as const;
 
 export default function PortalLoginClient() {
   const configured = isSupabaseConfigured();
@@ -68,7 +47,7 @@ export default function PortalLoginClient() {
     event.preventDefault();
     const supabase = getSupabaseBrowserClient();
     if (!supabase) {
-      setMessage("Supabase public environment variables are required before live login testing.");
+      setMessage("Portal login is not configured yet.");
       return;
     }
 
@@ -98,113 +77,92 @@ export default function PortalLoginClient() {
   }
 
   return (
-    <section className="page-hero section-pad login-page-v15 login-gui-page">
-      <div className="container login-gui-layout">
-        <div className="panel-card login-panel login-console-card login-gui-card">
-          <div className="login-gui-topline">
-            <span className="login-gui-dot" />
-            <span>Secure Portal</span>
-            <span className="login-gui-live">V17.1</span>
-          </div>
+    <section className="page-hero section-pad login-page-v15 login-gui-page login-game-page">
+      <div className="login-game-shell container">
+        <div className="login-game-card panel-card">
+          <div className="login-topo-ridge" aria-hidden="true" />
 
-          <div className="login-brand-stage">
-            <Image
-              src="/images/header-brand-mobile-combined-clean.png"
-              alt="Phoenix Precision Drones"
-              width={1128}
-              height={296}
-              className="login-brand-image"
-              priority
-            />
-          </div>
-
-          <div className="login-title-row">
-            <div>
-              <span className="section-kicker">Owner / Team Access</span>
+          <div className="login-game-header">
+            <div className="login-emblem-wrap">
+              <Image
+                src="/images/logo-emblem-clean.png"
+                alt="Phoenix Precision Drones logo"
+                width={1026}
+                height={1028}
+                className="login-emblem-only"
+                priority
+              />
+            </div>
+            <div className="login-header-copy">
+              <span className="section-kicker">Team Access</span>
               <h1>Portal Login</h1>
             </div>
             <div className="login-security-chip"><Shield size={16} /> Live RPC</div>
           </div>
 
-          {checkingSession ? (
-            <div className="portal-login-loading"><Loader2 className="portal-spin" size={22} /> Checking session...</div>
-          ) : primaryPath ? (
-            <div className="portal-session-ready login-session-gui">
-              <div>
-                <strong>Active session</strong>
-                <p>Continue to your dashboard or sign out.</p>
-              </div>
-              <div className="hero-actions centered-actions">
-                <Link className="primary-btn" href={primaryPath}><LayoutDashboard size={18} /> Continue</Link>
-                <button className="ghost-btn" type="button" onClick={handleSignOut}>Sign out</button>
+          <div className="login-game-grid">
+            <div className="login-form-zone">
+              {checkingSession ? (
+                <div className="portal-login-loading"><Loader2 className="portal-spin" size={22} /> Checking session...</div>
+              ) : primaryPath ? (
+                <div className="portal-session-ready login-session-gui">
+                  <div>
+                    <strong>Active session</strong>
+                    <p>Continue to your dashboard or sign out.</p>
+                  </div>
+                  <div className="hero-actions centered-actions">
+                    <Link className="primary-btn" href={primaryPath}>Continue <ArrowRight size={18} /></Link>
+                    <button className="ghost-btn" type="button" onClick={handleSignOut}>Sign out</button>
+                  </div>
+                </div>
+              ) : (
+                <form className="login-form-preview login-gui-form login-game-form" onSubmit={handleSubmit}>
+                  <label>
+                    Email
+                    <input
+                      type="email"
+                      placeholder="Email address"
+                      value={email}
+                      onChange={(event) => setEmail(event.target.value)}
+                      disabled={!configured || loading}
+                      required
+                    />
+                  </label>
+                  <label>
+                    Password
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      value={password}
+                      onChange={(event) => setPassword(event.target.value)}
+                      disabled={!configured || loading}
+                      required
+                    />
+                  </label>
+                  <button className="primary-btn full-width-btn login-submit-gui" type="submit" disabled={!configured || loading}>
+                    {loading ? <Loader2 className="portal-spin" size={18} /> : <LockKeyhole size={18} />}
+                    {configured ? "Login" : "Login unavailable"}
+                    {configured && !loading ? <ArrowRight size={18} /> : null}
+                  </button>
+                </form>
+              )}
+
+              {message && <p className="portal-error-note">{message}</p>}
+              {!configured && <p className="login-note">Portal login is waiting for live Supabase environment variables.</p>}
+
+              <div className="login-gui-actions login-game-actions">
+                <Link className="ghost-btn" href="/signup"><UserPlus size={18} /> Create Customer Account</Link>
               </div>
             </div>
-          ) : (
-            <form className="login-form-preview login-gui-form" onSubmit={handleSubmit}>
-              <label>
-                Email
-                <input
-                  type="email"
-                  placeholder="piratecomp@icloud.com"
-                  value={email}
-                  onChange={(event) => setEmail(event.target.value)}
-                  disabled={!configured || loading}
-                  required
-                />
-              </label>
-              <label>
-                Password
-                <input
-                  type="password"
-                  placeholder="Enter password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  disabled={!configured || loading}
-                  required
-                />
-              </label>
-              <button className="primary-btn full-width-btn login-submit-gui" type="submit" disabled={!configured || loading}>
-                {loading ? <Loader2 className="portal-spin" size={18} /> : <LockKeyhole size={18} />}
-                {configured ? "Login" : "Supabase not configured"}
-                {configured && !loading ? <ArrowRight size={18} /> : null}
-              </button>
-            </form>
-          )}
 
-          {message && <p className="portal-error-note">{message}</p>}
-          {!configured && (
-            <p className="login-note">
-              Supabase public environment variables are required before live login testing.
-            </p>
-          )}
-
-          <div className="login-gui-actions">
-            <Link className="ghost-btn" href="/portal"><LayoutDashboard size={18} /> View Portal</Link>
-            <Link className="ghost-btn" href="/contact">Request Access</Link>
-          </div>
-        </div>
-
-        <div className="login-gui-side panel-card">
-          <div className="login-side-header">
-            <span className="section-kicker">Portal Areas</span>
-            <h2>One secure gateway.</h2>
-          </div>
-          <div className="login-access-stack login-gui-access-stack">
-            {accessCards.map(({ title, text, Icon, href }) => (
-              <Link href={href} className="login-gui-access-card" key={title}>
-                <Icon size={24} />
-                <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </div>
-                <ArrowRight size={18} />
-              </Link>
-            ))}
-          </div>
-          <div className="login-gui-status-grid">
-            <span><strong>Auth</strong> Supabase</span>
-            <span><strong>Route</strong> Guarded</span>
-            <span><strong>Data</strong> Live RPC</span>
+            <div className="login-game-side">
+              <span className="login-side-pill">Customer Portal</span>
+              <span className="login-side-pill">Pilot Network</span>
+              <span className="login-side-pill">Operations</span>
+              <span className="login-side-pill">Safety</span>
+              <span className="login-side-pill">Finance</span>
+              <span className="login-side-pill">Dispatch</span>
+            </div>
           </div>
         </div>
       </div>

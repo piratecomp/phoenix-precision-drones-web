@@ -1,22 +1,19 @@
-# Phoenix Precision Drones Website — V17.2 Login GUI Polish
+# Phoenix Precision Drones Web V17.3 — Portal Login Game GUI Polish
 
-This package is based on V17.1 Portal Data Wiring and keeps the successful Supabase Auth / portal RPC connection.
+This package keeps the V17.1 Supabase portal data wiring and the V17.2 login authentication flow, then updates the login experience to better match the Phoenix Precision Drones game-style portal theme.
 
-## What changed in V17.2
+## Changes
 
-- Reworked `/login` so it looks more like the Phoenix Precision Drones website theme.
-- Added the Phoenix Precision Drones header logo inside the login panel.
-- Removed the technical description explaining Supabase Auth / route guard behavior.
-- Replaced the older text-heavy login layout with a tighter GUI-style secure portal card.
-- Added compact portal-area cards for Customer, Pilot, and Operations access.
-- Kept live portal login wiring intact:
-  - Supabase Auth sign-in
-  - `portal_get_bootstrap()` dashboard routing
-  - `/portal/owner` redirect for the owner account
+- Removed the owner email placeholder from the login form.
+- Removed `Owner / Team Access`; login now says `Team Access`.
+- Replaced the banner logo inside the login panel with the emblem logo only.
+- Removed the ambiguous `View Portal` visitor button.
+- Replaced `Request Access` with `Create Customer Account`.
+- Added `/signup` with a customer account creation form using Supabase Auth.
+- Added orange desert-ridge/topographic contour styling inside the login panel.
+- Kept owner login redirect and live RPC portal routing intact.
 
 ## Required Vercel environment variables
-
-These must remain configured in Vercel:
 
 ```text
 NEXT_PUBLIC_SUPABASE_URL
@@ -25,18 +22,11 @@ SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
 ```
 
-## Deployment
-
-Upload this project/package to Vercel or push it to the connected GitHub repo, then redeploy.
-
-Recommended first deploy:
+## Test routes
 
 ```text
-Redeploy with existing Build Cache
-```
-
-If the build fails from stale cache:
-
-```text
-Redeploy with Clear Build Cache
+/login
+/signup
+/portal
+/portal/owner
 ```

@@ -3061,3 +3061,208 @@ button, input, textarea, select { font: inherit; }
     font-size: 30px;
   }
 }
+
+/* V17.3 login game-gui polish: emblem-only, no ghost email, customer creation, orange desert contour glass */
+.login-game-page {
+  min-height: calc(100vh - 86px);
+  background:
+    radial-gradient(circle at 18% 18%, rgba(255, 150, 35, 0.20), transparent 28rem),
+    radial-gradient(circle at 85% 14%, rgba(255, 210, 96, 0.12), transparent 26rem),
+    linear-gradient(180deg, rgba(4, 5, 9, 0.99), rgba(11, 7, 4, 0.98));
+}
+.login-game-shell {
+  max-width: 1180px;
+}
+.login-game-card {
+  position: relative;
+  overflow: hidden;
+  padding: clamp(24px, 3vw, 42px);
+  border-radius: 34px;
+  border: 1px solid rgba(255, 142, 37, 0.36);
+  background:
+    radial-gradient(circle at 20% 12%, rgba(255, 143, 38, 0.20), transparent 20rem),
+    radial-gradient(circle at 82% 38%, rgba(255, 192, 66, 0.10), transparent 24rem),
+    linear-gradient(180deg, rgba(10, 14, 23, 0.95), rgba(6, 8, 13, 0.97));
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+    0 0 62px rgba(255, 120, 20, 0.14),
+    0 28px 90px rgba(0, 0, 0, 0.55);
+}
+.login-game-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.42;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.72), transparent 80%);
+}
+.login-game-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, transparent, rgba(255, 151, 39, 0.12), transparent),
+    linear-gradient(180deg, transparent 0%, rgba(255, 132, 24, 0.10) 50%, transparent 100%);
+  opacity: 0.32;
+  mix-blend-mode: screen;
+}
+.login-topo-ridge {
+  position: absolute;
+  left: -6%;
+  right: -6%;
+  bottom: -12%;
+  height: 54%;
+  pointer-events: none;
+  opacity: 0.42;
+  background-image: url("data:image/svg+xml,%3Csvg width='1200' height='420' viewBox='0 0 1200 420' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ff8a1f' stroke-width='2' stroke-opacity='.70'%3E%3Cpath d='M-20 305 C120 270 180 244 310 260 C455 278 514 326 650 286 C800 242 884 214 1040 242 C1120 256 1180 282 1220 292'/%3E%3Cpath d='M-20 328 C120 294 188 268 316 283 C458 300 520 350 656 310 C810 266 892 238 1045 265 C1122 279 1182 306 1220 316'/%3E%3Cpath d='M-20 351 C120 318 194 291 322 307 C462 324 526 374 662 335 C818 291 900 263 1050 290 C1124 304 1184 330 1220 340'/%3E%3Cpath d='M-20 374 C124 342 202 315 330 331 C468 348 534 398 670 360 C826 316 908 288 1058 315 C1128 328 1186 354 1220 364'/%3E%3Cpath d='M-20 397 C128 366 210 339 338 356 C474 373 542 422 678 386 C834 342 916 314 1066 340 C1134 353 1188 379 1220 389'/%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 118% auto;
+  filter: drop-shadow(0 0 16px rgba(255, 127, 22, 0.32));
+}
+.login-game-header {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: clamp(16px, 2vw, 28px);
+  margin-bottom: clamp(20px, 3vw, 34px);
+}
+.login-emblem-wrap {
+  width: clamp(112px, 13vw, 176px);
+  height: clamp(112px, 13vw, 176px);
+  display: grid;
+  place-items: center;
+  border-radius: 32px;
+  background:
+    radial-gradient(circle at 50% 46%, rgba(255, 145, 35, 0.28), transparent 66%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+  border: 1px solid rgba(255, 153, 54, 0.22);
+  box-shadow: 0 0 46px rgba(255, 130, 22, 0.14) inset;
+}
+.login-emblem-only {
+  width: 132%;
+  height: 132%;
+  object-fit: contain;
+  filter: drop-shadow(0 0 18px rgba(255, 133, 24, 0.42));
+}
+.login-header-copy h1 {
+  margin: 8px 0 0;
+  font-size: clamp(44px, 6vw, 86px);
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  text-shadow: 0 0 24px rgba(255, 255, 255, 0.12);
+}
+.login-game-grid {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: minmax(320px, 0.62fr) minmax(260px, 0.38fr);
+  gap: clamp(18px, 3vw, 34px);
+  align-items: stretch;
+}
+.login-form-zone {
+  min-width: 0;
+}
+.login-game-form input::placeholder {
+  color: rgba(255, 232, 206, 0.42);
+}
+.login-game-form input {
+  border-color: rgba(255, 148, 38, 0.44);
+  background:
+    linear-gradient(180deg, rgba(7, 10, 16, 0.92), rgba(3, 6, 10, 0.86));
+}
+.login-game-actions {
+  grid-template-columns: 1fr;
+  margin-top: 18px;
+}
+.login-game-actions .ghost-btn {
+  border-color: rgba(255, 154, 54, 0.34);
+  background: rgba(255, 145, 35, 0.05);
+}
+.login-game-actions.single-action {
+  grid-template-columns: 1fr;
+}
+.login-game-side {
+  display: grid;
+  gap: 12px;
+  align-content: center;
+}
+.login-side-pill {
+  display: flex;
+  align-items: center;
+  min-height: 58px;
+  border-radius: 20px;
+  padding: 14px 18px;
+  color: rgba(255, 239, 218, 0.92);
+  font-weight: 900;
+  letter-spacing: 0.02em;
+  border: 1px solid rgba(255, 153, 54, 0.18);
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    radial-gradient(circle at 10% 50%, rgba(255, 138, 24, 0.18), transparent 10rem);
+  box-shadow: 0 0 28px rgba(255, 123, 19, 0.07) inset;
+}
+.signup-game-shell {
+  max-width: 760px;
+}
+.signup-game-card {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.signup-header {
+  grid-template-columns: auto 1fr;
+}
+.small-emblem {
+  width: clamp(96px, 14vw, 136px);
+  height: clamp(96px, 14vw, 136px);
+}
+.signup-game-form {
+  position: relative;
+  z-index: 2;
+}
+
+@media (max-width: 900px) {
+  .login-game-grid {
+    grid-template-columns: 1fr;
+  }
+  .login-game-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 640px) {
+  .login-game-page {
+    padding-top: 24px;
+  }
+  .login-game-card {
+    border-radius: 28px;
+    padding: 20px;
+  }
+  .login-game-header,
+  .signup-header {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+  .login-security-chip {
+    justify-self: start;
+  }
+  .login-emblem-wrap {
+    width: 124px;
+    height: 124px;
+  }
+  .login-header-copy h1 {
+    font-size: 48px;
+  }
+  .login-game-side {
+    grid-template-columns: 1fr;
+  }
+  .login-side-pill {
+    min-height: 48px;
+  }
+}
