@@ -142,6 +142,63 @@ export default function HomePage() {
         </div>
       </section>
 
+
+
+      <section className="section-pad section-divider portal-preview-section">
+        <div className="container">
+          <div className="section-heading centered">
+            <span className="section-kicker">Customer & Pilot Portal Preview</span>
+            <h2>Project visibility for customers. Mission workflow for pilots.</h2>
+            <p>
+              Phoenix Precision Drones gives customers and pilots a clear look at how aerial data, job details, mission status, uploads, and deliverables are organized.
+            </p>
+          </div>
+          <div className="portal-grid homepage-portal-grid">
+            <article className="portal-card panel-card homepage-portal-card">
+              <div className="portal-copy">
+                <span className="section-kicker">Customer Portal</span>
+                <h3>Clear project visibility from request to delivery.</h3>
+                <p>
+                  Customers can review project status, deliverables, reports, inspection media, invoices, messages, and job history in one organized workspace.
+                </p>
+                <ul className="mini-list portal-mini-list">
+                  <li>Project status and milestones</li>
+                  <li>Inspection media and reports</li>
+                  <li>Deliverables, invoices, and messages</li>
+                </ul>
+                <Link className="primary-btn portal-preview-btn" href="/customer-portal">View Customer Portal</Link>
+              </div>
+              <div className="screenshot-shell homepage-portal-shot-shell">
+                <div className="screenshot-track compact-shot-track">
+                  <Image src="/images/customer-portal-preview.png" alt="Phoenix Precision Drones customer portal preview" width={1055} height={1491} className="portal-shot compact-shot" />
+                </div>
+              </div>
+            </article>
+
+            <article className="portal-card panel-card homepage-portal-card">
+              <div className="portal-copy">
+                <span className="section-kicker">Pilot Portal</span>
+                <h3>Mission-ready workflow for qualified drone pilots.</h3>
+                <p>
+                  Pilots can review job opportunities, mission details, route context, safety notes, upload needs, flight logs, and payout status.
+                </p>
+                <ul className="mini-list portal-mini-list">
+                  <li>Job offers and mission details</li>
+                  <li>Safety status and route context</li>
+                  <li>Uploads, logs, and payout tracking</li>
+                </ul>
+                <Link className="primary-btn portal-preview-btn" href="/pilot-dashboard">View Pilot Dashboard</Link>
+              </div>
+              <div className="screenshot-shell homepage-portal-shot-shell">
+                <div className="screenshot-track compact-shot-track">
+                  <Image src="/images/pilot-portal-preview.png" alt="Phoenix Precision Drones pilot portal preview" width={1024} height={1024} className="portal-shot compact-shot" />
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
       <section className="section-pad section-divider">
         <div className="container">
           <div className="section-heading centered">

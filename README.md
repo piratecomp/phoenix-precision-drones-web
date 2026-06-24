@@ -21,3 +21,13 @@ This update only changes the header logo asset, navigation image rendering, and 
 - Added final CSS overrides so desktop shows only `desktop-header-logo` and mobile shows only `mobile-header-logo`.
 - Kept the cleaned mobile combined logo with emblem + wordmark.
 - Left desktop layout unchanged.
+
+
+## V16.8 changes
+
+- Restored public-facing Customer Portal and Pilot Portal preview section on the homepage.
+- Added polished portal preview cards without internal release/update wording.
+- Customer preview links to `/customer-portal`.
+- Pilot preview links to `/pilot-dashboard`.
+- Kept V16.7 mobile header double-logo fix.
+- Kept PPD AI chat, Login, Quote, service pages, and agriculture/emergency updates.
