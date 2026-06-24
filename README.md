@@ -1,40 +1,49 @@
-# Phoenix Precision Drones Web - V16 Hero + Agriculture Services Upgrade
+# Phoenix Precision Drones Web - V16.1 Tight Desktop Layout Fix
 
-## What changed in V16
+## What changed in V16.1
 
-V16 updates the public website shell with the new professional hero image and expands the service offering.
+V16.1 tightens the desktop/laptop layout after live review of the V16 homepage.
 
-### Homepage
-- Replaced the cropped platform-preview hero visual with a new custom hero image: `/images/hero-drone-powerline-scan.png`.
-- The new hero image shows two drones over desert ridges at sunset: one scanning terrain with a blue LiDAR-style 3D grid and one scanning a power-line tower with thermal-style hotspot visualization.
-- Removed the public-facing portal/update section from the homepage so visitors see the site as finished, not as an internal release note.
-- Kept the Login button in the header.
-- Kept the PPD AI chat experience unchanged.
+### Homepage / hero
+
+- Reduced the desktop header height so the logo, nav, Login, and Request Quote buttons take less vertical space.
+- Reduced desktop headline size so the left hero text no longer overwhelms laptop screens.
+- Changed the hero headline to: **Commercial drone intelligence powered by AI.**
+- Removed the mockup/dashboard frame treatment around the hero image.
+- The new drone/desert/powerline LiDAR + thermal image is now treated as a cinematic hero image instead of a platform-preview card.
+- Removed public-facing update/portal shell language.
+- Added compact hero service pills for Thermal, LiDAR, Utilities, and Agriculture.
 
 ### Services
+
+- Kept clickable service cards.
 - Added Agriculture Drone Services.
-- Agriculture coverage includes farm mapping, crop monitoring, crop-health visibility, irrigation/drainage observation, livestock-area documentation, storm/drought records, vegetation/weed-pressure visibility, and regulated spraying/spreading intake.
-- Added cautious public wording around drone spraying because agricultural application can require FAA Part 137 authority, waivers or exemptions, aircraft registration, chemical-label compliance, state/local licensing, insurance, drift review, weather review, and human approval.
-- Updated Emergency Response Support to include thermal search-and-rescue support language while preserving the emergency-services boundary.
+- Added separate Agriculture Drone Spraying Intake service page.
+- Added separate Farm Mapping & Crop Monitoring service page.
+- Emergency Response includes thermal search-and-rescue support with public-safety boundaries.
 
-### Service routes
-- Explicit route pages are included for every service:
-  - `/services/construction-monitoring`
-  - `/services/lidar-mapping-surveying`
-  - `/services/thermal-inspections`
-  - `/services/infrastructure-utility-inspections`
-  - `/services/cell-tower-telecom-inspections`
-  - `/services/solar-farm-inspections`
-  - `/services/insurance-disaster-documentation`
-  - `/services/emergency-response-support`
-  - `/services/real-estate-marketing-media`
-  - `/services/agriculture-drone-services`
-- Extra agriculture aliases are also included:
-  - `/services/agriculture-drone-spraying`
-  - `/services/farm-mapping`
+### Routes included
 
-## Notes
+- `/services/construction-monitoring`
+- `/services/lidar-mapping-surveying`
+- `/services/thermal-inspections`
+- `/services/infrastructure-utility-inspections`
+- `/services/cell-tower-telecom-inspections`
+- `/services/solar-farm-inspections`
+- `/services/insurance-disaster-documentation`
+- `/services/emergency-response-support`
+- `/services/real-estate-marketing-media`
+- `/services/agriculture-drone-services`
+- `/services/agriculture-drone-spraying`
+- `/services/farm-mapping`
 
-This package updates only the website files. It does not change Supabase, website chat SQL, API behavior, authentication, portals, pilot dispatch, payments, or backend operations.
+### Safety language
 
-The site remains prelaunch-safe and does not claim the website can approve flights, dispatch pilots, issue insurance documents, approve emergency operations, or approve agricultural spraying.
+- Drone spraying is described as a regulated, human-reviewed intake path.
+- Website chat and the public site do not approve chemical application, Part 137 operations, airspace-sensitive flights, emergency operations, or insurance documents.
+- DJI wording remains AI-assisted planning and command-based workflow support, not uncontrolled autonomous flight approval.
+
+## Deployment note
+
+If any `/services/...` route still returns 404 after deployment, the deployed project is not receiving the nested route folders under `app/services/.../page.tsx`. Confirm those folders exist in the deployed GitHub/Vercel source.
+

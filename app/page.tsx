@@ -34,6 +34,8 @@ const iconBySlug = {
   "emergency-response-support": Activity,
   "real-estate-marketing-media": Camera,
   "agriculture-drone-services": Sprout,
+  "agriculture-drone-spraying": Sprout,
+  "farm-mapping": Map,
 };
 
 const platformCards = [
@@ -88,18 +90,18 @@ const definitions = [
 export default function HomePage() {
   return (
     <>
-      <section className="hero-section v15-hero section-pad">
-        <div className="v15-hero-bg" />
-        <div className="container hero-layout v15-hero-layout">
-          <div className="hero-copy v15-hero-copy">
+      <section className="hero-section v16-hero section-pad">
+        <div className="v16-hero-bg" />
+        <div className="container hero-layout v16-hero-layout">
+          <div className="hero-copy v16-hero-copy">
             <span className="section-kicker">AI-driven. Precision focused. Results delivered.</span>
             <h1>
-              Commercial drone solutions <span className="accent-text">powered by AI intelligence</span>.
+              Commercial drone intelligence <span className="accent-text">powered by AI</span>.
             </h1>
             <p className="lead-copy">
-              Phoenix Precision Drones delivers AI-supported aerial intelligence for construction, inspections, mapping, thermal imaging, utilities, agriculture, real estate, emergency documentation, and commercial operations.
+              Phoenix Precision Drones supports construction, inspections, LiDAR mapping, thermal imaging, utilities, agriculture, real estate, and authorized emergency documentation with AI-assisted aerial workflows.
             </p>
-            <div className="hero-actions">
+            <div className="hero-actions v16-hero-actions">
               <Link className="primary-btn" href="/contact">
                 Request a Quote
               </Link>
@@ -107,30 +109,16 @@ export default function HomePage() {
                 Explore Services
               </Link>
             </div>
-            <div className="hero-metrics v15-console-strip">
-              <div className="metric-card">
-                <strong>Mission Intake</strong>
-                <span>Project details, service needs, timing, location, deliverables, and human-review flags.</span>
-              </div>
-              <div className="metric-card">
-                <strong>Pilot Network</strong>
-                <span>Qualified pilots, capability matching, offer waves, safety status, and workload awareness.</span>
-              </div>
-              <div className="metric-card">
-                <strong>AI Operations</strong>
-                <span>Dispatch, weather, pricing, finance, maintenance, payroll, marketing, and growth intelligence.</span>
-              </div>
+            <div className="hero-service-pills" aria-label="Popular service categories">
+              <Link href="/services/thermal-inspections">Thermal</Link>
+              <Link href="/services/lidar-mapping-surveying">LiDAR</Link>
+              <Link href="/services/infrastructure-utility-inspections">Utilities</Link>
+              <Link href="/services/agriculture-drone-services">Agriculture</Link>
             </div>
           </div>
 
-          <div className="hero-visual panel-card v15-drone-scan-preview">
-            <div className="visual-topline">
-              <span>Aerial intelligence scan</span>
-              <span>Drone + city data capture</span>
-            </div>
-            <div className="browser-preview v15-browser-preview">
-              <Image src="/images/hero-drone-powerline-scan.png" alt="Two drones scanning desert power-line infrastructure with LiDAR and thermal inspection beams at sunset" width={1792} height={1024} className="preview-image" priority />
-            </div>
+          <div className="v16-hero-image-wrap" aria-label="Drone scanning desert power-line infrastructure">
+            <Image src="/images/hero-drone-powerline-scan.png" alt="Two drones scanning desert power-line infrastructure with LiDAR and thermal inspection beams at sunset" width={1792} height={1024} className="v16-hero-image" priority />
           </div>
         </div>
       </section>
