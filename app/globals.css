@@ -591,6 +591,14 @@ button, input, textarea, select { font: inherit; }
   filter: drop-shadow(0 0 14px rgba(255, 140, 22, 0.38));
 }
 
+.mobile-header-logo {
+  display: none;
+}
+
+.desktop-header-logo {
+  display: block;
+}
+
 .nav-actions {
   gap: 10px;
 }
@@ -1968,5 +1976,40 @@ button, input, textarea, select { font: inherit; }
 
   .nav-quote::after {
     font-size: 11px;
+  }
+}
+
+
+/* V16.6 mobile logo correction: use cleaned combined asset on phones */
+@media (max-width: 760px) {
+  .desktop-header-logo {
+    display: none;
+  }
+
+  .mobile-header-logo {
+    display: block;
+  }
+
+  .combined-brand {
+    width: min(330px, calc(100vw - 132px));
+    min-width: 235px;
+  }
+
+  .combined-header-logo {
+    max-height: 64px;
+    width: 100%;
+    object-fit: contain;
+    object-position: left center;
+  }
+}
+
+@media (max-width: 390px) {
+  .combined-brand {
+    width: min(288px, calc(100vw - 118px));
+    min-width: 210px;
+  }
+
+  .combined-header-logo {
+    max-height: 58px;
   }
 }
