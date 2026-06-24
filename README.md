@@ -30,3 +30,11 @@ The agriculture page still describes:
 ## Safety wording
 
 Drone spraying and chemical application remain human-reviewed services and are not approved by website chat.
+
+## V16.4 Mobile Header Logo Fix
+
+- Added `public/images/header-brand-mobile-clean.png` as a mobile-specific wordmark asset.
+- Updated `components/Nav.tsx` to use the full combined logo on desktop and the clean mobile wordmark on small screens.
+- Added responsive CSS so the mobile header no longer enlarges the emblem artwork or exposes the bright map/mountain panels.
+- Shortened the mobile Request Quote button visually to `Quote` so Login and Quote fit on iPhone widths without pushing off-screen.
+- Desktop header continues using the full combined brand image.
