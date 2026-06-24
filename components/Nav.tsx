@@ -21,15 +21,7 @@ export default function Nav() {
             alt="Phoenix Precision Drones"
             width={1128}
             height={296}
-            className="combined-header-logo desktop-brand-logo"
-            priority
-          />
-          <Image
-            src="/images/header-brand-mobile-clean.png"
-            alt="Phoenix Precision Drones"
-            width={720}
-            height={178}
-            className="combined-header-logo mobile-brand-logo"
+            className="combined-header-logo"
             priority
           />
         </Link>

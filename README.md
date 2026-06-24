@@ -1,4 +1,5 @@
-# Phoenix Precision Drones Web - V16.3 Layout Polish
+# Phoenix Precision Drones Web - V16.5 Mobile Viewport + Services Fix
+
 
 ## V16.3 changes
 
@@ -38,3 +39,12 @@ Drone spraying and chemical application remain human-reviewed services and are n
 - Added responsive CSS so the mobile header no longer enlarges the emblem artwork or exposes the bright map/mountain panels.
 - Shortened the mobile Request Quote button visually to `Quote` so Login and Quote fit on iPhone widths without pushing off-screen.
 - Desktop header continues using the full combined brand image.
+
+
+## V16.5 changes
+
+- Added a Next.js viewport export so mobile browsers use the real device width instead of desktop-scale layout.
+- Restored the Phoenix emblem in the mobile header by using the combined brand image again, but scaled it down for mobile.
+- Kept the mobile header compact with Login and Quote visible.
+- Fixed the mobile services grid so service cards stack cleanly instead of rendering as narrow desktop columns.
+- Mobile service cards now use a horizontal card layout with readable text and a compact Open indicator.
