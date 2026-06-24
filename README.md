@@ -1,27 +1,51 @@
-# Phoenix Precision Drones Website — V14 AI Platform Story Upgrade
+# Phoenix Precision Drones Web - V15 Final Public Site Shell
 
-This package upgrades the public website messaging so Phoenix Precision Drones is presented as an AI-driven drone operations platform, not just a generic drone service website.
+## What changed in V15
 
-## V14 changes
+V15 rebuilds the public-facing site around the `website-preview.png` mission-control style so the live homepage feels like the final PPD brand direction instead of a temporary informational site.
 
-- Rebuilt homepage messaging around the true PPD model: public website + customer portal + pilot dashboard + AI operations backend.
-- Added a “What PPD Really Is” section explaining customer intake, AI pilot scoring, small-wave dispatch, safety review, mission planning, uploads, deliverables, and business automation.
-- Rebuilt About page with the full AI-driven operating model: W2 Phoenix-area operations + scalable 1099 pilot network.
-- Rebuilt Pilot Network page with pilot ranking, location matching, small-wave job offers, Part 107/insurance/drone checks, fatigue limits, safety controls, and DJI-compatible mission workflow support.
-- Rebuilt Services page with typical deliverables and AI-supported operational workflow.
-- Improved Industries page with platform benefits for recurring commercial work.
-- Improved Customer Portal and Pilot Dashboard pages to explain their role in the larger platform.
-- Updated Contact page with project review and prelaunch-safe language.
+### Homepage
+- Rebuilt hero around the preview image style: black/copper mission-control background, service tiles, portal preview, AI operations sections.
+- Added header Login button.
+- Kept Request Quote button.
+- Kept PPD AI chat widget globally available through the existing layout.
+- Added clickable service tiles that route to individual service pages.
+- Added portal login CTA and role-based public shell direction.
 
-## Public-safe wording
+### Services
+- Added a full services directory page.
+- Added individual service pages for:
+  - `/services/construction-monitoring`
+  - `/services/lidar-mapping-surveying`
+  - `/services/thermal-inspections`
+  - `/services/infrastructure-utility-inspections`
+  - `/services/cell-tower-telecom-inspections`
+  - `/services/solar-farm-inspections`
+  - `/services/insurance-disaster-documentation`
+  - `/services/emergency-response-support`
+  - `/services/real-estate-marketing-media`
+- Each service page includes service explanation, common uses, deliverables, PPD AI workflow, safety notes, and project intake CTA.
 
-The website uses safe language around prelaunch operations:
+### Login
+- Rebuilt `/login` as a themed portal access page.
+- Includes Customer Login, Pilot Login, and Operations Access cards.
+- Login form is intentionally disabled / coming soon until real authentication is wired.
+- Public-safe note confirms no private customer, pilot, finance, or operations data is exposed yet.
 
-- It does not claim active nationwide dispatch is currently live.
-- It does not claim the website approves flights.
-- It does not claim the AI issues insurance documents or legal/FAA decisions.
-- It describes DJI support as AI-assisted mission planning and command-based workflow support, not uncontrolled autonomous flight approval.
+### Pilot dashboard route
+- Added `/pilot-dashboard` public preview page.
+- Updated nav/footer to use `/pilot-dashboard` instead of `/dashboard` for the public pilot preview label.
+- Existing `/dashboard` page remains in place for backward compatibility.
 
-## Deploy
+### Safety / boundaries
+- Public wording remains prelaunch-safe.
+- The site does not claim active dispatch is live.
+- The site does not claim AI approves flights.
+- The site does not claim AI directly flies every mission.
+- DJI wording remains “AI-assisted planning and command-based workflow support.”
 
-Upload this folder to the existing GitHub/Vercel workflow or replace the current website files with this package.
+## Notes
+
+This package updates only the website files. It does not change Supabase, website chat SQL, API behavior, authentication, portals, pilot dispatch, payments, or backend operations.
+
+I could not run a full `next build` in this container because `node_modules` are not installed in the runtime. The package keeps the existing project structure and dependency list.

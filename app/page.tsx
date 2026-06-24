@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import PortalCard from "@/components/PortalCard";
+import { serviceDefinitions } from "@/lib/services";
 import {
   Activity,
   BadgeCheck,
@@ -9,6 +10,7 @@ import {
   Clock3,
   DollarSign,
   Flame,
+  LockKeyhole,
   Map,
   Network,
   RadioTower,
@@ -18,18 +20,21 @@ import {
   UploadCloud,
   Users,
   Zap,
+  Camera,
+  ArrowRight,
 } from "lucide-react";
 
-const services = [
-  ["Construction Monitoring", Building2],
-  ["LiDAR Mapping & Surveying", Map],
-  ["Thermal Inspections", Flame],
-  ["Infrastructure & Utility", Zap],
-  ["Cell Tower & Telecom", RadioTower],
-  ["Solar Farm Inspections", Sun],
-  ["Insurance Documentation", ShieldCheck],
-  ["Emergency Response", Activity],
-] as const;
+const iconBySlug = {
+  "construction-monitoring": Building2,
+  "lidar-mapping-surveying": Map,
+  "thermal-inspections": Flame,
+  "infrastructure-utility-inspections": Zap,
+  "cell-tower-telecom-inspections": RadioTower,
+  "solar-farm-inspections": Sun,
+  "insurance-disaster-documentation": ShieldCheck,
+  "emergency-response-support": Activity,
+  "real-estate-marketing-media": Camera,
+};
 
 const platformCards = [
   {
@@ -83,48 +88,76 @@ const definitions = [
 export default function HomePage() {
   return (
     <>
-      <section className="hero-section section-pad">
-        <div className="container hero-layout">
-          <div className="hero-copy">
-            <span className="section-kicker">AI-driven drone operations network</span>
+      <section className="hero-section v15-hero section-pad">
+        <div className="v15-hero-bg" />
+        <div className="container hero-layout v15-hero-layout">
+          <div className="hero-copy v15-hero-copy">
+            <span className="section-kicker">AI-driven. Precision focused. Results delivered.</span>
             <h1>
-              More than drone services. <span className="accent-text">Aerial operations intelligence</span>.
+              Commercial drone solutions <span className="accent-text">powered by AI intelligence</span>.
             </h1>
             <p className="lead-copy">
-              Phoenix Precision Drones is building an AI-assisted drone operations platform for commercial customers, in-house pilots, and a scalable 1099 pilot network. The system is designed to support service intake, pilot matching, safety review, mission planning, DJI-compatible workflows, uploads, deliverables, finance, maintenance, payroll, marketing, funding research, and competitor pricing intelligence.
+              Phoenix Precision Drones delivers AI-supported aerial intelligence for construction, inspections, mapping, thermal imaging, utilities, real estate, emergency documentation, and commercial operations.
             </p>
             <div className="hero-actions">
               <Link className="primary-btn" href="/contact">
-                Request Project Review
+                Request a Quote
               </Link>
-              <Link className="ghost-btn" href="/pilots">
-                Join Pilot Network
+              <Link className="ghost-btn" href="/services">
+                Explore Services
+              </Link>
+              <Link className="ghost-btn" href="/login">
+                Portal Login
               </Link>
             </div>
-            <div className="hero-metrics">
+            <div className="hero-metrics v15-console-strip">
               <div className="metric-card">
-                <strong>Customers</strong>
-                <span>Project intake, deliverables, communication, and organized aerial data.</span>
+                <strong>Mission Intake</strong>
+                <span>Project details, service needs, timing, location, deliverables, and human-review flags.</span>
               </div>
               <div className="metric-card">
-                <strong>Pilots</strong>
-                <span>AI-ranked opportunities, mission context, safety checks, and uploads.</span>
+                <strong>Pilot Network</strong>
+                <span>Qualified pilots, capability matching, offer waves, safety status, and workload awareness.</span>
               </div>
               <div className="metric-card">
-                <strong>Operations</strong>
-                <span>Dispatch, weather, pricing, finance, payroll, maintenance, and growth AI.</span>
+                <strong>AI Operations</strong>
+                <span>Dispatch, weather, pricing, finance, maintenance, payroll, marketing, and growth intelligence.</span>
               </div>
             </div>
           </div>
 
-          <div className="hero-visual panel-card">
+          <div className="hero-visual panel-card v15-platform-preview">
             <div className="visual-topline">
               <span>Platform preview</span>
-              <span>Public site + portals + AI ops</span>
+              <span>Mission-control style interface</span>
             </div>
-            <div className="browser-preview">
-              <Image src="/images/website-preview.png" alt="Phoenix Precision Drones website concept" width={1448} height={1086} className="preview-image" priority />
+            <div className="browser-preview v15-browser-preview">
+              <Image src="/images/website-preview.png" alt="Phoenix Precision Drones platform preview" width={1448} height={1086} className="preview-image" priority />
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section-pad section-divider v15-services-band">
+        <div className="container">
+          <div className="section-heading centered">
+            <span className="section-kicker">Our Services</span>
+            <h2>Press a service tile to open its full mission page.</h2>
+            <p>
+              Each service page explains what the service is, common uses, customer deliverables, AI-supported workflow, and safety boundaries.
+            </p>
+          </div>
+          <div className="service-grid v15-service-grid">
+            {serviceDefinitions.slice(0, 8).map((service) => {
+              const Icon = iconBySlug[service.slug];
+              return (
+                <Link className="service-tile panel-card service-card-link" href={`/services/${service.slug}`} key={service.slug}>
+                  <Icon size={30} />
+                  <h3>{service.title}</h3>
+                  <span>Open service page <ArrowRight size={16} /></span>
+                </Link>
+              );
+            })}
           </div>
         </div>
       </section>
@@ -161,29 +194,9 @@ export default function HomePage() {
           </div>
           <div className="info-card-grid">
             {howItWorks.map(([title, text]) => (
-              <article className="detail-card panel-card" key={title}>
-                <h3>{title}</h3>
+              <article className="detail-card panel-card step-card" key={title}>
+                <span className="step-number">{title}</span>
                 <p>{text}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="section-pad section-divider">
-        <div className="container">
-          <div className="section-heading centered">
-            <span className="section-kicker">Service stack</span>
-            <h2>Built for repeatable commercial drone work.</h2>
-            <p>
-              Services are positioned around customers who need organized documentation, inspection evidence, mapping support, and recurring aerial intelligence.
-            </p>
-          </div>
-          <div className="service-grid">
-            {services.map(([title, Icon]) => (
-              <article className="service-tile panel-card" key={title}>
-                <Icon size={28} />
-                <h3>{title}</h3>
               </article>
             ))}
           </div>
@@ -218,7 +231,7 @@ export default function HomePage() {
               title="Field workflow built for pilots"
               text="A mission-focused dashboard for receiving work, seeing route context, managing uploads, and staying equipment-ready."
               image="/images/pilot-portal-preview.png"
-              href="/dashboard"
+              href="/pilot-dashboard"
               cta="View Pilot Dashboard"
               highlights={[
                 "Mission queue and live route map",
@@ -252,34 +265,10 @@ export default function HomePage() {
 
           <div className="operations-stack panel-card">
             <div className="section-kicker">AI-supported operations</div>
-            <div className="ops-row">
-              <BrainCircuit size={26} />
-              <div>
-                <h3>Dispatch intelligence</h3>
-                <p>Pilot ranking can consider distance, availability, response speed, acceptance history, safety, fatigue, airspace, and job fit.</p>
-              </div>
-            </div>
-            <div className="ops-row">
-              <ShieldCheck size={26} />
-              <div>
-                <h3>Safety-aware workflows</h3>
-                <p>Weather, wind, heat, visibility, certification status, insurance, and manual-review gates are designed into the workflow.</p>
-              </div>
-            </div>
-            <div className="ops-row">
-              <UploadCloud size={26} />
-              <div>
-                <h3>Mission-to-deliverable flow</h3>
-                <p>Flight logs, media, mapping outputs, inspection evidence, and customer deliverables can stay connected to the job record.</p>
-              </div>
-            </div>
-            <div className="ops-row">
-              <DollarSign size={26} />
-              <div>
-                <h3>Business automation</h3>
-                <p>Pricing intelligence, pilot payouts, payroll, maintenance, marketing, funding research, and competitor tracking support the business side.</p>
-              </div>
-            </div>
+            <div className="ops-row"><BrainCircuit size={26} /><div><h3>Dispatch intelligence</h3><p>Pilot ranking can consider distance, availability, response speed, acceptance history, safety, fatigue, airspace, and job fit.</p></div></div>
+            <div className="ops-row"><ShieldCheck size={26} /><div><h3>Safety-aware workflows</h3><p>Weather, wind, heat, visibility, certification status, insurance, and manual-review gates are designed into the workflow.</p></div></div>
+            <div className="ops-row"><UploadCloud size={26} /><div><h3>Mission-to-deliverable flow</h3><p>Flight logs, media, mapping outputs, inspection evidence, and customer deliverables can stay connected to the job record.</p></div></div>
+            <div className="ops-row"><DollarSign size={26} /><div><h3>Business automation</h3><p>Pricing intelligence, pilot payouts, payroll, maintenance, marketing, funding research, and competitor tracking support the business side.</p></div></div>
             <Link className="primary-btn full-width-btn" href="/services">
               Review Services
             </Link>
@@ -289,26 +278,21 @@ export default function HomePage() {
 
       <section className="section-pad section-divider">
         <div className="container about-credentials-grid">
-          <article className="panel-card detail-card">
-            <Users size={32} />
-            <h3>W2 + 1099 model</h3>
-            <p>Phoenix-area work can be handled by local in-house operations first, while qualified network pilots support expansion as demand grows.</p>
-          </article>
-          <article className="panel-card detail-card">
-            <Clock3 size={32} />
-            <h3>Workload protection</h3>
-            <p>The platform is designed to watch pilot workload, daily flight time, weekly flight time, and rest windows so pilots are not overloaded.</p>
-          </article>
-          <article className="panel-card detail-card">
-            <BadgeCheck size={32} />
-            <h3>Qualification checks</h3>
-            <p>Pilot and drone workflows include Part 107, insurance, drone verification, skills, safety scoring, and capability matching.</p>
-          </article>
-          <article className="panel-card detail-card">
-            <Network size={32} />
-            <h3>Nationwide roadmap</h3>
-            <p>The long-term goal is a scalable AI-assisted drone network where customers request work and qualified pilots receive matched opportunities.</p>
-          </article>
+          <article className="panel-card detail-card"><Users size={32} /><h3>W2 + 1099 model</h3><p>Phoenix-area work can be handled by local in-house operations first, while qualified network pilots support expansion as demand grows.</p></article>
+          <article className="panel-card detail-card"><Clock3 size={32} /><h3>Workload protection</h3><p>The platform is designed to watch pilot workload, daily flight time, weekly flight time, and rest windows so pilots are not overloaded.</p></article>
+          <article className="panel-card detail-card"><BadgeCheck size={32} /><h3>Qualification checks</h3><p>Pilot and drone workflows include Part 107, insurance, drone verification, skills, safety scoring, and capability matching.</p></article>
+          <article className="panel-card detail-card"><Network size={32} /><h3>Nationwide roadmap</h3><p>The long-term goal is a scalable AI-assisted drone network where customers request work and qualified pilots receive matched opportunities.</p></article>
+        </div>
+      </section>
+
+      <section className="section-pad section-divider v15-login-cta">
+        <div className="container panel-card login-cta-panel">
+          <div>
+            <span className="section-kicker">Portal access</span>
+            <h2>Customer and pilot login are now part of the final public shell.</h2>
+            <p>Portal authentication can be connected after the public site is complete. For now, the login page matches the final theme and routes visitors toward customer, pilot, and operations access.</p>
+          </div>
+          <Link className="primary-btn" href="/login"><LockKeyhole size={18} /> Open Login Page</Link>
         </div>
       </section>
     </>

@@ -1,5 +1,8 @@
+import Link from "next/link";
+import { serviceDefinitions } from "@/lib/services";
 import {
   Activity,
+  ArrowRight,
   Building2,
   Camera,
   ClipboardCheck,
@@ -9,18 +12,20 @@ import {
   ShieldCheck,
   Sun,
   UploadCloud,
+  Zap,
 } from "lucide-react";
 
-const items = [
-  ["Construction Monitoring", "Recurring aerial progress capture, site documentation, earthwork visibility, stakeholder reporting, and historical jobsite records.", "Progress photos, orthomosaic-ready capture, videos, site notes, and organized milestone deliverables.", Building2],
-  ["LiDAR Mapping & Surveying", "Mapping support for terrain visibility, site planning, topo awareness, earthwork review, and development workflows.", "LiDAR-ready workflow support, mapping data, flight logs, grid planning, overlap/sidelap settings, and upload organization.", Map],
-  ["Thermal Inspections", "Thermal-ready inspection workflows for roofs, structures, solar assets, utilities, and infrastructure diagnostics.", "Thermal imagery, anomaly documentation, reference photos, and project records for review.", Flame],
-  ["Infrastructure & Utility Inspections", "Aerial inspection support for bridges, roads, utilities, pipelines, right-of-way corridors, and hard-to-access assets.", "Inspection evidence, location-linked media, notes, and deliverable packages for maintenance or engineering review.", ShieldCheck],
-  ["Cell Tower & Telecom Inspections", "Visual documentation and inspection support for tower owners, telecom contractors, rooftop assets, and 5G infrastructure.", "Asset photos, close-up inspection media, structured upload packages, and recurring inspection support.", RadioTower],
-  ["Solar Farm Inspections", "Aerial and thermal support for panel health, array documentation, maintenance visibility, and site condition review.", "Visual and thermal evidence, panel-area documentation, status notes, and recurring inspection records.", Sun],
-  ["Insurance & Disaster Documentation", "Post-event aerial imagery and organized documentation support for claims, property condition, and recovery workflows.", "Roof and property imagery, storm evidence, before/after records, and human-reviewed documentation packages.", Activity],
-  ["Real Estate & Marketing Media", "Photo and video capture for listings, developments, land, commercial properties, and marketing packages.", "Aerial photos, videos, edited media, site perspective shots, and delivery links.", Camera],
-] as const;
+const iconBySlug = {
+  "construction-monitoring": Building2,
+  "lidar-mapping-surveying": Map,
+  "thermal-inspections": Flame,
+  "infrastructure-utility-inspections": Zap,
+  "cell-tower-telecom-inspections": RadioTower,
+  "solar-farm-inspections": Sun,
+  "insurance-disaster-documentation": ShieldCheck,
+  "emergency-response-support": Activity,
+  "real-estate-marketing-media": Camera,
+};
 
 const ops = [
   ["AI-assisted intake", "Requests can be classified by service type, location, urgency, deliverables, and safety-sensitive requirements."],
@@ -34,27 +39,33 @@ const ops = [
 export default function ServicesPage() {
   return (
     <>
-      <section className="page-hero section-pad">
+      <section className="page-hero section-pad v15-page-hero">
         <div className="container page-hero-inner">
           <span className="section-kicker">Services</span>
           <h1>Commercial drone services backed by an AI operations platform.</h1>
           <p className="lead-copy">
-            Phoenix Precision Drones is positioned for customers who need organized aerial data, not just a one-time flight. Each service is designed to connect intake, safety review, pilot matching, mission planning, upload tracking, and customer deliverables.
+            Phoenix Precision Drones is positioned for customers who need organized aerial data, not just a one-time flight. Select a service below to open a dedicated page with use cases, deliverables, workflow, and safety notes.
           </p>
         </div>
       </section>
+
       <section className="section-pad section-divider">
-        <div className="container service-detail-grid">
-          {items.map(([title, text, deliverable, Icon]) => (
-            <article className="detail-card panel-card" key={title}>
-              <div className="detail-icon"><Icon size={28} /></div>
-              <h3>{title}</h3>
-              <p>{text}</p>
-              <p><strong>Typical deliverables:</strong> {deliverable}</p>
-            </article>
-          ))}
+        <div className="container service-detail-grid v15-service-directory">
+          {serviceDefinitions.map((service) => {
+            const Icon = iconBySlug[service.slug];
+            return (
+              <Link className="detail-card panel-card service-directory-card" key={service.slug} href={`/services/${service.slug}`}>
+                <div className="detail-icon"><Icon size={28} /></div>
+                <span className="service-eyebrow">{service.eyebrow}</span>
+                <h3>{service.title}</h3>
+                <p>{service.hero}</p>
+                <span className="card-link-text">Open service page <ArrowRight size={16} /></span>
+              </Link>
+            );
+          })}
         </div>
       </section>
+
       <section className="section-pad section-divider">
         <div className="container">
           <div className="section-heading centered">
@@ -75,6 +86,7 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
       <section className="section-pad section-divider">
         <div className="container about-credentials-grid">
           <article className="panel-card detail-card">

@@ -6,7 +6,7 @@ const links = [
   ["Industries", "/industries"],
   ["Pilot Network", "/pilots"],
   ["Customer Portal", "/customer-portal"],
-  ["Pilot Dashboard", "/dashboard"],
+  ["Pilot Dashboard", "/pilot-dashboard"],
   ["About", "/about"],
   ["Contact", "/contact"],
 ];
@@ -34,9 +34,9 @@ export default function Nav() {
           ))}
         </nav>
 
-        <div className="nav-actions">
-          <Link className="ghost-btn nav-contact" href="/contact">
-            Contact
+        <div className="nav-actions nav-actions-v15">
+          <Link className="ghost-btn nav-login" href="/login">
+            Login
           </Link>
           <Link className="primary-btn nav-quote" href="/contact">
             Request Quote
@@ -49,6 +49,7 @@ export default function Nav() {
               {label}
             </Link>
           ))}
+          <Link href="/login">Login</Link>
         </nav>
       </div>
     </header>

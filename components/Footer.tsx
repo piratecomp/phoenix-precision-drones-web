@@ -20,7 +20,8 @@ export default function Footer() {
             <Link href="/industries">Industries</Link>
             <Link href="/pilots">Pilot Network</Link>
             <Link href="/customer-portal">Customer Portal</Link>
-            <Link href="/dashboard">Pilot Dashboard</Link>
+            <Link href="/pilot-dashboard">Pilot Dashboard</Link>
+            <Link href="/login">Login</Link>
           </div>
         </div>
 
