@@ -2013,3 +2013,66 @@ button, input, textarea, select { font: inherit; }
     max-height: 58px;
   }
 }
+
+/* V16.7 mobile header double-logo fix
+   Previous mobile rules used display:block!important on every combined-header-logo,
+   which made both desktop and mobile logo images visible at the same time.
+   These final rules intentionally override all earlier header-logo rules. */
+@media (min-width: 761px) {
+  .desktop-header-logo {
+    display: block !important;
+  }
+
+  .mobile-header-logo {
+    display: none !important;
+  }
+}
+
+@media (max-width: 760px) {
+  .desktop-header-logo {
+    display: none !important;
+  }
+
+  .mobile-header-logo {
+    display: block !important;
+  }
+
+  .combined-brand {
+    width: min(330px, calc(100vw - 132px));
+    min-width: 235px;
+    max-width: min(330px, calc(100vw - 132px));
+    overflow: hidden;
+  }
+
+  .mobile-header-logo {
+    max-height: 64px;
+    width: 100% !important;
+    height: auto !important;
+    object-fit: contain;
+    object-position: left center;
+  }
+}
+
+@media (max-width: 430px) {
+  .combined-brand {
+    width: min(305px, calc(100vw - 126px));
+    min-width: 218px;
+    max-width: min(305px, calc(100vw - 126px));
+  }
+
+  .mobile-header-logo {
+    max-height: 58px;
+  }
+}
+
+@media (max-width: 390px) {
+  .combined-brand {
+    width: min(282px, calc(100vw - 118px));
+    min-width: 205px;
+    max-width: min(282px, calc(100vw - 118px));
+  }
+
+  .mobile-header-logo {
+    max-height: 54px;
+  }
+}
