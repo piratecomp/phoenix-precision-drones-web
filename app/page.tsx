@@ -34,8 +34,6 @@ const iconBySlug = {
   "emergency-response-support": Activity,
   "real-estate-marketing-media": Camera,
   "agriculture-drone-services": Sprout,
-  "agriculture-drone-spraying": Sprout,
-  "farm-mapping": Map,
 };
 
 const platformCards = [
@@ -46,7 +44,7 @@ const platformCards = [
   },
   {
     title: "AI ranks operational fit",
-    body: "The platform is built to evaluate pilot location, distance, availability, skill match, drone capability, Part 107 status, insurance, response history, safety, fatigue, and mission needs.",
+    body: "The platform evaluates pilot location, distance, availability, skill match, drone capability, Part 107 status, insurance, response history, safety, fatigue, and mission needs.",
     Icon: BrainCircuit,
   },
   {
@@ -73,7 +71,7 @@ const definitions = [
   {
     title: "For customers",
     body:
-      "A professional way to request drone services, track project progress, receive organized deliverables, and work with a company built around aerial data instead of one-off flights.",
+      "A professional way to request drone services, track project progress, receive organized deliverables, and work with an aerial intelligence company instead of one-off flight files.",
   },
   {
     title: "For pilots",
@@ -101,18 +99,15 @@ export default function HomePage() {
             <p className="lead-copy">
               Phoenix Precision Drones supports construction, inspections, LiDAR mapping, thermal imaging, utilities, agriculture, real estate, and authorized emergency documentation with AI-assisted aerial workflows.
             </p>
-            <div className="hero-actions v16-hero-actions">
-              <Link className="primary-btn" href="/contact">
-                Request a Quote
-              </Link>
-              <Link className="ghost-btn" href="/services">
+            <div className="hero-actions v16-hero-actions hero-actions-single">
+              <Link className="primary-btn hero-explore-btn" href="/services">
                 Explore Services
               </Link>
             </div>
             <div className="hero-service-pills" aria-label="Popular service categories">
               <Link href="/services/thermal-inspections">Thermal</Link>
               <Link href="/services/lidar-mapping-surveying">LiDAR</Link>
-              <Link href="/services/infrastructure-utility-inspections">Utilities</Link>
+              <Link href="/services/real-estate-marketing-media">Photo/Video</Link>
               <Link href="/services/agriculture-drone-services">Agriculture</Link>
             </div>
           </div>
@@ -151,12 +146,12 @@ export default function HomePage() {
         <div className="container">
           <div className="section-heading centered">
             <span className="section-kicker">What PPD really is</span>
-            <h2>A drone company built like a technology platform.</h2>
+            <h2>Aviation intelligence and precision data on a technology platform.</h2>
             <p>
               The public website is the front door. Behind it is a connected operating model for customers, pilots, drones, missions, safety, pricing, deliverables, and company administration.
             </p>
           </div>
-          <div className="service-detail-grid">
+          <div className="service-detail-grid platform-tight-grid">
             {platformCards.map(({ title, body, Icon }) => (
               <article className="detail-card panel-card" key={title}>
                 <div className="detail-icon"><Icon size={28} /></div>
@@ -195,7 +190,7 @@ export default function HomePage() {
               <span className="section-kicker">Company model</span>
               <h2>One company serving customers, pilots, and operations.</h2>
               <p>
-                PPD is built as a two-in-one model: Phoenix-area in-house operations plus a scalable network marketplace for qualified pilots as service areas expand.
+PPD operates as a two-in-one model: Phoenix-area in-house operations plus a scalable network marketplace for qualified pilots as service areas expand.
               </p>
             </div>
             <div className="definition-list">

@@ -81,7 +81,7 @@ export default function PilotsPage() {
           <div>
             <div className="section-heading">
               <span className="section-kicker">Safety and readiness</span>
-              <h2>Built to protect pilots, customers, and the mission.</h2>
+              <h2>Protecting pilots, customers, and the mission.</h2>
               <p>
                 PPD is designed with pilot readiness and safety controls around the dispatch process. Pilots should not be matched to work they are not qualified, equipped, available, or rested enough to perform.
               </p>

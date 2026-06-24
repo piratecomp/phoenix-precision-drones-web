@@ -24,7 +24,7 @@ export default function IndustriesPage() {
           <span className="section-kicker">Industries</span>
           <h1>Aerial intelligence for industries that need repeatable data.</h1>
           <p className="lead-copy">
-            Phoenix Precision Drones serves commercial sectors where visibility, safety, speed, documentation, and organized deliverables create real value. The platform is built to support repeat work, mission planning, pilot routing, and customer records across multiple industries.
+            Phoenix Precision Drones serves commercial sectors where visibility, safety, speed, documentation, and organized deliverables create real value. The platform supports repeat work, mission planning, pilot routing, and customer records across multiple industries.
           </p>
         </div>
       </section>

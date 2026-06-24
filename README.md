@@ -1,30 +1,32 @@
-# Phoenix Precision Drones Web - V16.3 Vercel Services Build Fix
+# Phoenix Precision Drones Web - V16.3 Layout Polish
 
-This package fixes the Vercel build failure on `/services` from V16.2.
+## V16.3 changes
 
-## Fix
+- Removed the duplicate agriculture service buttons from the public service grid.
+- Kept one Agriculture Drone Services card and folded farm mapping, crop monitoring, spraying/spreading intake, and agricultural documentation into that page.
+- Removed the Request a Quote button from the homepage hero because the header already has that CTA.
+- Made Explore Services the primary glowing hero button.
+- Changed the hero quick pills to Thermal, LiDAR, Photo/Video, and Agriculture.
+- Slightly reduced the hero image size on desktop.
+- Tightened the technology platform card section so the four boxes are smaller and more balanced.
+- Changed the platform section title to “Aviation intelligence and precision data on a technology platform.”
+- Reworded visible public copy so it does not sound like an internal build/update page.
+- Kept the new desert power-line LiDAR/thermal hero image.
+- Kept PPD AI chat and Login.
 
-The `/services` page renders one icon component for each service in `lib/services.ts`. V16.2 added these new service slugs:
+## Service route notes
 
-- `agriculture-drone-spraying`
-- `farm-mapping`
+The public service grid now links to one Agriculture Drone Services page instead of separate public buttons for spraying and farm mapping.
 
-But the `/services` icon map did not include those two slugs, so the icon component was `undefined`. During prerender, Next.js threw:
+The agriculture page still describes:
+- farm mapping
+- crop monitoring
+- irrigation/drainage visibility
+- vegetation and weed-pressure visibility
+- livestock-area and fence-line documentation
+- storm/drought records
+- regulated drone spraying/spreading/seeding/fertilizer/herbicide/pesticide intake where authorized
 
-`Element type is invalid: expected a string ... but got: undefined.`
+## Safety wording
 
-V16.3 adds icons for both missing slugs and also adds a safe fallback icon.
-
-## Still included
-
-- V16.2 tightened desktop layout.
-- New custom desert / powerline / LiDAR / thermal hero image.
-- Removed public portal update section.
-- Explicit service route pages only.
-- Agriculture services and drone spraying intake.
-- Farm mapping and crop monitoring.
-- Emergency response with thermal search-and-rescue support.
-
-## Upload
-
-Replace the current project files with this package and redeploy on Vercel.
+Drone spraying and chemical application remain human-reviewed services and are not approved by website chat.

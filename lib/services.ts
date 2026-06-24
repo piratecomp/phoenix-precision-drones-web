@@ -8,9 +8,7 @@ export type ServiceSlug =
   | "insurance-disaster-documentation"
   | "emergency-response-support"
   | "real-estate-marketing-media"
-  | "agriculture-drone-services"
-  | "agriculture-drone-spraying"
-  | "farm-mapping";
+  | "agriculture-drone-services";
 
 export type ServiceDefinition = {
   slug: ServiceSlug;
@@ -47,7 +45,7 @@ export const serviceDefinitions: ServiceDefinition[] = [
     eyebrow: "Mapping and terrain intelligence",
     hero: "LiDAR-ready and mapping-focused drone workflows for terrain, site planning, development, and asset visibility.",
     summary:
-      "LiDAR and mapping workflows are designed for projects that need more than standard photos. PPD is built to support structured capture planning, overlap settings, waypoint organization, upload tracking, and mapping deliverable coordination.",
+      "LiDAR and mapping workflows are designed for projects that need more than standard photos. PPD supports structured capture planning, overlap settings, waypoint organization, upload tracking, and mapping deliverable coordination.",
     uses: ["Site planning", "Terrain visibility", "Development documentation", "Right-of-way review", "Earthwork support", "Recurring map updates"],
     deliverables: ["Map-ready aerial capture", "LiDAR-ready workflow support", "Flight logs", "Grid and overlap planning records", "Organized uploads", "Mapping deliverable coordination"],
     workflow: ["Collect boundary and accuracy requirements", "Review altitude, overlap, sidelap, weather, and safety factors", "Prepare mission planning inputs", "Coordinate qualified pilot and capable drone", "Organize uploaded mapping files for processing or delivery"],
@@ -144,42 +142,14 @@ export const serviceDefinitions: ServiceDefinition[] = [
     title: "Agriculture Drone Services",
     shortTitle: "Agriculture",
     eyebrow: "Farm mapping, crop monitoring, and regulated spraying support",
-    hero: "Drone support for farms, ranches, fields, irrigation visibility, crop health mapping, livestock area documentation, and regulated agricultural spraying workflows.",
+    hero: "Drone support for farms, ranches, fields, irrigation visibility, crop health mapping, livestock-area documentation, storm records, and regulated agricultural spraying intake.",
     summary:
-      "Agriculture drone services can support growers and land managers with aerial visibility, crop health indicators, field mapping, irrigation and drainage observation, livestock-area documentation, storm or drought records, and regulated spraying workflows. Spraying or chemical application is treated as a regulated service path and requires proper authority, pilot qualifications, equipment, insurance, weather review, drift review, label compliance, and state or local requirements.",
-    uses: ["Farm and field mapping", "Crop health and stress indicators", "Irrigation and drainage visibility", "Livestock-area and fence-line documentation", "Plant count or stand assessment support", "Storm, drought, and damage documentation", "Vegetation and weed-pressure visibility", "Regulated drone spraying or spreading support where authorized"],
-    deliverables: ["Aerial field imagery", "Map-ready capture", "Thermal or multispectral-ready workflow support where equipment allows", "Field condition documentation", "Issue-area notes", "Repeat monitoring records", "Spraying project intake for human review"],
-    workflow: ["Collect crop, field, acreage, boundary, access, and deliverable needs", "Review weather, wind, temperature, drift risk, surrounding properties, and safety constraints", "Confirm whether the request is mapping, monitoring, documentation, or regulated application", "Match pilot, drone capability, payload capability, and authorization requirements", "Organize imagery, mapping records, application documentation, or follow-up tasks"],
+      "Agriculture drone services give growers, ranchers, land managers, and agricultural contractors a clearer view of field conditions from above. PPD supports farm mapping, crop monitoring, irrigation and drainage visibility, plant stand observation, vegetation and weed-pressure documentation, livestock-area and fence-line documentation, storm or drought records, and regulated spraying or spreading intake where authorization allows.",
+    uses: ["Farm and field mapping", "Crop health and stress indicators", "Irrigation and drainage visibility", "Plant count or stand assessment support", "Vegetation and weed-pressure visibility", "Fence-line, livestock-area, and access-road documentation", "Storm, drought, and damage records", "Repeat field monitoring", "Targeted drone spraying, spreading, seeding, fertilizer, herbicide, or pesticide application intake where properly authorized"],
+    deliverables: ["Aerial field imagery", "Map-ready capture", "Field condition documentation", "Issue-area notes", "Before/after comparison support", "Repeat monitoring records", "Crop, irrigation, and access observations", "Spraying project intake summary for human review", "Weather and drift review checklist for regulated application requests"],
+    workflow: ["Collect field boundary, crop type, acreage, access notes, and project goals", "Determine whether the request is mapping, monitoring, documentation, livestock-area visibility, or regulated application", "Review weather, wind, sun angle, temperature, surrounding properties, water, roads, structures, and site safety", "Match pilot, drone, camera, payload, and authorization requirements", "Capture organized field imagery or route regulated application requests for human review", "Deliver files, notes, and follow-up tasks for grower or land-manager review"],
     safetyNote:
-      "Agricultural spraying, seeding, spreading, pesticide, herbicide, fertilizer, or chemical dispensing can be regulated and may require FAA Part 137 authority, waivers or exemptions, aircraft registration, chemical-label compliance, state/local licensing, insurance, drift review, weather review, and human approval before any operation. Website chat cannot approve agricultural spraying.",
-  },
-  {
-    slug: "agriculture-drone-spraying",
-    title: "Agriculture Drone Spraying Intake",
-    shortTitle: "Drone Spraying",
-    eyebrow: "Regulated aerial application intake",
-    hero: "Project intake and review path for drone spraying, spreading, seeding, fertilizer, herbicide, pesticide, and other regulated agricultural application requests.",
-    summary:
-      "Drone spraying can be useful for precision application, hard-to-access acreage, targeted treatment zones, and repeat agricultural workflows. Because chemical dispensing and agricultural application can be regulated, PPD treats spraying as a human-reviewed service path, not an instant website booking.",
-    uses: ["Targeted crop spraying intake", "Spot treatment planning", "Fertilizer or nutrient application review", "Herbicide or pesticide application review", "Seeding or spreading workflow review", "Field boundary and drift-risk discussion", "Application documentation support"],
-    deliverables: ["Spraying project intake summary", "Field boundary and acreage notes", "Product/application requirement notes", "Weather and drift review checklist", "Authorization and compliance review tasks", "Human follow-up before any operation"],
-    workflow: ["Collect crop type, field boundary, acreage, product type, timing, and target treatment area", "Review wind, weather, temperature, surrounding properties, water, roads, structures, and drift concerns", "Confirm FAA Part 137, aircraft, payload, pilot, label, insurance, and state/local requirements", "Route the request for human review", "Prepare next-step documentation only after approval path is confirmed"],
-    safetyNote:
-      "Website chat cannot approve spraying or chemical application. A real spraying operation may require FAA Part 137 authority, exemptions or waivers, aircraft registration, chemical-label compliance, state/local licensing, insurance, drift review, weather review, site permission, pilot qualifications, and human approval.",
-  },
-  {
-    slug: "farm-mapping",
-    title: "Farm Mapping & Crop Monitoring",
-    shortTitle: "Farm Mapping",
-    eyebrow: "Field intelligence and crop visibility",
-    hero: "Aerial mapping, crop monitoring, irrigation visibility, vegetation observation, livestock-area documentation, and repeat field records for farms and ranches.",
-    summary:
-      "Farm mapping gives growers and land managers a clearer view of field conditions from above. Drone capture can help document crop stress indicators, irrigation and drainage patterns, stand issues, vegetation pressure, storm or drought impacts, access roads, fence lines, and livestock areas.",
-    uses: ["Farm and field mapping", "Crop health and stress visibility", "Irrigation and drainage observation", "Plant count or stand assessment support", "Vegetation and weed-pressure visibility", "Fence-line and livestock-area documentation", "Storm, drought, and damage records", "Repeat field monitoring"],
-    deliverables: ["Aerial field imagery", "Map-ready capture", "Field condition documentation", "Issue-area notes", "Repeat monitoring records", "Before/after comparison support", "Customer-ready media folders"],
-    workflow: ["Collect field boundary, crop type, acreage, access notes, and mapping goals", "Review weather, wind, sun angle, flight timing, and site safety", "Match pilot and camera capability", "Capture organized field imagery", "Deliver files and notes for grower or land-manager review"],
-    safetyNote:
-      "Farm mapping and crop monitoring are documentation-support services. Any agronomic, chemical, engineering, insurance, or legal decisions should be reviewed by the appropriate qualified professional.",
+      "Farm mapping and crop monitoring are documentation-support services. Agricultural spraying, seeding, spreading, pesticide, herbicide, fertilizer, or chemical dispensing can be regulated and may require FAA Part 137 authority, waivers or exemptions, aircraft registration, chemical-label compliance, state/local licensing, insurance, drift review, weather review, site permission, pilot qualifications, and human approval. Website chat cannot approve agricultural spraying.",
   },
   {
     slug: "real-estate-marketing-media",

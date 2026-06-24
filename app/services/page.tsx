@@ -16,7 +16,7 @@ import {
   Zap,
 } from "lucide-react";
 
-const iconBySlug: Record<string, React.ComponentType<{ size?: number }>> = {
+const iconBySlug = {
   "construction-monitoring": Building2,
   "lidar-mapping-surveying": Map,
   "thermal-inspections": Flame,
@@ -27,8 +27,6 @@ const iconBySlug: Record<string, React.ComponentType<{ size?: number }>> = {
   "emergency-response-support": Activity,
   "real-estate-marketing-media": Camera,
   "agriculture-drone-services": Sprout,
-  "agriculture-drone-spraying": Sprout,
-  "farm-mapping": Map,
 };
 
 const ops = [
@@ -56,7 +54,7 @@ export default function ServicesPage() {
       <section className="section-pad section-divider">
         <div className="container service-detail-grid v15-service-directory">
           {serviceDefinitions.map((service) => {
-            const Icon = iconBySlug[service.slug] ?? ClipboardCheck;
+            const Icon = iconBySlug[service.slug];
             return (
               <Link className="detail-card panel-card service-directory-card" key={service.slug} href={`/services/${service.slug}`}>
                 <div className="detail-icon"><Icon size={28} /></div>
@@ -76,7 +74,7 @@ export default function ServicesPage() {
             <span className="section-kicker">Service workflow</span>
             <h2>The platform supports the work around the flight.</h2>
             <p>
-              PPD is being built to handle the operational complexity that makes drone services reliable, repeatable, and scalable.
+              PPD handles the operational complexity that makes drone services reliable, repeatable, and scalable.
             </p>
           </div>
           <div className="info-card-grid">

@@ -16,7 +16,7 @@ import {
 
 const focusAreas = [
   ["AI operations backbone", "Communication, lead intake, dispatch scoring, safety routing, pricing support, follow-up drafts, and internal task queues are designed around one connected operating model.", BrainCircuit],
-  ["Pilot network model", "The company is built as both Phoenix-area operations and a scalable network for qualified 1099 pilots as service coverage expands.", Users],
+  ["Pilot network model", "The company operates as both Phoenix-area operations and a scalable network for qualified 1099 pilots as service coverage expands.", Users],
   ["Safety-aware dispatch", "Pilot match logic can consider Part 107 status, insurance, drone capability, safety scores, workload, fatigue windows, weather, distance, and job fit.", ShieldCheck],
   ["Mission and deliverable flow", "Jobs connect to mission planning, DJI-compatible workflows, waypoints, flight logs, media uploads, customer deliverables, invoices, payouts, and records.", PlaneTakeoff],
 ] as const;
@@ -32,7 +32,7 @@ const platformPieces = [
 
 const principles = [
   ["AI-assisted, human-supervised", "The system supports decisions, but the website does not claim automatic flight approval, legal advice, insurance issuance, or active dispatch confirmation."],
-  ["Field-first design", "PPD is built for real commercial field work: construction, mapping, inspections, telecom, solar, utility, emergency response, and recurring jobs."],
+  ["Field-first design", "PPD supports real commercial field work: construction, mapping, inspections, telecom, solar, utility, emergency response, and recurring jobs."],
   ["Pilot protection", "Workload, fatigue, daily flight time, weekly flight time, insurance, certification, and safety scoring are part of the platform design."],
   ["Customer-ready data", "The target output is organized aerial intelligence: photos, videos, maps, thermal evidence, inspection records, reports, and deliverables."],
 ] as const;
@@ -45,7 +45,7 @@ export default function AboutPage() {
           <span className="section-kicker">About Phoenix Precision Drones</span>
           <h1>An AI-driven drone operations platform, not just an aerial media company.</h1>
           <p className="lead-copy">
-            Phoenix Precision Drones is being built as a commercial drone service provider and scalable pilot network powered by an AI-assisted operating system. The platform is designed to connect customers, pilots, drones, missions, safety, dispatch, pricing, maintenance, payroll, funding research, competitor intelligence, marketing, and deliverables into one organized workflow.
+            Phoenix Precision Drones operates as a commercial drone service provider and scalable pilot network powered by an AI-assisted operating system. The platform is designed to connect customers, pilots, drones, missions, safety, dispatch, pricing, maintenance, payroll, funding research, competitor intelligence, marketing, and deliverables into one organized workflow.
           </p>
           <div className="hero-actions">
             <Link className="primary-btn" href="/services">Review Services</Link>
@@ -69,7 +69,7 @@ export default function AboutPage() {
 
           <article className="panel-card about-story-card highlight-card">
             <BrainCircuit size={34} />
-            <h2>Built as an AI company from the beginning.</h2>
+            <h2>AI-powered operations from the first customer request.</h2>
             <p>
               The backend is designed to support dispatch, Communication AI, safety, mission planning, weather awareness, pilot verification, competitor pricing research, marketing, funding research, finance, payroll, maintenance, and administrative workflows with human review where it matters.
             </p>
@@ -170,7 +170,7 @@ export default function AboutPage() {
           </article>
           <article className="panel-card detail-card">
             <Network size={32} />
-            <h3>Built to scale</h3>
+            <h3>Ready to scale</h3>
             <p>The long-term goal is a nationwide AI-assisted drone network with local operations and qualified pilot marketplace coverage.</p>
           </article>
         </div>
