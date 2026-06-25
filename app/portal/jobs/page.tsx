@@ -1,3 +1,5 @@
+import PortalLinkedItemsPage from "@/components/PortalLinkedItemsPage";
+
 export default function JobsPage() {
-  return <div>Jobs</div>;
+  return <PortalLinkedItemsPage itemType="jobs" />;
 }
