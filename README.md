@@ -1,18 +1,15 @@
-# Phoenix Precision Drones Web V17.6 — Login Topo Match
+# Phoenix Precision Drones Web V17.7 — Login Topo Image Refine
 
-This build continues from V17.5 and tightens the portal login visual to better match the desired desert-ridge / topo contour style.
+This build continues from V17.6 and uses the uploaded desert/topo reference image directly as the bottom background treatment inside the login card.
 
-## Changes in V17.6
+## Changes in V17.7
 
-- Rebuilt the login window background contours to better resemble a **desert landscape with terrain-following topo lines**.
-- Kept the contour treatment concentrated toward the **bottom portion of the login window** instead of drifting across the full card.
-- Forced the **Team Access** and **Live RPC** chips into a true **side-by-side row** under the logo.
-- Further tightened the desktop composition so the login window remains more balanced on laptop screens.
-- Preserved the mobile-friendly login form, customer account creation CTA, live Supabase Auth flow, and role-based portal redirects.
-
-## New asset
-
-- `public/images/login-topo-ridge-v17-6.svg`
+- Added the uploaded reference image as `public/images/login-topo-background-v17-7.png`.
+- Reworked the login card background to show the desert ridge / topo image on the lower portion of the login window.
+- Moved `Team Access` and `Live RPC` under the `Portal Login` title.
+- Tightened the login card width again for desktop/laptop screens.
+- Kept the logo on the upper-right side of the login card.
+- Kept Supabase Auth login, customer account creation, active-session detection, and role-based redirects intact.
 
 ## Required Vercel environment variables
 
