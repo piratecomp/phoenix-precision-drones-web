@@ -1,46 +1,28 @@
-# Phoenix Precision Drones Web V18 — Homepage Simplification
+# Phoenix Precision Drones Web V18.1 — Focused Homepage
 
-This package continues from V17.9 and shortens the public homepage so the site feels more like a premium landing page instead of a long brochure.
+This build makes the homepage shorter and cleaner based on live mobile review.
 
-## Changes in V18
+## Changes in V18.1
 
-- Shortened the homepage to five focused sections:
-  1. Hero
-  2. Service snapshot
-  3. Portal/workspace strip
-  4. Trust/operations strip
-  5. Final call-to-action
-- Moved longer explanations off the homepage and into linked detail pages.
-- Kept service cards clickable and routed to the existing service pages.
-- Kept portal links routed to Customer Portal, Pilot Dashboard, and Portal.
-- Kept the current login page, Supabase Auth wiring, owner portal redirect, and portal backend integration intact.
-- Added V18 homepage-specific CSS for shorter, cleaner sections.
+- Homepage now focuses on the hero, company paragraph, Explore Services, portal preview, and quote CTA.
+- Removed extra homepage sections that caused too much scrolling.
+- Moved deeper explanation content to linked pages.
+- Rebuilt mobile service buttons so long titles no longer stack vertically.
+- Added a darker dashboard-style service button layout with orange borders, glow accents, service numbers, and compact Open status pills.
+- Kept login, Supabase Auth, customer signup, and owner portal routing intact.
 
 ## Required Vercel environment variables
 
-```text
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_ANON_KEY
 SUPABASE_URL
 SUPABASE_SERVICE_ROLE_KEY
-```
 
 ## Test routes
 
-```text
-/
- /services
-/customer-portal
-/pilot-dashboard
-/login
-/portal/owner
-```
-
-## Notes
-
-The deeper service, industry, pilot-network, customer-portal, and portal details remain available on linked pages. The homepage is now meant to answer quickly:
-
-- What PPD does
-- Who it helps
-- Why it is different
-- Where visitors should click next
+- Home
+- /services
+- /customer-portal
+- /pilot-dashboard
+- /login
+- /portal/owner
