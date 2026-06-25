@@ -8,11 +8,13 @@ import "./portal-map-v22.css";
 import "./google-map-v23.css";
 import "./internal-messages-v26.css";
 import "./quote-pipeline-v28.css";
+import "./maintenance-bridge-v35.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import GoogleOperationsMapBoot from "@/components/GoogleOperationsMapBoot";
 import InternalMessageWindow from "@/components/InternalMessageWindow";
+import DashboardClickLinker from "@/components/DashboardClickLinker";
 
 export const metadata: Metadata = {
   title: "Phoenix Precision Drones | Commercial Drone Services & Portal Experience",
@@ -36,6 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ChatWidget />
           <GoogleOperationsMapBoot />
           <InternalMessageWindow />
+          <DashboardClickLinker />
         </div>
       </body>
     </html>
