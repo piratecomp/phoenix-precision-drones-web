@@ -7,8 +7,6 @@ import {
   Bell,
   BriefcaseBusiness,
   CheckCircle2,
-  ClipboardCheck,
-  Clock3,
   Gauge,
   HardHat,
   LayoutDashboard,
@@ -17,6 +15,8 @@ import {
   LogOut,
   PlaneTakeoff,
   Radio,
+  Rocket,
+  Satellite,
   ShieldAlert,
   ShieldCheck,
   UserRound,
@@ -29,13 +29,16 @@ import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseCl
 import {
   checkDashboardAccess,
   completeTask,
+  decidePpdAiApproval,
   getPortalBootstrap,
+  getPpdCommandCenter,
   markNotificationRead,
   type PortalBootstrap,
   type PortalModule,
   type PortalNotification,
   type PortalQuickAction,
   type PortalTask,
+  type PpdCommandCenter,
 } from "@/lib/portalApi";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -63,12 +66,10 @@ const moduleIconMap: Record<string, LucideIcon> = {
   network: Radio,
   observer: HardHat,
   customer: UserRound,
-  review: ClipboardCheck,
   command: Gauge,
   admin: UsersRound,
   users: UsersRound,
-  time: Clock3,
-  upload: ClipboardCheck,
+  upload: Rocket,
   verify: ShieldCheck,
 };
 
@@ -84,9 +85,9 @@ function ModuleIcon({ iconKey, size = 22 }: { iconKey?: string | null; size?: nu
 
 function statusClass(status?: string | null) {
   if (!status) return "portal-live-pill";
-  if (["danger", "critical"].includes(status)) return "portal-live-pill danger";
-  if (["warning"].includes(status)) return "portal-live-pill warning";
-  if (["success"].includes(status)) return "portal-live-pill success";
+  if (["danger", "critical", "high"].includes(status)) return "portal-live-pill danger";
+  if (["warning", "medium"].includes(status)) return "portal-live-pill warning";
+  if (["success", "low"].includes(status)) return "portal-live-pill success";
   return "portal-live-pill";
 }
 
@@ -107,17 +108,17 @@ function getFallbackModules(dashboard: PortalDashboard): PortalModule[] {
     {
       module_key: `${dashboard.key}_workflow`,
       title: "Workflow modules",
-      subtitle: "Phase 1 shell",
+      subtitle: "Live portal shell",
       body: dashboard.workflow.join(" • "),
-      status_label: "Static preview",
+      status_label: "Preview",
       status_level: "warning",
-      icon_key: "review",
+      icon_key: "command",
       sort_order: 20,
     },
     {
       module_key: `${dashboard.key}_ai_scope`,
       title: "AI boundary",
-      subtitle: "Department scope",
+      subtitle: "Controlled automation",
       body: dashboard.aiScope,
       status_label: "Protected",
       status_level: "success",
@@ -187,9 +188,7 @@ export function PortalIndexClient() {
     };
   }, []);
 
-  if (loading) {
-    return <PortalLoading title="Checking portal access" />;
-  }
+  if (loading) return <PortalLoading title="Checking portal access" />;
 
   if (primaryPath) {
     return (
@@ -216,20 +215,16 @@ function PortalPublicLanding({ configured, error }: { configured: boolean; error
     <>
       <section className="page-hero section-pad portal-foundation-hero">
         <div className="container page-hero-inner">
-          <span className="section-kicker">V17.1 portal data wiring</span>
-          <h1>One operating portal. Now wired for Supabase routing.</h1>
+          <span className="section-kicker">PPD portal system</span>
+          <h1>One operating portal. Role-based command views.</h1>
           <p className="lead-copy">
-            The portal shell is ready to call your Phase 1.10 backend: route guard, bootstrap, dashboard modules, quick actions, tasks, notifications, entity links, and operating summaries.
+            Customer, pilot, maintenance, safety, finance, operations, and owner command-center dashboards are connected to the Supabase portal registry.
           </p>
           <div className="hero-actions centered-actions">
             <Link className="primary-btn" href="/login">Login</Link>
             <Link className="ghost-btn" href="/portal/customer">Preview Customer Portal</Link>
           </div>
-          {!configured && (
-            <p className="portal-error-note">
-              Supabase browser variables are not configured yet. Add NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in Vercel to enable live login.
-            </p>
-          )}
+          {!configured && <p className="portal-error-note">Supabase browser variables are not configured yet.</p>}
           {error && <p className="portal-error-note">{error}</p>}
         </div>
       </section>
@@ -278,6 +273,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
   const [accessError, setAccessError] = useState<string | null>(null);
   const [sessionMissing, setSessionMissing] = useState(false);
   const [actionMessage, setActionMessage] = useState<string | null>(null);
+  const [commandCenter, setCommandCenter] = useState<PpdCommandCenter | null>(null);
 
   const dashboardPath = fallbackDashboard?.path || "/portal";
 
@@ -301,19 +297,22 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
         if (!alive) return;
         if (!access.can_access) {
           setAccessError(access.reason || "DASHBOARD_ACCESS_DENIED");
-          setBootstrap({
-            authenticated: true,
-            can_access: false,
-            reason: access.reason,
-            primary_dashboard_path: access.primary_dashboard_path,
-            requested_dashboard_path: access.requested_dashboard_path,
-            dashboard_key: access.dashboard_key,
-          });
+          setLoading(false);
           return;
         }
-        const data = await getPortalBootstrap(supabase, dashboardPath);
+        const liveBootstrap = await getPortalBootstrap(supabase, dashboardPath);
         if (!alive) return;
-        setBootstrap(data);
+        setBootstrap(liveBootstrap);
+
+        const liveKey = liveBootstrap.dashboard_key || dashboardKey;
+        if (["owner", "admin"].includes(liveKey)) {
+          try {
+            const command = await getPpdCommandCenter(supabase);
+            if (alive) setCommandCenter(command);
+          } catch (err) {
+            console.warn("PPD command center unavailable", err);
+          }
+        }
       } catch (err: any) {
         if (!alive) return;
         setAccessError(err?.message || "Unable to load portal dashboard.");
@@ -325,38 +324,32 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
     return () => {
       alive = false;
     };
-  }, [dashboardPath]);
+  }, [dashboardKey, dashboardPath]);
 
-  const liveModules = bootstrap?.modules || [];
-  const liveActions = bootstrap?.quick_actions || [];
-  const modules = liveModules.length ? liveModules : fallbackDashboard ? getFallbackModules(fallbackDashboard) : [];
-  const actions = liveActions.length ? liveActions : fallbackDashboard ? getFallbackActions(fallbackDashboard) : [];
-  const activeDashboardName = bootstrap?.dashboards?.find((d: any) => d.dashboard_path === dashboardPath)?.dashboard_name || fallbackDashboard?.title || "Portal Dashboard";
-  const activeDepartment = bootstrap?.dashboards?.find((d: any) => d.dashboard_path === dashboardPath)?.department_name || fallbackDashboard?.department || "Portal";
-  const navDashboards = bootstrap?.dashboards?.length
-    ? bootstrap.dashboards.map((d: any) => ({
-        key: d.dashboard_key,
-        title: d.dashboard_name,
-        path: d.dashboard_path,
-        role: d.dashboard_name,
-      }))
-    : portalDashboards.map((d) => ({ key: d.key, title: d.title, path: d.path, role: d.role }));
-
-  async function refresh() {
+  async function refreshCommandCenter() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    const data = await getPortalBootstrap(supabase, dashboardPath);
-    setBootstrap(data);
+    try {
+      const command = await getPpdCommandCenter(supabase);
+      setCommandCenter(command);
+    } catch (err: any) {
+      setActionMessage(err?.message || "Unable to refresh command center.");
+    }
+  }
+
+  async function handleLogout() {
+    const supabase = getSupabaseBrowserClient();
+    if (supabase) await supabase.auth.signOut();
+    window.location.href = "/login";
   }
 
   async function handleCompleteTask(task: PortalTask) {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    setActionMessage("Completing task...");
     try {
-      await completeTask(supabase, task.id, "Completed from V17.1 portal dashboard.");
-      await refresh();
-      setActionMessage("Task completed.");
+      await completeTask(supabase, task.id, "Completed from V19 portal game dashboard.");
+      setActionMessage(`Completed task: ${task.task_title}`);
+      setBootstrap((prev) => prev ? { ...prev, tasks: (prev.tasks || []).filter((t) => t.id !== task.id) } : prev);
     } catch (err: any) {
       setActionMessage(err?.message || "Unable to complete task.");
     }
@@ -365,108 +358,188 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
   async function handleMarkRead(notification: PortalNotification) {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    setActionMessage("Updating notification...");
     try {
       await markNotificationRead(supabase, notification.id);
-      await refresh();
-      setActionMessage("Notification marked read.");
+      setActionMessage(`Marked notification read: ${notification.notification_title}`);
+      setBootstrap((prev) => prev ? { ...prev, notifications: (prev.notifications || []).filter((n) => n.id !== notification.id) } : prev);
     } catch (err: any) {
-      setActionMessage(err?.message || "Unable to update notification.");
+      setActionMessage(err?.message || "Unable to mark notification read.");
     }
   }
 
-  async function handleSignOut() {
+  async function handleApprovalDecision(approvalId: string, decision: "approved" | "rejected") {
     const supabase = getSupabaseBrowserClient();
-    if (supabase) await supabase.auth.signOut();
-    window.location.href = "/login";
+    if (!supabase) return;
+    try {
+      await decidePpdAiApproval(supabase, approvalId, decision, `Decision made from V19 ${dashboardKey} dashboard.`);
+      setActionMessage(`AI approval ${decision}.`);
+      await refreshCommandCenter();
+    } catch (err: any) {
+      setActionMessage(err?.message || "Unable to update AI approval.");
+    }
   }
 
-  if (!fallbackDashboard) {
-    return (
-      <section className="page-hero section-pad">
-        <div className="container page-hero-inner">
-          <h1>Portal dashboard not found.</h1>
-          <Link className="primary-btn" href="/portal">Return to Portal</Link>
-        </div>
-      </section>
-    );
-  }
+  const dashboard = useMemo(() => fallbackDashboard || portalDashboards[0], [fallbackDashboard]);
 
-  if (loading) return <PortalLoading title={`Loading ${fallbackDashboard.title}`} />;
+  if (loading) return <PortalLoading title="Loading command center" />;
 
-  if (accessError || bootstrap?.can_access === false) {
+  if (sessionMissing) {
     return (
       <section className="page-hero section-pad portal-foundation-hero">
         <div className="container page-hero-inner">
-          <span className="section-kicker">Protected portal route</span>
-          <h1>Access check complete.</h1>
-          <p className="lead-copy">
-            {sessionMissing
-              ? "Login is required before the protected dashboard can load live Supabase data."
-              : `Supabase denied this route: ${accessError || bootstrap?.reason}.`}
-          </p>
+          <span className="section-kicker">Login required</span>
+          <h1>Sign in to access this portal.</h1>
+          <p className="lead-copy">This dashboard is protected by Supabase Auth and portal role checks.</p>
+          <Link className="primary-btn" href="/login">Go to Login</Link>
+        </div>
+      </section>
+    );
+  }
+
+  if (accessError) {
+    return (
+      <section className="page-hero section-pad portal-foundation-hero">
+        <div className="container page-hero-inner">
+          <span className="section-kicker">Access blocked</span>
+          <h1>Portal guard denied this dashboard.</h1>
+          <p className="lead-copy">{accessError}</p>
           <div className="hero-actions centered-actions">
-            <Link className="primary-btn" href={sessionMissing ? "/login" : bootstrap?.primary_dashboard_path || "/portal"}>
-              {sessionMissing ? "Login" : "Go to My Dashboard"}
-            </Link>
-            <Link className="ghost-btn" href="/portal">Portal Home</Link>
+            <Link className="primary-btn" href="/portal">Back to Portal</Link>
+            <Link className="ghost-btn" href="/login">Switch account</Link>
           </div>
         </div>
       </section>
     );
   }
 
+  const modules = (bootstrap?.modules?.length ? bootstrap.modules : getFallbackModules(dashboard)).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+  const actions = (bootstrap?.quick_actions?.length ? bootstrap.quick_actions : getFallbackActions(dashboard)).sort((a, b) => (a.sort_order || 0) - (b.sort_order || 0));
+  const currentUser = bootstrap?.current_user;
+  const isCommandDashboard = ["owner", "admin"].includes(bootstrap?.dashboard_key || dashboardKey);
+
   return (
-    <section className="portal-app-shell portal-live-shell">
+    <section className="portal-live-shell">
       <aside className="portal-sidebar">
-        <Link className="portal-sidebar-brand" href="/portal">
-          <LayoutDashboard size={22} />
-          <span>PPD Portal</span>
-        </Link>
+        <div className="portal-sidebar-brand">
+          <DashboardIcon dashboardKey={dashboard.key} />
+          <span>{dashboard.department}</span>
+        </div>
         <nav className="portal-sidebar-nav">
-          {navDashboards.map((item) => (
-            <Link className={item.path === dashboardPath ? "active" : ""} href={item.path} key={item.key}>
-              <DashboardIcon dashboardKey={item.key} size={18} />
-              <span>{item.role}</span>
+          {portalDashboards.map((item) => (
+            <Link key={item.key} href={item.path} className={item.key === dashboardKey ? "active" : ""}>
+              <DashboardIcon dashboardKey={item.key} />
+              {item.department}
             </Link>
           ))}
         </nav>
-        <button className="portal-signout" onClick={handleSignOut} type="button">
-          <LogOut size={16} /> Sign out
-        </button>
+        <div className="panel-card portal-session-card">
+          <span className="section-kicker">System Status</span>
+          <p><span className="green-dot" /> All systems operational</p>
+          <small>Supabase {configured ? "Live" : "Preview"}</small>
+        </div>
       </aside>
 
       <div className="portal-main-area">
-        <div className="portal-topbar panel-card">
+        <header className="panel-card portal-topbar">
           <div>
-            <span className="section-kicker">{activeDepartment}</span>
-            <h1>{activeDashboardName}</h1>
-            <p className="portal-live-subtitle">
-              {bootstrap?.current_user?.full_name
-                ? `Signed in as ${bootstrap.current_user.full_name}`
-                : configured
-                  ? "Connected to Supabase portal backend."
-                  : "Static preview mode. Configure Supabase public variables for live data."}
-            </p>
+            <span className="section-kicker">Phoenix Precision Drones</span>
+            <h1>{isCommandDashboard ? "Owner Command Center" : dashboard.title}</h1>
+            <p className="portal-live-subtitle">{dashboard.description}</p>
           </div>
-          <div className="portal-live-status-stack">
-            <div className="portal-status-pill">{bootstrap ? "Live RPC" : "Preview"}</div>
-            <div className="portal-small-counts">
-              <span>{bootstrap?.counts?.open_tasks || 0} tasks</span>
-              <span>{bootstrap?.counts?.unread_notifications || 0} alerts</span>
-              <span>{bootstrap?.counts?.entity_links || 0} links</span>
+          <div className="portal-user-chip">
+            <span>{currentUser?.full_name || currentUser?.email || "Portal User"}</span>
+            <small>{currentUser?.legacy_role || dashboard.department}</small>
+            <button type="button" onClick={handleLogout}><LogOut size={16} /> Logout</button>
+          </div>
+        </header>
+
+        {actionMessage && <p className="portal-action-message">{actionMessage}</p>}
+
+        {isCommandDashboard && commandCenter && (
+          <section className="portal-game-command-center">
+            <div className="portal-game-stat-grid">
+              <article className="portal-game-stat-card readiness-card">
+                <Gauge size={28} />
+                <span>Production Readiness</span>
+                <strong>{Math.round(Number(commandCenter.readiness?.readiness_score || 0))}<small>/100</small></strong>
+                <em>{commandCenter.readiness?.portal_ok ? "Live Operations" : "Needs Review"}</em>
+              </article>
+              <article className="portal-game-stat-card">
+                <PlaneTakeoff size={28} />
+                <span>Active Jobs</span>
+                <strong>{commandCenter.readiness?.active_jobs ?? 0}</strong>
+                <em>Field workflow</em>
+              </article>
+              <article className="portal-game-stat-card green">
+                <UsersRound size={28} />
+                <span>Verified Pilots</span>
+                <strong>{commandCenter.readiness?.verified_pilots ?? 0}</strong>
+                <em>Ready pilots</em>
+              </article>
+              <article className="portal-game-stat-card amber">
+                <Rocket size={28} />
+                <span>AI Approvals</span>
+                <strong>{commandCenter.readiness?.pending_ai_approvals ?? 0}</strong>
+                <em>Review queue</em>
+              </article>
+              <article className="portal-game-stat-card red">
+                <ShieldAlert size={28} />
+                <span>Critical Events</span>
+                <strong>{commandCenter.readiness?.open_high_or_critical_events ?? 0}</strong>
+                <em>Attention</em>
+              </article>
             </div>
-          </div>
-        </div>
 
-        {!configured && (
-          <div className="panel-card portal-warning-card">
-            <ShieldAlert size={22} />
-            <p>Add <strong>NEXT_PUBLIC_SUPABASE_URL</strong> and <strong>NEXT_PUBLIC_SUPABASE_ANON_KEY</strong> in Vercel to activate live login and RPC data.</p>
-          </div>
+            <div className="portal-game-map-and-queue">
+              <article className="panel-card portal-game-map-card">
+                <div className="portal-game-panel-head">
+                  <div><span className="section-kicker">Live Operations Map</span><h3>Phoenix, AZ</h3></div>
+                  <span className="portal-game-live-dot">Live</span>
+                </div>
+                <div className="portal-game-map-stage" aria-label="Stylized live operations map">
+                  <div className="map-route route-a" />
+                  <div className="map-route route-b" />
+                  <span className="map-pin pin-green">5</span>
+                  <span className="map-pin pin-orange">442</span>
+                  <span className="map-pin pin-blue">381</span>
+                  <span className="map-drone drone-a"><Satellite size={18} /></span>
+                  <span className="map-drone drone-b"><Satellite size={18} /></span>
+                  <span className="map-zone zone-a" />
+                  <span className="map-zone zone-b" />
+                  <strong>Phoenix</strong>
+                </div>
+                <div className="portal-game-map-legend">
+                  <span><i className="green-dot" /> pilots</span>
+                  <span><i className="orange-dot" /> jobs</span>
+                  <span><i className="blue-dot" /> drones</span>
+                </div>
+              </article>
+
+              <article className="panel-card portal-game-queue-card">
+                <div className="portal-game-panel-head">
+                  <div><span className="section-kicker">AI Dispatch Queue</span><h3>Human approval required</h3></div>
+                  <span>{commandCenter.pending_ai_approvals?.length || 0}</span>
+                </div>
+                <div className="portal-game-approval-list">
+                  {(commandCenter.pending_ai_approvals || []).length === 0 && <p>No pending AI approvals.</p>}
+                  {(commandCenter.pending_ai_approvals || []).slice(0, 4).map((approval: any) => (
+                    <div className="portal-game-approval-row" key={approval.id}>
+                      <div>
+                        <strong>{approval.action_title}</strong>
+                        <span>{approval.action_summary || approval.action_type}</span>
+                        <small>{approval.risk_level} · {approval.approval_status}</small>
+                      </div>
+                      <div className="approval-buttons">
+                        <button type="button" onClick={() => handleApprovalDecision(approval.id, "approved")}>Approve</button>
+                        <button type="button" onClick={() => handleApprovalDecision(approval.id, "rejected")}>Reject</button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </article>
+            </div>
+          </section>
         )}
-
-        {actionMessage && <div className="panel-card portal-action-message">{actionMessage}</div>}
 
         <div className="portal-dashboard-grid live-module-grid">
           {modules.map((module) => (
@@ -484,9 +557,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
                   <span>{module.metric_label}</span>
                 </div>
               )}
-              {module.action_label && module.action_path && (
-                <Link className="ghost-btn compact-portal-btn" href={module.action_path}>{module.action_label}</Link>
-              )}
+              {module.action_label && module.action_path && <Link className="ghost-btn compact-portal-btn" href={module.action_path}>{module.action_label}</Link>}
             </article>
           ))}
         </div>
@@ -513,9 +584,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
             <h3>Current access scope</h3>
             <p>Supabase returned {bootstrap?.permissions?.length || 0} permission records and {bootstrap?.dashboards?.length || 0} accessible dashboards for this session.</p>
             <div className="portal-tag-row">
-              {(bootstrap?.permissions || []).slice(0, 8).map((permission: any) => (
-                <span key={`${permission.permission_key}-${permission.role_key}`}>{permission.permission_key}</span>
-              ))}
+              {(bootstrap?.permissions || []).slice(0, 8).map((permission: any) => <span key={`${permission.permission_key}-${permission.role_key}`}>{permission.permission_key}</span>)}
             </div>
           </article>
         </div>
@@ -533,9 +602,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
                     <span>{task.task_summary || task.department_name || task.task_type}</span>
                     <small>{task.priority} · {task.task_status}</small>
                   </div>
-                  <button type="button" onClick={() => handleCompleteTask(task)}>
-                    <CheckCircle2 size={16} /> Complete
-                  </button>
+                  <button type="button" onClick={() => handleCompleteTask(task)}><CheckCircle2 size={16} /> Complete</button>
                 </div>
               ))}
             </div>
@@ -553,9 +620,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
                     <span>{notification.notification_body || notification.notification_type}</span>
                     <small>{notification.priority} · {notification.notification_status}</small>
                   </div>
-                  <button type="button" onClick={() => handleMarkRead(notification)}>
-                    <Bell size={16} /> Read
-                  </button>
+                  <button type="button" onClick={() => handleMarkRead(notification)}><Bell size={16} /> Read</button>
                 </div>
               ))}
             </div>
@@ -565,13 +630,9 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
         <div className="panel-card portal-next-card">
           <span className="section-kicker">Entity bridge</span>
           <h3>Profile links</h3>
-          <p>
-            Supabase returned {bootstrap?.entity_links?.length || 0} verified bridge links for this user. These connect portal users to customers, pilots, employees, and internal staff records.
-          </p>
+          <p>Supabase returned {bootstrap?.entity_links?.length || 0} verified bridge links for this user. These connect portal users to customers, pilots, employees, and internal staff records.</p>
           <div className="portal-tag-row">
-            {(bootstrap?.entity_links || []).map((link: any) => (
-              <span key={link.id || `${link.link_type}-${link.entity_id}`}>{link.link_type}: {link.entity_table}</span>
-            ))}
+            {(bootstrap?.entity_links || []).map((link: any) => <span key={link.id || `${link.link_type}-${link.entity_id}`}>{link.link_type}: {link.entity_table}</span>)}
           </div>
         </div>
       </div>
