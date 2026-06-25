@@ -68,9 +68,9 @@ export default function HomePage() {
         <div className="v16-hero-bg" />
         <div className="container hero-layout v16-hero-layout home-v18-1-hero-layout">
           <div className="hero-copy v16-hero-copy">
-            <span className="section-kicker">Aviation intelligence. Precision data.</span>
+            <span className="section-kicker">AI-driven. Precision focused. Results delivered.</span>
             <h1>
-              Commercial drone data for <span className="accent-text">real project decisions</span>.
+              Commercial drone intelligence <span className="accent-text">powered by AI</span>.
             </h1>
             <p className="lead-copy">
               Phoenix Precision Drones provides AI-supported aerial services for construction, mapping, inspections, thermal imaging, infrastructure, solar, agriculture, media, and documented field operations. The company combines professional drone workflows, customer visibility, pilot coordination, and organized deliverables in one operating platform.
@@ -94,7 +94,7 @@ export default function HomePage() {
           <div className="v16-hero-image-wrap home-v18-1-hero-image" aria-label="Drone scanning desert power-line infrastructure">
             <Image
               src="/images/hero-drone-powerline-scan.png"
-              alt="Two drones scanning desert power-line infrastructure with LiDAR and thermal inspection beams at sunset"
+              alt="Drone scanning desert power-line infrastructure with LiDAR and thermal inspection data at sunset"
               width={1792}
               height={1024}
               className="v16-hero-image"
