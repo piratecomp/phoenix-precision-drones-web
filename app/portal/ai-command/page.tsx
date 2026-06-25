@@ -1,4 +1,5 @@
 import AIGatewayPanel from "@/components/AIGatewayPanel";
+import DepartmentAIOrchestratorPanel from "@/components/DepartmentAIOrchestratorPanel";
 import MaintenanceBridgePanel from "@/components/MaintenanceBridgePanel";
 
 export default function AICommandPage() {
@@ -8,9 +9,10 @@ export default function AICommandPage() {
         <div className="panel-card portal-linked-header">
           <span className="section-kicker">PPD AI Command</span>
           <h1>Business Brain Control</h1>
-          <p>Controlled AI Gateway execution for business reasoning, quote analysis, maintenance repair reasoning, and generated department work items.</p>
+          <p>Controlled AI Gateway execution, department AI routing, generated work items, maintenance repair actions, and owner-exception governance.</p>
         </div>
         <AIGatewayPanel />
+        <DepartmentAIOrchestratorPanel />
         <MaintenanceBridgePanel dashboardKey="owner" />
       </div>
     </section>
