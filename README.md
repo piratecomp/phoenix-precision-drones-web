@@ -1,14 +1,20 @@
-# Phoenix Precision Drones Web V17.9 — Login Topo Hero Background
+# Phoenix Precision Drones Web V18 — Homepage Simplification
 
-This build continues from V17.8 and addresses the latest login-page feedback.
+This package continues from V17.9 and shortens the public homepage so the site feels more like a premium landing page instead of a long brochure.
 
-## Changes in V17.9
+## Changes in V18
 
-- Rebuilds the login header so the title and logo align on the same row on desktop like the mobile version.
-- Moves the `Team Access` and `Live RPC` chips directly under the title to remove the big vertical gap.
-- Uses the newly provided reference hero image as the basis for the login card background, cropped to the lower canyon/topographic portion so the background art is visible without the large text banner.
-- Keeps the card width tight on desktop and preserves the existing mobile sizing.
-- Keeps Supabase Auth login, customer account creation, and portal redirects intact.
+- Shortened the homepage to five focused sections:
+  1. Hero
+  2. Service snapshot
+  3. Portal/workspace strip
+  4. Trust/operations strip
+  5. Final call-to-action
+- Moved longer explanations off the homepage and into linked detail pages.
+- Kept service cards clickable and routed to the existing service pages.
+- Kept portal links routed to Customer Portal, Pilot Dashboard, and Portal.
+- Kept the current login page, Supabase Auth wiring, owner portal redirect, and portal backend integration intact.
+- Added V18 homepage-specific CSS for shorter, cleaner sections.
 
 ## Required Vercel environment variables
 
@@ -22,8 +28,19 @@ SUPABASE_SERVICE_ROLE_KEY
 ## Test routes
 
 ```text
+/
+ /services
+/customer-portal
+/pilot-dashboard
 /login
-/signup
-/portal
 /portal/owner
 ```
+
+## Notes
+
+The deeper service, industry, pilot-network, customer-portal, and portal details remain available on linked pages. The homepage is now meant to answer quickly:
+
+- What PPD does
+- Who it helps
+- Why it is different
+- Where visitors should click next
