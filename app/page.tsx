@@ -3,20 +3,19 @@ import Link from "next/link";
 import { serviceDefinitions } from "@/lib/services";
 import {
   Activity,
+  ArrowRight,
   BadgeCheck,
   Building2,
+  Camera,
   Flame,
+  LockKeyhole,
   Map,
   RadioTower,
   ShieldCheck,
-  Sun,
-  Camera,
-  ArrowRight,
   Sprout,
-  Zap,
+  Sun,
   Users,
-  BrainCircuit,
-  LockKeyhole,
+  Zap,
 } from "lucide-react";
 
 const iconBySlug = {
@@ -44,39 +43,17 @@ const featuredServiceSlugs = [
 const portalCards = [
   {
     title: "Customer Portal",
-    body: "Track requests, project status, reports, invoices, messages, and delivered files.",
+    body: "Project requests, job status, files, reports, messages, invoices, and delivery history.",
     href: "/customer-portal",
     Icon: Users,
+    stat: "Client workspace",
   },
   {
     title: "Pilot Portal",
-    body: "Mission details, safety notes, uploads, logs, and payout workflow for pilots.",
+    body: "Mission details, safety notes, uploads, flight logs, assignments, and payout workflow.",
     href: "/pilot-dashboard",
     Icon: Activity,
-  },
-  {
-    title: "Operations Portal",
-    body: "Owner, admin, finance, safety, maintenance, sales, and pilot-network command views.",
-    href: "/portal",
-    Icon: LockKeyhole,
-  },
-];
-
-const trustItems = [
-  {
-    title: "AI-assisted coordination",
-    body: "The platform supports intake, dispatch logic, safety review, mission context, and deliverable workflow.",
-    Icon: BrainCircuit,
-  },
-  {
-    title: "Safety-aware workflows",
-    body: "Weather, airspace-sensitive requests, pilot requirements, and manual review gates stay in the process.",
-    Icon: ShieldCheck,
-  },
-  {
-    title: "Scalable pilot network",
-    body: "Phoenix-area operations can expand through a qualified 1099 pilot network as service demand grows.",
-    Icon: BadgeCheck,
+    stat: "Mission workflow",
   },
 ];
 
@@ -87,16 +64,16 @@ export default function HomePage() {
 
   return (
     <>
-      <section className="hero-section v16-hero section-pad home-compact-hero">
+      <section className="hero-section v16-hero section-pad home-v18-1-hero">
         <div className="v16-hero-bg" />
-        <div className="container hero-layout v16-hero-layout">
+        <div className="container hero-layout v16-hero-layout home-v18-1-hero-layout">
           <div className="hero-copy v16-hero-copy">
-            <span className="section-kicker">AI-driven aerial intelligence</span>
+            <span className="section-kicker">Aviation intelligence. Precision data.</span>
             <h1>
-              Drone data for <span className="accent-text">projects that need proof</span>.
+              Commercial drone data for <span className="accent-text">real project decisions</span>.
             </h1>
             <p className="lead-copy">
-              Phoenix Precision Drones supports construction, inspections, mapping, thermal imaging, infrastructure, solar, agriculture, media, and emergency documentation workflows.
+              Phoenix Precision Drones provides AI-supported aerial services for construction, mapping, inspections, thermal imaging, infrastructure, solar, agriculture, media, and documented field operations. The company combines professional drone workflows, customer visibility, pilot coordination, and organized deliverables in one operating platform.
             </p>
             <div className="hero-actions v16-hero-actions">
               <Link className="primary-btn hero-explore-btn" href="/contact">
@@ -106,15 +83,15 @@ export default function HomePage() {
                 Explore Services
               </Link>
             </div>
-            <div className="hero-service-pills" aria-label="Popular service categories">
-              <Link href="/services/thermal-inspections">Thermal</Link>
-              <Link href="/services/lidar-mapping-surveying">LiDAR</Link>
+            <div className="hero-service-pills home-v18-1-pills" aria-label="Popular service categories">
               <Link href="/services/construction-monitoring">Construction</Link>
+              <Link href="/services/lidar-mapping-surveying">LiDAR</Link>
+              <Link href="/services/thermal-inspections">Thermal</Link>
               <Link href="/services/agriculture-drone-services">Agriculture</Link>
             </div>
           </div>
 
-          <div className="v16-hero-image-wrap" aria-label="Drone scanning desert power-line infrastructure">
+          <div className="v16-hero-image-wrap home-v18-1-hero-image" aria-label="Drone scanning desert power-line infrastructure">
             <Image
               src="/images/hero-drone-powerline-scan.png"
               alt="Two drones scanning desert power-line infrastructure with LiDAR and thermal inspection beams at sunset"
@@ -127,25 +104,28 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="section-pad section-divider v15-services-band home-compact-services">
+      <section className="section-pad section-divider home-v18-1-services">
         <div className="container">
-          <div className="section-heading centered">
-            <span className="section-kicker">Services</span>
-            <h2>Start with the service. Open the details when needed.</h2>
-            <p>
-              The homepage now shows the core service paths only. Each linked page carries the deeper use cases, deliverables, workflow, and safety notes.
-            </p>
+          <div className="section-heading centered compact-heading">
+            <span className="section-kicker">Explore Services</span>
+            <h2>Choose the aerial workflow you need.</h2>
           </div>
 
-          <div className="service-grid v15-service-grid home-service-snapshot">
-            {featuredServices.map((service) => {
+          <div className="home-v18-1-service-console">
+            {featuredServices.map((service, index) => {
               const Icon = iconBySlug[service.slug];
+              const number = String(index + 1).padStart(2, "0");
               return (
-                <Link className="service-tile panel-card service-card-link" href={`/services/${service.slug}`} key={service.slug}>
-                  <Icon size={30} />
-                  <h3>{service.shortTitle}</h3>
-                  <p>{service.eyebrow}</p>
-                  <span>View details <ArrowRight size={16} /></span>
+                <Link className="home-v18-1-service-button" href={`/services/${service.slug}`} key={service.slug}>
+                  <div className="service-button-left">
+                    <span className="service-button-number">{number}</span>
+                    <Icon size={26} />
+                  </div>
+                  <div className="service-button-main">
+                    <h3>{service.shortTitle}</h3>
+                    <p>{service.eyebrow}</p>
+                  </div>
+                  <span className="service-button-status">Open <ArrowRight size={15} /></span>
                 </Link>
               );
             })}
@@ -153,56 +133,56 @@ export default function HomePage() {
 
           <div className="centered-action-row">
             <Link className="ghost-btn" href="/services">
-              View All Drone Services
+              View All Services
             </Link>
           </div>
         </div>
       </section>
 
-      <section className="section-pad section-divider home-portal-strip">
+      <section className="section-pad section-divider home-v18-1-portals">
         <div className="container">
-          <div className="section-heading centered">
-            <span className="section-kicker">Portal system</span>
-            <h2>One platform. Different workspaces.</h2>
-            <p>
-              Customers, pilots, and internal operations each get a role-based portal path instead of one crowded dashboard.
-            </p>
+          <div className="section-heading centered compact-heading">
+            <span className="section-kicker">Portal Preview</span>
+            <h2>Customer visibility. Pilot workflow.</h2>
           </div>
 
-          <div className="info-card-grid home-portal-card-grid">
-            {portalCards.map(({ title, body, href, Icon }) => (
-              <Link className="detail-card panel-card service-card-link home-portal-link-card" href={href} key={title}>
-                <Icon size={30} />
+          <div className="home-v18-1-portal-grid">
+            {portalCards.map(({ title, body, href, Icon, stat }) => (
+              <Link className="home-v18-1-portal-card panel-card" href={href} key={title}>
+                <div className="portal-card-topline">
+                  <Icon size={30} />
+                  <span>{stat}</span>
+                </div>
                 <h3>{title}</h3>
                 <p>{body}</p>
-                <span className="card-link-text">Open page <ArrowRight size={16} /></span>
+                <span className="service-button-status">Preview <ArrowRight size={15} /></span>
               </Link>
             ))}
+
+            <Link className="home-v18-1-portal-card panel-card operations-card" href="/portal">
+              <div className="portal-card-topline">
+                <LockKeyhole size={30} />
+                <span>Role-based access</span>
+              </div>
+              <h3>Operations Portal</h3>
+              <p>Owner, admin, finance, safety, maintenance, sales, pilot network, observer, and customer dashboards.</p>
+              <span className="service-button-status">Login <ArrowRight size={15} /></span>
+            </Link>
           </div>
         </div>
       </section>
 
-      <section className="section-pad section-divider home-trust-strip">
-        <div className="container about-credentials-grid home-trust-grid">
-          {trustItems.map(({ title, body, Icon }) => (
-            <article className="panel-card detail-card" key={title}>
-              <Icon size={32} />
-              <h3>{title}</h3>
-              <p>{body}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="section-pad home-final-cta">
+      <section className="section-pad home-v18-1-final">
         <div className="container">
-          <div className="panel-card final-cta-card">
-            <span className="section-kicker">Ready for aerial data?</span>
-            <h2>Request a quote or create a customer account.</h2>
-            <p>
-              Tell Phoenix Precision Drones what you need captured, where the project is, and what deliverables matter.
-            </p>
-            <div className="hero-actions">
+          <div className="home-v18-1-quote-card panel-card">
+            <div>
+              <span className="section-kicker">Ready for a quote?</span>
+              <h2>Tell us what needs to be captured.</h2>
+              <p>
+                Send the project location, service type, timeline, and deliverables. Phoenix Precision Drones will help route the request into the right aerial workflow.
+              </p>
+            </div>
+            <div className="quote-card-actions">
               <Link className="primary-btn" href="/contact">Request Quote</Link>
               <Link className="ghost-btn" href="/signup">Create Customer Account</Link>
             </div>
