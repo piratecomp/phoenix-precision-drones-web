@@ -1,0 +1,453 @@
+/* ============================================================
+   V19 Portal Game UI System — command-center / young-pilot HUD
+   ============================================================ */
+.portal-live-shell {
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: calc(100vh - 95px);
+  background:
+    radial-gradient(circle at 82% 8%, rgba(255, 120, 20, 0.14), transparent 28rem),
+    radial-gradient(circle at 14% 80%, rgba(255, 94, 0, 0.10), transparent 24rem),
+    linear-gradient(180deg, #050609 0%, #090604 100%);
+  color: #fff7ec;
+}
+
+.portal-live-shell .portal-sidebar {
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 14px;
+  min-height: calc(100vh - 95px);
+  border-right: 1px solid rgba(255, 119, 16, 0.24);
+  background:
+    radial-gradient(circle at 50% 4%, rgba(255, 140, 24, 0.18), transparent 15rem),
+    linear-gradient(180deg, rgba(6, 8, 12, 0.98), rgba(8, 7, 6, 0.96));
+  box-shadow: inset -1px 0 0 rgba(255, 191, 91, 0.08), 12px 0 48px rgba(0, 0, 0, 0.38);
+}
+
+.portal-live-shell .portal-sidebar::before {
+  content: "";
+  display: block;
+  height: 148px;
+  border-radius: 22px;
+  margin: 0 0 8px;
+  background:
+    radial-gradient(circle at 50% 12%, rgba(255, 143, 28, 0.24), transparent 58%),
+    url('/images/logo-emblem-clean.png') center 2px / 118px 118px no-repeat,
+    linear-gradient(180deg, rgba(255, 128, 18, 0.09), rgba(10, 12, 18, 0.64));
+  border: 1px solid rgba(255, 139, 24, 0.24);
+  box-shadow: inset 0 0 28px rgba(255, 128, 18, 0.14), 0 0 32px rgba(255, 112, 13, 0.08);
+}
+
+.portal-live-shell .portal-sidebar-brand {
+  min-height: 44px;
+  justify-content: center;
+  border: 1px solid rgba(255, 137, 22, 0.22);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgba(255, 122, 19, 0.10), rgba(11, 11, 14, 0.62));
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.portal-live-shell .portal-sidebar-nav {
+  gap: 8px;
+}
+
+.portal-live-shell .portal-sidebar-nav a {
+  min-height: 48px;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.025), rgba(255, 255, 255, 0.01));
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  color: rgba(255, 245, 232, 0.70);
+  transition: 0.18s ease;
+}
+
+.portal-live-shell .portal-sidebar-nav a:hover,
+.portal-live-shell .portal-sidebar-nav a.active {
+  transform: translateX(2px);
+  color: #fff;
+  border-color: rgba(255, 144, 27, 0.72);
+  background:
+    radial-gradient(circle at 0% 50%, rgba(255, 132, 18, 0.28), transparent 12rem),
+    linear-gradient(180deg, rgba(255, 129, 22, 0.16), rgba(15, 13, 13, 0.78));
+  box-shadow: inset 0 0 22px rgba(255, 133, 20, 0.12), 0 0 24px rgba(255, 111, 7, 0.18);
+}
+
+.portal-live-shell .portal-main-area {
+  padding: 22px;
+  background:
+    linear-gradient(rgba(255, 128, 24, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 128, 24, 0.035) 1px, transparent 1px),
+    radial-gradient(circle at 50% 0%, rgba(255, 133, 19, 0.13), transparent 28rem),
+    #050608;
+  background-size: 52px 52px, 52px 52px, auto, auto;
+}
+
+.portal-live-shell .panel-card,
+.portal-game-stat-card,
+.portal-game-map-card,
+.portal-game-queue-card {
+  border: 1px solid rgba(255, 130, 20, 0.30);
+  background:
+    linear-gradient(135deg, rgba(255, 136, 24, 0.08), transparent 32%),
+    radial-gradient(circle at 100% 0%, rgba(255, 116, 13, 0.12), transparent 16rem),
+    rgba(6, 8, 12, 0.90);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 235, 196, 0.03),
+    inset 0 -2px 0 rgba(255, 119, 13, 0.10),
+    0 0 26px rgba(255, 112, 13, 0.08),
+    0 18px 54px rgba(0, 0, 0, 0.35);
+}
+
+.portal-live-shell .portal-topbar {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  margin-bottom: 16px;
+  padding: 16px 18px;
+}
+
+.portal-live-shell .portal-topbar::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #ff8b1a, transparent);
+  box-shadow: 0 0 22px rgba(255, 128, 24, 0.85);
+}
+
+.portal-live-shell .portal-topbar h1 {
+  font-size: clamp(1.7rem, 2.7vw, 3rem);
+  letter-spacing: -0.04em;
+  text-transform: uppercase;
+}
+
+.portal-live-subtitle {
+  color: rgba(255, 235, 205, 0.72);
+}
+
+.portal-status-pill,
+.portal-live-pill,
+.portal-small-counts span {
+  border-color: rgba(255, 144, 27, 0.36);
+  background: rgba(255, 139, 21, 0.10);
+  color: #ffd28c;
+  box-shadow: inset 0 0 18px rgba(255, 124, 19, 0.07);
+}
+
+.portal-game-command-center {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.portal-game-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.portal-game-stat-card {
+  position: relative;
+  overflow: hidden;
+  min-height: 128px;
+  border-radius: 18px;
+  padding: 16px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-content: center;
+  gap: 6px 12px;
+}
+
+.portal-game-stat-card::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(255, 143, 24, 0.9), transparent);
+}
+
+.portal-game-stat-card svg {
+  grid-row: span 3;
+  align-self: center;
+  color: #ff9a23;
+  filter: drop-shadow(0 0 13px rgba(255, 145, 35, 0.55));
+}
+
+.portal-game-stat-card span,
+.portal-game-stat-card em {
+  color: rgba(255, 238, 210, 0.62);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-style: normal;
+}
+
+.portal-game-stat-card strong {
+  color: #ffb046;
+  font-size: clamp(2rem, 3vw, 3rem);
+  line-height: 1;
+  text-shadow: 0 0 16px rgba(255, 132, 20, 0.45);
+}
+
+.portal-game-stat-card strong small {
+  font-size: 0.36em;
+  color: rgba(255, 238, 210, 0.58);
+}
+
+.portal-game-stat-card.green strong,
+.portal-game-stat-card.green svg { color: #45f972; }
+.portal-game-stat-card.amber strong,
+.portal-game-stat-card.amber svg { color: #ffc456; }
+.portal-game-stat-card.red strong,
+.portal-game-stat-card.red svg { color: #ff4c3d; }
+.portal-game-stat-card.green::after { background: linear-gradient(90deg, transparent, rgba(69, 249, 114, 0.85), transparent); }
+.portal-game-stat-card.red::after { background: linear-gradient(90deg, transparent, rgba(255, 76, 61, 0.85), transparent); }
+
+.portal-game-map-and-queue {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(360px, 0.8fr);
+  gap: 16px;
+}
+
+.portal-game-panel-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.portal-game-panel-head h3 {
+  margin: 4px 0 0;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.portal-game-live-dot {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #6bff82;
+  font-weight: 900;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+}
+
+.portal-game-live-dot::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #54ff73;
+  box-shadow: 0 0 14px #54ff73;
+}
+
+.portal-game-map-stage {
+  position: relative;
+  min-height: 360px;
+  overflow: hidden;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 140, 25, 0.28);
+  background:
+    linear-gradient(rgba(103, 157, 198, 0.13) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(103, 157, 198, 0.10) 1px, transparent 1px),
+    radial-gradient(circle at 58% 56%, rgba(255, 111, 12, 0.28), transparent 16rem),
+    url('/images/hero-drone-city-scan.png') center / cover no-repeat,
+    #06080d;
+  background-size: 38px 38px, 38px 38px, auto, cover, auto;
+  box-shadow: inset 0 0 64px rgba(0, 0, 0, 0.62);
+}
+
+.portal-game-map-stage strong {
+  position: absolute;
+  left: 50%;
+  top: 52%;
+  transform: translate(-50%, -50%);
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: rgba(255, 244, 225, 0.72);
+  text-shadow: 0 0 18px rgba(255, 130, 21, 0.65);
+}
+
+.map-route {
+  position: absolute;
+  height: 3px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(255, 151, 26, 0.95), transparent);
+  box-shadow: 0 0 16px rgba(255, 128, 24, 0.7);
+  transform-origin: left center;
+}
+.route-a { left: 8%; top: 36%; width: 78%; transform: rotate(-10deg); }
+.route-b { left: 11%; top: 70%; width: 70%; transform: rotate(13deg); }
+
+.map-pin,
+.map-drone,
+.map-zone {
+  position: absolute;
+  display: grid;
+  place-items: center;
+}
+.map-pin {
+  min-width: 46px;
+  height: 32px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  border: 1px solid currentColor;
+  background: rgba(0, 0, 0, 0.58);
+}
+.pin-green { left: 20%; top: 28%; color: #54ff73; box-shadow: 0 0 26px rgba(84, 255, 115, 0.26); }
+.pin-orange { left: 63%; top: 36%; color: #ff9b23; box-shadow: 0 0 26px rgba(255, 155, 35, 0.28); }
+.pin-blue { left: 43%; top: 70%; color: #4db5ff; box-shadow: 0 0 26px rgba(77, 181, 255, 0.26); }
+.map-drone { color: #60ff78; filter: drop-shadow(0 0 14px rgba(96, 255, 120, 0.8)); }
+.drone-a { left: 32%; top: 48%; }
+.drone-b { right: 18%; top: 64%; }
+.map-zone {
+  border: 2px solid currentColor;
+  border-radius: 50%;
+  opacity: 0.45;
+}
+.zone-a { left: 12%; top: 20%; width: 160px; height: 120px; color: #44ff6c; }
+.zone-b { right: 10%; top: 28%; width: 190px; height: 150px; color: #ff6423; }
+
+.portal-game-map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 12px;
+  color: rgba(255, 235, 205, 0.70);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+}
+.portal-game-map-legend i {
+  display: inline-block;
+  width: 8px; height: 8px; border-radius: 50%; margin-right: 6px;
+}
+.green-dot { background: #54ff73; box-shadow: 0 0 12px #54ff73; }
+.orange-dot { background: #ff9b23; box-shadow: 0 0 12px #ff9b23; }
+.blue-dot { background: #4db5ff; box-shadow: 0 0 12px #4db5ff; }
+
+.portal-game-approval-list {
+  display: grid;
+  gap: 12px;
+}
+
+.portal-game-approval-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  align-items: center;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 143, 24, 0.20);
+  background: rgba(255, 143, 24, 0.045);
+  padding: 12px;
+}
+
+.portal-game-approval-row strong,
+.portal-game-approval-row span,
+.portal-game-approval-row small {
+  display: block;
+}
+.portal-game-approval-row strong { color: #fff; }
+.portal-game-approval-row span { color: rgba(255, 236, 208, 0.68); font-size: 0.9rem; margin-top: 4px; }
+.portal-game-approval-row small { color: #ffbc61; margin-top: 4px; text-transform: uppercase; }
+.approval-buttons { display: flex; gap: 8px; }
+.approval-buttons button {
+  border-radius: 12px;
+  border: 1px solid rgba(255, 143, 24, 0.36);
+  background: rgba(255, 143, 24, 0.11);
+  color: #ffd18d;
+  padding: 9px 10px;
+  font-weight: 900;
+  cursor: pointer;
+}
+.approval-buttons button:first-child {
+  color: #111;
+  background: linear-gradient(180deg, #ffc04a, #ff8618);
+}
+
+.portal-live-module-card,
+.portal-workflow-card,
+.portal-next-card {
+  border-radius: 20px;
+}
+.portal-role-icon {
+  background: rgba(255, 136, 22, 0.12);
+  border: 1px solid rgba(255, 136, 22, 0.24);
+  color: #ff9a23;
+  box-shadow: 0 0 18px rgba(255, 126, 18, 0.12);
+}
+
+@media (max-width: 1180px) {
+  .portal-game-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .portal-game-map-and-queue { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .portal-live-shell {
+    display: block;
+    padding-bottom: 86px;
+  }
+  .portal-live-shell .portal-sidebar {
+    position: relative;
+    min-height: auto;
+    padding: 14px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 119, 16, 0.24);
+  }
+  .portal-live-shell .portal-sidebar::before {
+    height: 104px;
+    background-size: 86px 86px, auto, auto;
+  }
+  .portal-live-shell .portal-sidebar-nav {
+    display: flex;
+    overflow-x: auto;
+  }
+  .portal-live-shell .portal-sidebar-nav a {
+    min-width: fit-content;
+  }
+  .portal-game-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .portal-game-stat-card {
+    min-height: 112px;
+  }
+  .portal-game-map-stage {
+    min-height: 310px;
+  }
+  .portal-game-approval-row {
+    grid-template-columns: 1fr;
+  }
+  .approval-buttons button {
+    flex: 1;
+  }
+}
+
+@media (max-width: 560px) {
+  .portal-live-shell .portal-main-area {
+    padding: 14px;
+  }
+  .portal-game-stat-grid {
+    grid-template-columns: 1fr;
+  }
+  .portal-game-stat-card {
+    grid-template-columns: auto 1fr;
+    min-height: 96px;
+  }
+  .portal-game-map-stage {
+    min-height: 280px;
+  }
+  .portal-game-panel-head {
+    flex-direction: column;
+  }
+  .portal-game-map-and-queue {
+    gap: 14px;
+  }
+  .portal-topbar h1 {
+    font-size: 1.6rem;
+  }
+}
