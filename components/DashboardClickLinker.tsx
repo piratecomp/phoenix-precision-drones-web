@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 
 const statRoutes: Array<{ label: string; route: string }> = [
   { label: "Production Readiness", route: "/portal/owner#production-readiness" },
@@ -10,8 +11,36 @@ const statRoutes: Array<{ label: string; route: string }> = [
   { label: "Critical Events", route: "/portal/event-log" },
 ];
 
+function cleanHtml(value?: string | null) {
+  return (value || "").replace(/<[^>]*>/g, " ").replace(/\s+/g, " ").trim();
+}
+
 export default function DashboardClickLinker() {
   useEffect(() => {
+    async function showQueueReview() {
+      const supabase = getSupabaseBrowserClient();
+      if (!supabase) return;
+      const { data, error } = await supabase.rpc("ppd_get_current_queue_item_review");
+      if (error) {
+        window.alert(error.message);
+        return;
+      }
+      const note = data?.notification;
+      const item = data?.approval;
+      if (!item) {
+        window.alert(data?.message || "No pending queue item.");
+        return;
+      }
+      const preview = cleanHtml(note?.message_html || note?.body).slice(0, 1200);
+      window.alert([
+        item.action_title || "Queue item",
+        item.action_summary || "",
+        note?.recipient_email ? `To: ${note.recipient_email}` : "",
+        note?.subject ? `Subject: ${note.subject}` : "",
+        preview ? `Preview: ${preview}` : "No message body preview available."
+      ].filter(Boolean).join("\n\n"));
+    }
+
     function wireCards() {
       const cards = Array.from(document.querySelectorAll<HTMLElement>(".portal-game-stat-card"));
       cards.forEach((card) => {
@@ -34,6 +63,24 @@ export default function DashboardClickLinker() {
             open();
           }
         });
+      });
+
+      const rows = Array.from(document.querySelectorAll<HTMLElement>(".portal-game-approval-row"));
+      rows.forEach((row) => {
+        if (row.dataset.ppdReviewAdded === "true") return;
+        const buttons = row.querySelector<HTMLElement>(".approval-buttons");
+        if (!buttons) return;
+        row.dataset.ppdReviewAdded = "true";
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.textContent = "Review";
+        btn.className = "ppd-injected-review-btn";
+        btn.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.stopPropagation();
+          showQueueReview();
+        });
+        buttons.prepend(btn);
       });
     }
 
