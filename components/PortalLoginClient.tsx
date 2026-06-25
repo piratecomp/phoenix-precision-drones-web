@@ -82,8 +82,16 @@ export default function PortalLoginClient() {
         <div className="login-game-card panel-card">
           <div className="login-topo-ridge" aria-hidden="true" />
 
-          <div className="login-game-header">
-            <div className="login-emblem-wrap">
+          <div className="login-game-header login-game-header-v17_4">
+            <div className="login-header-copy login-header-copy-v17_4">
+              <div className="login-chip-stack">
+                <span className="section-kicker">Team Access</span>
+                <div className="login-security-chip"><Shield size={16} /> Live RPC</div>
+              </div>
+              <h1>Portal Login</h1>
+            </div>
+
+            <div className="login-emblem-wrap login-emblem-wrap-corner">
               <Image
                 src="/images/logo-emblem-clean.png"
                 alt="Phoenix Precision Drones logo"
@@ -93,14 +101,9 @@ export default function PortalLoginClient() {
                 priority
               />
             </div>
-            <div className="login-header-copy">
-              <span className="section-kicker">Team Access</span>
-              <h1>Portal Login</h1>
-            </div>
-            <div className="login-security-chip"><Shield size={16} /> Live RPC</div>
           </div>
 
-          <div className="login-game-grid">
+          <div className="login-game-grid login-game-grid-v17_4">
             <div className="login-form-zone">
               {checkingSession ? (
                 <div className="portal-login-loading"><Loader2 className="portal-spin" size={22} /> Checking session...</div>
@@ -121,7 +124,7 @@ export default function PortalLoginClient() {
                     Email
                     <input
                       type="email"
-                      placeholder="Email address"
+                      placeholder="Enter your email"
                       value={email}
                       onChange={(event) => setEmail(event.target.value)}
                       disabled={!configured || loading}
@@ -132,7 +135,7 @@ export default function PortalLoginClient() {
                     Password
                     <input
                       type="password"
-                      placeholder="Password"
+                      placeholder="Enter your password"
                       value={password}
                       onChange={(event) => setPassword(event.target.value)}
                       disabled={!configured || loading}
@@ -153,15 +156,6 @@ export default function PortalLoginClient() {
               <div className="login-gui-actions login-game-actions">
                 <Link className="ghost-btn" href="/signup"><UserPlus size={18} /> Create Customer Account</Link>
               </div>
-            </div>
-
-            <div className="login-game-side">
-              <span className="login-side-pill">Customer Portal</span>
-              <span className="login-side-pill">Pilot Network</span>
-              <span className="login-side-pill">Operations</span>
-              <span className="login-side-pill">Safety</span>
-              <span className="login-side-pill">Finance</span>
-              <span className="login-side-pill">Dispatch</span>
             </div>
           </div>
         </div>

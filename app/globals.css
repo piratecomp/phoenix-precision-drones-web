@@ -3062,7 +3062,7 @@ button, input, textarea, select { font: inherit; }
   }
 }
 
-/* V17.3 login game-gui polish: emblem-only, no ghost email, customer creation, orange desert contour glass */
+/* V17.4 login topo polish: top-right emblem, stacked chips, no dashboard pills, stronger contour terrain background */
 .login-game-page {
   min-height: calc(100vh - 86px);
   background:
@@ -3080,8 +3080,9 @@ button, input, textarea, select { font: inherit; }
   border-radius: 34px;
   border: 1px solid rgba(255, 142, 37, 0.36);
   background:
-    radial-gradient(circle at 20% 12%, rgba(255, 143, 38, 0.20), transparent 20rem),
-    radial-gradient(circle at 82% 38%, rgba(255, 192, 66, 0.10), transparent 24rem),
+    radial-gradient(circle at 18% 20%, rgba(255, 145, 32, 0.16), transparent 22rem),
+    radial-gradient(circle at 80% 16%, rgba(255, 190, 72, 0.10), transparent 22rem),
+    linear-gradient(90deg, rgba(58, 30, 10, 0.46), rgba(9, 13, 22, 0.56) 32%, rgba(7, 10, 16, 0.95) 62%, rgba(4, 6, 10, 0.98) 100%),
     linear-gradient(180deg, rgba(10, 14, 23, 0.95), rgba(6, 8, 13, 0.97));
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.04) inset,
@@ -3093,12 +3094,12 @@ button, input, textarea, select { font: inherit; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.42;
+  opacity: 0.24;
   background-image:
-    linear-gradient(rgba(255,255,255,0.028) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 46px 46px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.72), transparent 80%);
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+  background-size: 58px 58px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.84), transparent 88%);
 }
 .login-game-card::after {
   content: "";
@@ -3106,45 +3107,79 @@ button, input, textarea, select { font: inherit; }
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent, rgba(255, 151, 39, 0.12), transparent),
-    linear-gradient(180deg, transparent 0%, rgba(255, 132, 24, 0.10) 50%, transparent 100%);
+    linear-gradient(90deg, transparent 0%, rgba(255, 151, 39, 0.16) 36%, transparent 72%),
+    linear-gradient(180deg, rgba(255, 173, 83, 0.05) 0%, transparent 36%, rgba(255, 132, 24, 0.08) 100%);
   opacity: 0.32;
   mix-blend-mode: screen;
 }
 .login-topo-ridge {
   position: absolute;
-  left: -6%;
-  right: -6%;
-  bottom: -12%;
-  height: 54%;
+  inset: 0;
   pointer-events: none;
-  opacity: 0.42;
-  background-image: url("data:image/svg+xml,%3Csvg width='1200' height='420' viewBox='0 0 1200 420' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ff8a1f' stroke-width='2' stroke-opacity='.70'%3E%3Cpath d='M-20 305 C120 270 180 244 310 260 C455 278 514 326 650 286 C800 242 884 214 1040 242 C1120 256 1180 282 1220 292'/%3E%3Cpath d='M-20 328 C120 294 188 268 316 283 C458 300 520 350 656 310 C810 266 892 238 1045 265 C1122 279 1182 306 1220 316'/%3E%3Cpath d='M-20 351 C120 318 194 291 322 307 C462 324 526 374 662 335 C818 291 900 263 1050 290 C1124 304 1184 330 1220 340'/%3E%3Cpath d='M-20 374 C124 342 202 315 330 331 C468 348 534 398 670 360 C826 316 908 288 1058 315 C1128 328 1186 354 1220 364'/%3E%3Cpath d='M-20 397 C128 366 210 339 338 356 C474 373 542 422 678 386 C834 342 916 314 1066 340 C1134 353 1188 379 1220 389'/%3E%3C/g%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: center bottom;
-  background-size: 118% auto;
-  filter: drop-shadow(0 0 16px rgba(255, 127, 22, 0.32));
+  opacity: 0.72;
+  background-image:
+    url("data:image/svg+xml,%3Csvg width='1600' height='1000' viewBox='0 0 1600 1000' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ff962e' stroke-width='1.8' stroke-opacity='.42'%3E%3Cpath d='M-20 770 C110 710 210 680 330 700 C460 722 580 782 710 768 C840 754 920 696 1050 676 C1188 654 1306 674 1460 716 C1530 736 1580 752 1620 760'/%3E%3Cpath d='M-20 796 C112 736 214 706 336 726 C468 748 588 808 716 795 C846 781 928 722 1056 702 C1192 680 1312 700 1462 742 C1530 761 1582 779 1620 786'/%3E%3Cpath d='M-20 822 C116 761 220 730 340 751 C472 773 594 834 722 820 C850 806 934 748 1060 728 C1194 706 1316 726 1466 768 C1532 787 1584 805 1620 812'/%3E%3Cpath d='M-20 848 C120 786 226 754 346 776 C478 798 600 860 728 845 C856 830 940 774 1066 754 C1198 732 1322 752 1470 794 C1536 813 1586 831 1620 838'/%3E%3Cpath d='M-20 874 C126 810 232 779 352 801 C484 823 608 885 734 871 C862 857 948 800 1072 780 C1204 758 1328 778 1476 820 C1542 839 1590 857 1620 864'/%3E%3Cpath d='M-20 900 C132 835 240 804 358 826 C492 848 614 910 740 897 C868 884 954 826 1080 806 C1210 784 1334 804 1482 846 C1548 865 1594 882 1620 890'/%3E%3Cpath d='M-20 926 C138 860 246 829 366 852 C498 874 620 936 748 923 C876 910 962 852 1088 832 C1218 810 1340 830 1488 872 C1552 890 1598 907 1620 914'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff962e' stroke-width='1.2' stroke-opacity='.22'%3E%3Cpath d='M0 164 C140 136 266 134 390 154 C510 173 632 212 760 206 C880 200 976 164 1092 150 C1214 135 1340 148 1600 214'/%3E%3Cpath d='M0 198 C136 172 262 170 384 189 C506 208 626 246 752 240 C874 234 970 198 1088 184 C1210 170 1338 182 1600 248'/%3E%3Cpath d='M0 232 C136 208 262 205 384 224 C504 243 624 280 750 274 C872 268 968 232 1086 218 C1206 204 1336 216 1600 282'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 14% 12%, rgba(255, 143, 38, 0.13), transparent 18rem),
+    radial-gradient(circle at 74% 58%, rgba(255, 133, 26, 0.11), transparent 22rem);
+  background-repeat: no-repeat, no-repeat, no-repeat;
+  background-position: center center, left top, right bottom;
+  background-size: cover, auto, auto;
+  filter: drop-shadow(0 0 18px rgba(255, 127, 22, 0.20));
 }
 .login-game-header {
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
   gap: clamp(16px, 2vw, 28px);
-  margin-bottom: clamp(20px, 3vw, 34px);
+  margin-bottom: clamp(22px, 3vw, 36px);
+}
+.login-game-header-v17_4 {
+  min-height: clamp(130px, 15vw, 184px);
+}
+.login-header-copy-v17_4 {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-width: 0;
+}
+.login-chip-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+.login-security-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid rgba(103, 255, 156, 0.38);
+  color: #c9ffe0;
+  background: linear-gradient(180deg, rgba(60, 145, 88, 0.16), rgba(16, 44, 24, 0.14));
+  box-shadow: inset 0 0 0 1px rgba(101, 255, 158, 0.06), 0 0 16px rgba(88, 255, 140, 0.08);
+  font-weight: 800;
+  letter-spacing: 0.02em;
 }
 .login-emblem-wrap {
-  width: clamp(112px, 13vw, 176px);
-  height: clamp(112px, 13vw, 176px);
+  width: clamp(124px, 15vw, 190px);
+  height: clamp(124px, 15vw, 190px);
   display: grid;
   place-items: center;
-  border-radius: 32px;
+  border-radius: 34px;
   background:
-    radial-gradient(circle at 50% 46%, rgba(255, 145, 35, 0.28), transparent 66%),
-    linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015));
+    radial-gradient(circle at 50% 46%, rgba(255, 145, 35, 0.24), transparent 66%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.015));
   border: 1px solid rgba(255, 153, 54, 0.22);
-  box-shadow: 0 0 46px rgba(255, 130, 22, 0.14) inset;
+  box-shadow: 0 0 46px rgba(255, 130, 22, 0.12) inset;
+}
+.login-emblem-wrap-corner {
+  justify-self: end;
+  align-self: start;
 }
 .login-emblem-only {
   width: 132%;
@@ -3153,8 +3188,8 @@ button, input, textarea, select { font: inherit; }
   filter: drop-shadow(0 0 18px rgba(255, 133, 24, 0.42));
 }
 .login-header-copy h1 {
-  margin: 8px 0 0;
-  font-size: clamp(44px, 6vw, 86px);
+  margin: 0;
+  font-size: clamp(46px, 6vw, 86px);
   line-height: 0.9;
   letter-spacing: -0.055em;
   text-shadow: 0 0 24px rgba(255, 255, 255, 0.12);
@@ -3163,9 +3198,10 @@ button, input, textarea, select { font: inherit; }
   position: relative;
   z-index: 2;
   display: grid;
-  grid-template-columns: minmax(320px, 0.62fr) minmax(260px, 0.38fr);
-  gap: clamp(18px, 3vw, 34px);
+  grid-template-columns: minmax(320px, 1fr);
+  gap: 0;
   align-items: stretch;
+  max-width: 680px;
 }
 .login-form-zone {
   min-width: 0;
@@ -3189,26 +3225,6 @@ button, input, textarea, select { font: inherit; }
 .login-game-actions.single-action {
   grid-template-columns: 1fr;
 }
-.login-game-side {
-  display: grid;
-  gap: 12px;
-  align-content: center;
-}
-.login-side-pill {
-  display: flex;
-  align-items: center;
-  min-height: 58px;
-  border-radius: 20px;
-  padding: 14px 18px;
-  color: rgba(255, 239, 218, 0.92);
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  border: 1px solid rgba(255, 153, 54, 0.18);
-  background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
-    radial-gradient(circle at 10% 50%, rgba(255, 138, 24, 0.18), transparent 10rem);
-  box-shadow: 0 0 28px rgba(255, 123, 19, 0.07) inset;
-}
 .signup-game-shell {
   max-width: 760px;
 }
@@ -3230,10 +3246,7 @@ button, input, textarea, select { font: inherit; }
 
 @media (max-width: 900px) {
   .login-game-grid {
-    grid-template-columns: 1fr;
-  }
-  .login-game-side {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    max-width: none;
   }
 }
 @media (max-width: 640px) {
@@ -3244,13 +3257,21 @@ button, input, textarea, select { font: inherit; }
     border-radius: 28px;
     padding: 20px;
   }
-  .login-game-header,
+  .login-game-header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+  }
   .signup-header {
     grid-template-columns: 1fr;
     justify-items: start;
   }
-  .login-security-chip {
-    justify-self: start;
+  .login-emblem-wrap-corner {
+    justify-self: end;
+    align-self: start;
+  }
+  .login-chip-stack {
+    gap: 10px;
+    margin-bottom: 16px;
   }
   .login-emblem-wrap {
     width: 124px;
@@ -3259,10 +3280,5 @@ button, input, textarea, select { font: inherit; }
   .login-header-copy h1 {
     font-size: 48px;
   }
-  .login-game-side {
-    grid-template-columns: 1fr;
-  }
-  .login-side-pill {
-    min-height: 48px;
-  }
 }
+
