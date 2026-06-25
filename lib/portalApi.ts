@@ -123,6 +123,16 @@ export type PpdRoleOperationsPanel = {
   generated_at?: string;
 };
 
+export type PpdQuotePipelinePanel = {
+  ok?: boolean;
+  dashboard_key?: string;
+  viewer_mode?: "staff" | "customer" | string;
+  stats?: Record<string, any>;
+  quotes?: Array<Record<string, any>>;
+  intakes_without_quotes?: Array<Record<string, any>>;
+  generated_at?: string;
+};
+
 export async function rpc<T>(supabase: SupabaseClient, name: string, args?: Record<string, any>) {
   const { data, error } = await supabase.rpc(name, args || {});
   if (error) throw error;
@@ -171,6 +181,32 @@ export async function getPpdRoleOperationsPanel(
 ): Promise<PpdRoleOperationsPanel> {
   return rpc<PpdRoleOperationsPanel>(supabase, "ppd_get_role_operations_panel", {
     p_dashboard_key: dashboardKey,
+  });
+}
+
+export async function getPpdQuotePipelinePanel(
+  supabase: SupabaseClient,
+  dashboardKey: string
+): Promise<PpdQuotePipelinePanel> {
+  return rpc<PpdQuotePipelinePanel>(supabase, "ppd_get_sales_pipeline_panel", {
+    p_dashboard_key: dashboardKey,
+    p_limit: 20,
+  });
+}
+
+export async function acceptPpdQuote(
+  supabase: SupabaseClient,
+  quoteId: string,
+  viewerMode?: string,
+  jobAddress?: string | null
+) {
+  const fn = viewerMode === "staff" ? "ppd_accept_quote_and_create_job" : "ppd_customer_accept_quote";
+  return rpc<any>(supabase, fn, {
+    p_quote_id: quoteId,
+    p_acceptance_payload: {
+      source: viewerMode === "staff" ? "staff_quote_dashboard" : "customer_quote_dashboard",
+      job_address: jobAddress || null,
+    },
   });
 }
 
