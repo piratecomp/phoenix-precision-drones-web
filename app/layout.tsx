@@ -4,6 +4,7 @@ import "./home-v18-1.css";
 import "./portal-game-v19.css";
 import "./portal-game-v20.css";
 import "./launch-v21.css";
+import "./portal-map-v22.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
