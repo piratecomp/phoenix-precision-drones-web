@@ -149,3 +149,32 @@ export async function addTaskComment(supabase: SupabaseClient, taskId: string, c
     p_metadata: { source: "v17_1_portal_data_wiring" },
   });
 }
+
+export type PpdCommandCenter = {
+  ok?: boolean;
+  readiness?: any;
+  modules?: any[];
+  open_events?: any[];
+  pending_ai_approvals?: any[];
+  active_workflows?: any[];
+  portal_tasks?: any[];
+  notifications?: any[];
+  generated_at?: string;
+};
+
+export async function getPpdCommandCenter(supabase: SupabaseClient): Promise<PpdCommandCenter> {
+  return rpc<PpdCommandCenter>(supabase, "ppd_get_command_center");
+}
+
+export async function decidePpdAiApproval(
+  supabase: SupabaseClient,
+  approvalId: string,
+  decision: "approved" | "rejected" | "cancelled",
+  notes?: string
+) {
+  return rpc<any>(supabase, "ppd_decide_ai_approval", {
+    p_approval_id: approvalId,
+    p_decision: decision,
+    p_notes: notes || null,
+  });
+}
