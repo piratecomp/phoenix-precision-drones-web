@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import "./home-v18-1.css";
+import "./portal-game-v19.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
