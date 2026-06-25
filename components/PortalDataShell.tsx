@@ -41,6 +41,7 @@ import {
   type PpdCommandCenter,
   type PpdRoleOperationsPanel,
 } from "@/lib/portalApi";
+import QuotePipelinePanel from "@/components/QuotePipelinePanel";
 
 const iconMap: Record<string, LucideIcon> = {
   owner: Gauge,
@@ -354,7 +355,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
     if (!supabase) return;
     setActionMessage("Completing task...");
     try {
-      await completeTask(supabase, task.id, "Completed from V20 portal game dashboard.");
+      await completeTask(supabase, task.id, "Completed from V28 portal game dashboard.");
       await refresh();
       setActionMessage("Task completed.");
     } catch (err: any) {
@@ -380,7 +381,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
     if (!supabase) return;
     setActionMessage(`${decision === "approved" ? "Approving" : "Rejecting"} AI approval...`);
     try {
-      await decidePpdAiApproval(supabase, approvalId, decision, `Decision made from V20 portal game UI: ${decision}.`);
+      await decidePpdAiApproval(supabase, approvalId, decision, `Decision made from V28 portal game UI: ${decision}.`);
       await refresh();
       setActionMessage(`AI approval ${decision}.`);
     } catch (err: any) {
@@ -436,41 +437,20 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
   return (
     <section className="portal-app-shell portal-live-shell">
       <aside className="portal-sidebar">
-        <Link className="portal-sidebar-brand" href="/portal">
-          <LayoutDashboard size={22} />
-          <span>PPD Portal</span>
-        </Link>
+        <Link className="portal-sidebar-brand" href="/portal"><LayoutDashboard size={22} /><span>PPD Portal</span></Link>
         <nav className="portal-sidebar-nav">
           {navDashboards.map((item) => (
-            <Link className={item.path === dashboardPath ? "active" : ""} href={item.path} key={item.key}>
-              <DashboardIcon dashboardKey={item.key} size={18} />
-              <span>{item.role}</span>
-            </Link>
+            <Link className={item.path === dashboardPath ? "active" : ""} href={item.path} key={item.key}><DashboardIcon dashboardKey={item.key} size={18} /><span>{item.role}</span></Link>
           ))}
         </nav>
-        <div className="panel-card portal-session-card">
-          <span className="section-kicker">System Status</span>
-          <p><span className="green-dot" /> All systems operational</p>
-          <small>Supabase {configured ? "Live" : "Preview"}</small>
-        </div>
+        <div className="panel-card portal-session-card"><span className="section-kicker">System Status</span><p><span className="green-dot" /> All systems operational</p><small>Supabase {configured ? "Live" : "Preview"}</small></div>
         <button className="portal-signout" onClick={handleSignOut} type="button"><LogOut size={16} /> Sign out</button>
       </aside>
 
       <div className="portal-main-area">
         <div className="portal-topbar panel-card">
-          <div>
-            <span className="section-kicker">{departmentName}</span>
-            <h1>{["owner", "admin"].includes(liveDashboardKey) ? "Owner Command Center" : dashboardName}</h1>
-            <p className="portal-live-subtitle">{bootstrap?.current_user?.full_name ? `Signed in as ${bootstrap.current_user.full_name}` : "Connected to Supabase portal backend."}</p>
-          </div>
-          <div className="portal-live-status-stack">
-            <div className="portal-status-pill">Live RPC</div>
-            <div className="portal-small-counts">
-              <span>{bootstrap?.counts?.open_tasks || 0} tasks</span>
-              <span>{bootstrap?.counts?.unread_notifications || 0} alerts</span>
-              <span>{bootstrap?.counts?.entity_links || 0} links</span>
-            </div>
-          </div>
+          <div><span className="section-kicker">{departmentName}</span><h1>{["owner", "admin"].includes(liveDashboardKey) ? "Owner Command Center" : dashboardName}</h1><p className="portal-live-subtitle">{bootstrap?.current_user?.full_name ? `Signed in as ${bootstrap.current_user.full_name}` : "Connected to Supabase portal backend."}</p></div>
+          <div className="portal-live-status-stack"><div className="portal-status-pill">Live RPC</div><div className="portal-small-counts"><span>{bootstrap?.counts?.open_tasks || 0} tasks</span><span>{bootstrap?.counts?.unread_notifications || 0} alerts</span><span>{bootstrap?.counts?.entity_links || 0} links</span></div></div>
         </div>
 
         {actionMessage && <div className="panel-card portal-action-message">{actionMessage}</div>}
@@ -487,12 +467,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
             <div className="portal-game-map-and-queue">
               <article className="panel-card portal-game-map-card">
                 <div className="portal-game-panel-head"><div><span className="section-kicker">Live Operations Map</span><h3>Phoenix, AZ</h3></div><span className="portal-game-live-dot">Live</span></div>
-                <div className="portal-game-map-stage" aria-label="Stylized live operations map">
-                  <div className="map-route route-a" /><div className="map-route route-b" />
-                  <span className="map-pin pin-green">5</span><span className="map-pin pin-orange">442</span><span className="map-pin pin-blue">381</span>
-                  <span className="map-drone drone-a"><Satellite size={18} /></span><span className="map-drone drone-b"><Satellite size={18} /></span>
-                  <span className="map-zone zone-a" /><span className="map-zone zone-b" /><strong>Phoenix</strong>
-                </div>
+                <div className="portal-game-map-stage" aria-label="Stylized live operations map"><div className="map-route route-a" /><div className="map-route route-b" /><span className="map-pin pin-green">5</span><span className="map-pin pin-orange">442</span><span className="map-pin pin-blue">381</span><span className="map-drone drone-a"><Satellite size={18} /></span><span className="map-drone drone-b"><Satellite size={18} /></span><span className="map-zone zone-a" /><span className="map-zone zone-b" /><strong>Phoenix</strong></div>
                 <div className="portal-game-map-legend"><span><i className="green-dot" /> pilots</span><span><i className="orange-dot" /> jobs</span><span><i className="blue-dot" /> drones</span></div>
               </article>
               <article className="panel-card portal-game-queue-card">
@@ -500,10 +475,7 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
                 <div className="portal-game-approval-list">
                   {(commandCenter.pending_ai_approvals || []).length === 0 && <p>No pending AI approvals.</p>}
                   {(commandCenter.pending_ai_approvals || []).slice(0, 4).map((approval: any) => (
-                    <div className="portal-game-approval-row" key={approval.id}>
-                      <div><strong>{approval.action_title}</strong><span>{approval.action_summary || approval.action_type}</span><small>{approval.risk_level} · {approval.approval_status}</small></div>
-                      <div className="approval-buttons"><button type="button" onClick={() => handleApprovalDecision(approval.id, "approved")}>Approve</button><button type="button" onClick={() => handleApprovalDecision(approval.id, "rejected")}>Reject</button></div>
-                    </div>
+                    <div className="portal-game-approval-row" key={approval.id}><div><strong>{approval.action_title}</strong><span>{approval.action_summary || approval.action_type}</span><small>{approval.risk_level} · {approval.approval_status}</small></div><div className="approval-buttons"><button type="button" onClick={() => handleApprovalDecision(approval.id, "approved")}>Approve</button><button type="button" onClick={() => handleApprovalDecision(approval.id, "rejected")}>Reject</button></div></div>
                   ))}
                 </div>
               </article>
@@ -511,48 +483,21 @@ export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: strin
           </section>
         )}
 
+        <QuotePipelinePanel dashboardKey={liveDashboardKey} />
+
         {rolePanel && (
           <section className="portal-role-ops-board panel-card">
             <div className="portal-game-panel-head"><div><span className="section-kicker">Role Operations Board</span><h3>{rolePanel.dashboard_key || liveDashboardKey} command workflow</h3></div><span className="portal-game-live-dot">Synced</span></div>
-            <div className="portal-role-ops-card-grid">
-              {(rolePanel.cards || []).map((card, index) => (
-                <article className="portal-role-ops-stat" key={`${card.title || "card"}-${index}`}><span>{card.title}</span><strong>{card.value ?? 0}</strong><em>{card.label}</em></article>
-              ))}
-            </div>
-            <div className="portal-role-ops-list">
-              {(rolePanel.items || []).length === 0 && <p>No controlled workflow items are waiting for this dashboard.</p>}
-              {(rolePanel.items || []).slice(0, 8).map((item: any, index: number) => (
-                <div className="portal-role-ops-row" key={item.id || `${item.title}-${index}`}>
-                  <div><strong>{item.title || item.type || item.source || "Workflow item"}</strong><span>{item.summary || item.next_step || item.required_action || item.status || "Controlled workflow item"}</span><small>{item.status || item.risk_level || item.type || "tracked"} {item.readiness_score !== undefined ? `· ${item.readiness_score}/100` : ""}</small></div>
-                  <span className="service-button-status">{item.source || item.type || "Tracked"}</span>
-                </div>
-              ))}
-            </div>
+            <div className="portal-role-ops-card-grid">{(rolePanel.cards || []).map((card, index) => <article className="portal-role-ops-stat" key={`${card.title || "card"}-${index}`}><span>{card.title}</span><strong>{card.value ?? 0}</strong><em>{card.label}</em></article>)}</div>
+            <div className="portal-role-ops-list">{(rolePanel.items || []).length === 0 && <p>No controlled workflow items are waiting for this dashboard.</p>}{(rolePanel.items || []).slice(0, 8).map((item: any, index: number) => <div className="portal-role-ops-row" key={item.id || `${item.title}-${index}`}><div><strong>{item.title || item.type || item.source || "Workflow item"}</strong><span>{item.summary || item.next_step || item.required_action || item.status || "Controlled workflow item"}</span><small>{item.status || item.risk_level || item.type || "tracked"} {item.readiness_score !== undefined ? `· ${item.readiness_score}/100` : ""}</small></div><span className="service-button-status">{item.source || item.type || "Tracked"}</span></div>)}</div>
           </section>
         )}
 
-        <div className="portal-dashboard-grid live-module-grid">
-          {modules.map((module) => (
-            <article className="panel-card portal-live-module-card" key={module.module_key}>
-              <div className="portal-module-head"><div className="portal-role-icon"><ModuleIcon iconKey={module.icon_key} /></div><span className={statusClass(module.status_level)}>{module.status_label || module.module_type || "Module"}</span></div>
-              <h3>{module.title}</h3>
-              {module.subtitle && <small>{module.subtitle}</small>}
-              {module.body && <p>{module.body}</p>}
-              {(module.metric_value || module.metric_label) && <div className="portal-module-metric"><strong>{module.metric_value}</strong><span>{module.metric_label}</span></div>}
-              {module.action_label && module.action_path && <Link className="ghost-btn compact-portal-btn" href={module.action_path}>{module.action_label}</Link>}
-            </article>
-          ))}
-        </div>
+        <div className="portal-dashboard-grid live-module-grid">{modules.map((module) => <article className="panel-card portal-live-module-card" key={module.module_key}><div className="portal-module-head"><div className="portal-role-icon"><ModuleIcon iconKey={module.icon_key} /></div><span className={statusClass(module.status_level)}>{module.status_label || module.module_type || "Module"}</span></div><h3>{module.title}</h3>{module.subtitle && <small>{module.subtitle}</small>}{module.body && <p>{module.body}</p>}{(module.metric_value || module.metric_label) && <div className="portal-module-metric"><strong>{module.metric_value}</strong><span>{module.metric_label}</span></div>}{module.action_label && module.action_path && <Link className="ghost-btn compact-portal-btn" href={module.action_path}>{module.action_label}</Link>}</article>)}</div>
 
-        <div className="portal-dashboard-grid two-col portal-operating-grid">
-          <article className="panel-card portal-workflow-card"><span className="section-kicker">Quick actions</span><h3>Dashboard actions</h3><div className="portal-action-list">{actions.map((action) => <Link href={action.action_path || dashboardPath} className="portal-action-row" key={action.action_key}><ModuleIcon iconKey={action.icon_key} size={18} /><div><strong>{action.action_label}</strong>{action.description && <span>{action.description}</span>}</div></Link>)}</div></article>
-          <article className="panel-card portal-workflow-card"><span className="section-kicker">Permissions</span><h3>Current access scope</h3><p>Supabase returned {bootstrap?.permissions?.length || 0} permission records and {bootstrap?.dashboards?.length || 0} accessible dashboards for this session.</p><div className="portal-tag-row">{(bootstrap?.permissions || []).slice(0, 8).map((permission: any) => <span key={`${permission.permission_key}-${permission.role_key}`}>{permission.permission_key}</span>)}</div></article>
-        </div>
+        <div className="portal-dashboard-grid two-col portal-operating-grid"><article className="panel-card portal-workflow-card"><span className="section-kicker">Quick actions</span><h3>Dashboard actions</h3><div className="portal-action-list">{actions.map((action) => <Link href={action.action_path || dashboardPath} className="portal-action-row" key={action.action_key}><ModuleIcon iconKey={action.icon_key} size={18} /><div><strong>{action.action_label}</strong>{action.description && <span>{action.description}</span>}</div></Link>)}</div></article><article className="panel-card portal-workflow-card"><span className="section-kicker">Permissions</span><h3>Current access scope</h3><p>Supabase returned {bootstrap?.permissions?.length || 0} permission records and {bootstrap?.dashboards?.length || 0} accessible dashboards for this session.</p><div className="portal-tag-row">{(bootstrap?.permissions || []).slice(0, 8).map((permission: any) => <span key={`${permission.permission_key}-${permission.role_key}`}>{permission.permission_key}</span>)}</div></article></div>
 
-        <div className="portal-dashboard-grid two-col portal-operating-grid">
-          <article className="panel-card portal-workflow-card"><span className="section-kicker">Task queue</span><h3>Visible tasks</h3><div className="portal-task-list">{(bootstrap?.tasks || []).length === 0 && <p>No open tasks for this dashboard right now.</p>}{(bootstrap?.tasks || []).slice(0, 5).map((task) => <div className="portal-task-row" key={task.id}><div><strong>{task.task_title}</strong><span>{task.task_summary || task.department_name || task.task_type}</span><small>{task.priority} · {task.task_status}</small></div><button type="button" onClick={() => handleCompleteTask(task)}><CheckCircle2 size={16} /> Complete</button></div>)}</div></article>
-          <article className="panel-card portal-workflow-card"><span className="section-kicker">Notifications</span><h3>Unread notifications</h3><div className="portal-task-list">{(bootstrap?.notifications || []).length === 0 && <p>No unread notifications.</p>}{(bootstrap?.notifications || []).slice(0, 5).map((notification) => <div className="portal-task-row" key={notification.id}><div><strong>{notification.notification_title}</strong><span>{notification.notification_body || notification.notification_type}</span><small>{notification.priority} · {notification.notification_status}</small></div><button type="button" onClick={() => handleMarkRead(notification)}><Bell size={16} /> Read</button></div>)}</div></article>
-        </div>
+        <div className="portal-dashboard-grid two-col portal-operating-grid"><article className="panel-card portal-workflow-card"><span className="section-kicker">Task queue</span><h3>Visible tasks</h3><div className="portal-task-list">{(bootstrap?.tasks || []).length === 0 && <p>No open tasks for this dashboard right now.</p>}{(bootstrap?.tasks || []).slice(0, 5).map((task) => <div className="portal-task-row" key={task.id}><div><strong>{task.task_title}</strong><span>{task.task_summary || task.department_name || task.task_type}</span><small>{task.priority} · {task.task_status}</small></div><button type="button" onClick={() => handleCompleteTask(task)}><CheckCircle2 size={16} /> Complete</button></div>)}</div></article><article className="panel-card portal-workflow-card"><span className="section-kicker">Notifications</span><h3>Unread notifications</h3><div className="portal-task-list">{(bootstrap?.notifications || []).length === 0 && <p>No unread notifications.</p>}{(bootstrap?.notifications || []).slice(0, 5).map((notification) => <div className="portal-task-row" key={notification.id}><div><strong>{notification.notification_title}</strong><span>{notification.notification_body || notification.notification_type}</span><small>{notification.priority} · {notification.notification_status}</small></div><button type="button" onClick={() => handleMarkRead(notification)}><Bell size={16} /> Read</button></div>)}</div></article></div>
 
         <div className="panel-card portal-next-card"><span className="section-kicker">Entity bridge</span><h3>Profile links</h3><p>Supabase returned {bootstrap?.entity_links?.length || 0} verified bridge links for this user. These connect portal users to customers, pilots, employees, and internal staff records.</p><div className="portal-tag-row">{(bootstrap?.entity_links || []).map((link: any) => <span key={link.id || `${link.link_type}-${link.entity_id}`}>{link.link_type}: {link.entity_table}</span>)}</div></div>
       </div>
