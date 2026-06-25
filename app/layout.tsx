@@ -5,14 +5,15 @@ import "./portal-game-v19.css";
 import "./portal-game-v20.css";
 import "./launch-v21.css";
 import "./portal-map-v22.css";
+import "./google-map-v23.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
+import GoogleOperationsMapBoot from "@/components/GoogleOperationsMapBoot";
 
 export const metadata: Metadata = {
   title: "Phoenix Precision Drones | Commercial Drone Services & Portal Experience",
-  description:
-    "Phoenix Precision Drones presents commercial drone services for construction, telecom, mapping, thermal inspections, customer deliverables, and pilot mission workflows.",
+  description: "Phoenix Precision Drones commercial drone services and portal experience.",
 };
 
 export const viewport: Viewport = {
@@ -30,6 +31,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <main className="main">{children}</main>
           <Footer />
           <ChatWidget />
+          <GoogleOperationsMapBoot />
         </div>
       </body>
     </html>
