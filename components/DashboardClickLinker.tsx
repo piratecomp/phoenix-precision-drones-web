@@ -6,8 +6,8 @@ const statRoutes: Array<{ label: string; route: string }> = [
   { label: "Production Readiness", route: "/portal/owner#production-readiness" },
   { label: "Active Jobs", route: "/portal/jobs" },
   { label: "Verified Pilots", route: "/portal/pilot-network" },
-  { label: "AI Approvals", route: "/portal/approvals" },
-  { label: "Critical Events", route: "/portal/events?severity=critical" },
+  { label: "AI Approvals", route: "/portal/owner#ai-approvals" },
+  { label: "Critical Events", route: "/portal/event-log" },
 ];
 
 export default function DashboardClickLinker() {
