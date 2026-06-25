@@ -69,7 +69,7 @@ export default function PortalLinkedItemsPage({ itemType }: { itemType: string }
                 <span className="section-kicker">{item.status || item.source || itemType}</span>
                 <h3>{item.title || item.subtitle || "PPD record"}</h3>
                 {item.subtitle && <strong>{item.subtitle}</strong>}
-                <p>{item.body || item.summary || item.message || "No summary available."}</p>
+                <p>{item.detail_text || item.body || item.summary || item.message || "No summary available."}</p>
                 <small>{item.created_at ? new Date(item.created_at).toLocaleString() : "Current snapshot"}</small>
               </div>
             </article>
