@@ -3062,7 +3062,7 @@ button, input, textarea, select { font: inherit; }
   }
 }
 
-/* V17.4 login topo polish: top-right emblem, stacked chips, no dashboard pills, stronger contour terrain background */
+/* V17.5 login layout refine: bottom-only terrain contours, side-by-side chips under logo, narrower desktop window */
 .login-game-page {
   min-height: calc(100vh - 86px);
   background:
@@ -3071,18 +3071,20 @@ button, input, textarea, select { font: inherit; }
     linear-gradient(180deg, rgba(4, 5, 9, 0.99), rgba(11, 7, 4, 0.98));
 }
 .login-game-shell {
-  max-width: 1180px;
+  max-width: 960px;
 }
 .login-game-card {
   position: relative;
   overflow: hidden;
-  padding: clamp(24px, 3vw, 42px);
+  width: min(100%, 900px);
+  margin: 0 auto;
+  padding: clamp(22px, 3vw, 38px);
   border-radius: 34px;
   border: 1px solid rgba(255, 142, 37, 0.36);
   background:
-    radial-gradient(circle at 18% 20%, rgba(255, 145, 32, 0.16), transparent 22rem),
-    radial-gradient(circle at 80% 16%, rgba(255, 190, 72, 0.10), transparent 22rem),
-    linear-gradient(90deg, rgba(58, 30, 10, 0.46), rgba(9, 13, 22, 0.56) 32%, rgba(7, 10, 16, 0.95) 62%, rgba(4, 6, 10, 0.98) 100%),
+    radial-gradient(circle at 14% 16%, rgba(255, 145, 32, 0.14), transparent 20rem),
+    radial-gradient(circle at 88% 16%, rgba(255, 190, 72, 0.10), transparent 18rem),
+    linear-gradient(90deg, rgba(64, 32, 11, 0.44), rgba(12, 15, 24, 0.55) 34%, rgba(6, 10, 18, 0.94) 64%, rgba(4, 6, 10, 0.98) 100%),
     linear-gradient(180deg, rgba(10, 14, 23, 0.95), rgba(6, 8, 13, 0.97));
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.04) inset,
@@ -3094,12 +3096,12 @@ button, input, textarea, select { font: inherit; }
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.24;
+  opacity: 0.18;
   background-image:
-    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
-  background-size: 58px 58px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.84), transparent 88%);
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 62px 62px;
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.72), transparent 86%);
 }
 .login-game-card::after {
   content: "";
@@ -3107,49 +3109,64 @@ button, input, textarea, select { font: inherit; }
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(90deg, transparent 0%, rgba(255, 151, 39, 0.16) 36%, transparent 72%),
-    linear-gradient(180deg, rgba(255, 173, 83, 0.05) 0%, transparent 36%, rgba(255, 132, 24, 0.08) 100%);
-  opacity: 0.32;
+    radial-gradient(circle at 14% 12%, rgba(255, 178, 82, 0.10), transparent 20rem),
+    linear-gradient(180deg, transparent 48%, rgba(255, 120, 20, 0.05) 72%, rgba(255, 120, 20, 0.12) 100%);
+  opacity: 0.42;
   mix-blend-mode: screen;
 }
 .login-topo-ridge {
   position: absolute;
-  inset: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56%;
   pointer-events: none;
-  opacity: 0.72;
+  opacity: 0.95;
   background-image:
-    url("data:image/svg+xml,%3Csvg width='1600' height='1000' viewBox='0 0 1600 1000' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ff962e' stroke-width='1.8' stroke-opacity='.42'%3E%3Cpath d='M-20 770 C110 710 210 680 330 700 C460 722 580 782 710 768 C840 754 920 696 1050 676 C1188 654 1306 674 1460 716 C1530 736 1580 752 1620 760'/%3E%3Cpath d='M-20 796 C112 736 214 706 336 726 C468 748 588 808 716 795 C846 781 928 722 1056 702 C1192 680 1312 700 1462 742 C1530 761 1582 779 1620 786'/%3E%3Cpath d='M-20 822 C116 761 220 730 340 751 C472 773 594 834 722 820 C850 806 934 748 1060 728 C1194 706 1316 726 1466 768 C1532 787 1584 805 1620 812'/%3E%3Cpath d='M-20 848 C120 786 226 754 346 776 C478 798 600 860 728 845 C856 830 940 774 1066 754 C1198 732 1322 752 1470 794 C1536 813 1586 831 1620 838'/%3E%3Cpath d='M-20 874 C126 810 232 779 352 801 C484 823 608 885 734 871 C862 857 948 800 1072 780 C1204 758 1328 778 1476 820 C1542 839 1590 857 1620 864'/%3E%3Cpath d='M-20 900 C132 835 240 804 358 826 C492 848 614 910 740 897 C868 884 954 826 1080 806 C1210 784 1334 804 1482 846 C1548 865 1594 882 1620 890'/%3E%3Cpath d='M-20 926 C138 860 246 829 366 852 C498 874 620 936 748 923 C876 910 962 852 1088 832 C1218 810 1340 830 1488 872 C1552 890 1598 907 1620 914'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff962e' stroke-width='1.2' stroke-opacity='.22'%3E%3Cpath d='M0 164 C140 136 266 134 390 154 C510 173 632 212 760 206 C880 200 976 164 1092 150 C1214 135 1340 148 1600 214'/%3E%3Cpath d='M0 198 C136 172 262 170 384 189 C506 208 626 246 752 240 C874 234 970 198 1088 184 C1210 170 1338 182 1600 248'/%3E%3Cpath d='M0 232 C136 208 262 205 384 224 C504 243 624 280 750 274 C872 268 968 232 1086 218 C1206 204 1336 216 1600 282'/%3E%3C/g%3E%3C/svg%3E"),
-    radial-gradient(circle at 14% 12%, rgba(255, 143, 38, 0.13), transparent 18rem),
-    radial-gradient(circle at 74% 58%, rgba(255, 133, 26, 0.11), transparent 22rem);
+    url("data:image/svg+xml,%3Csvg width='1600' height='700' viewBox='0 0 1600 700' xmlns='http://www.w3.org/2000/svg'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='1' x2='0' y2='0'%3E%3Cstop offset='0%25' stop-color='%23ff8c26' stop-opacity='.50'/%3E%3Cstop offset='100%25' stop-color='%23ff8c26' stop-opacity='.12'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg fill='none' stroke='url(%23g)' stroke-width='1.55' stroke-linecap='round'%3E%3Cpath d='M-20 655 C110 610 238 598 356 620 C466 640 582 678 696 672 C812 666 924 628 1038 612 C1160 594 1278 608 1408 642 C1486 662 1548 672 1620 680'/%3E%3Cpath d='M-20 636 C112 592 240 580 358 602 C470 622 586 658 700 652 C816 646 926 610 1040 594 C1160 576 1280 588 1410 622 C1486 641 1548 652 1620 660'/%3E%3Cpath d='M-20 617 C114 573 242 562 360 584 C472 603 590 640 704 634 C818 628 930 591 1044 576 C1164 559 1282 570 1414 604 C1490 623 1550 633 1620 641'/%3E%3Cpath d='M-20 598 C116 555 244 544 364 565 C476 585 594 622 708 616 C822 610 934 574 1048 559 C1168 542 1288 552 1418 586 C1494 604 1554 614 1620 622'/%3E%3Cpath d='M-20 579 C118 536 248 526 368 547 C482 566 600 604 714 598 C828 592 940 556 1054 541 C1174 525 1292 536 1424 568 C1498 586 1558 596 1620 603'/%3E%3Cpath d='M-20 560 C122 518 252 508 374 528 C488 547 606 585 720 580 C834 574 946 538 1060 523 C1180 508 1298 518 1430 550 C1504 567 1560 577 1620 584'/%3E%3Cpath d='M-20 541 C126 500 258 490 380 510 C494 529 612 567 726 562 C840 556 952 521 1066 505 C1186 490 1304 500 1436 531 C1508 548 1564 557 1620 565'/%3E%3Cpath d='M-20 522 C132 482 264 472 388 492 C502 510 620 548 734 543 C848 538 960 503 1074 487 C1194 473 1312 482 1444 512 C1516 528 1570 538 1620 546'/%3E%3Cpath d='M-20 503 C138 464 272 454 396 473 C512 491 630 529 744 524 C860 519 972 485 1086 469 C1206 454 1324 463 1456 493 C1528 509 1578 518 1620 526'/%3E%3Cpath d='M-20 484 C148 446 282 437 408 454 C524 471 642 509 756 505 C872 500 986 466 1098 452 C1218 437 1338 445 1470 474 C1540 489 1588 499 1620 507'/%3E%3Cpath d='M-20 465 C160 428 296 420 422 436 C540 453 658 490 774 486 C890 481 1002 448 1114 433 C1234 417 1352 425 1484 454 C1552 468 1596 478 1620 485'/%3E%3Cpath d='M-20 446 C174 410 308 403 436 418 C554 434 674 471 790 468 C906 464 1018 430 1130 416 C1250 401 1370 407 1502 435 C1566 449 1604 458 1620 463'/%3E%3C/g%3E%3Cg fill='none' stroke='%23ff9b38' stroke-width='1.1' stroke-opacity='.18'%3E%3Cpath d='M0 350 C84 326 170 318 258 326 C360 336 458 362 552 360 C648 358 736 334 828 324 C928 314 1020 322 1118 346 C1218 370 1310 378 1600 360'/%3E%3Cpath d='M0 376 C92 352 180 344 268 352 C370 362 468 389 562 386 C658 383 744 360 838 350 C938 340 1030 348 1128 372 C1228 396 1318 403 1600 386'/%3E%3C/g%3E%3C/svg%3E"),
+    radial-gradient(circle at 0% 100%, rgba(255, 142, 36, 0.24), transparent 26rem),
+    radial-gradient(circle at 88% 100%, rgba(255, 125, 22, 0.16), transparent 22rem);
   background-repeat: no-repeat, no-repeat, no-repeat;
-  background-position: center center, left top, right bottom;
+  background-position: center bottom, left bottom, right bottom;
   background-size: cover, auto, auto;
-  filter: drop-shadow(0 0 18px rgba(255, 127, 22, 0.20));
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.10) 18%, rgba(0,0,0,0.78) 38%, rgba(0,0,0,1) 100%);
+  filter: drop-shadow(0 0 16px rgba(255, 127, 22, 0.18));
 }
 .login-game-header {
   position: relative;
   z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: clamp(16px, 2vw, 28px);
-  margin-bottom: clamp(22px, 3vw, 36px);
+  align-items: end;
+  gap: clamp(18px, 2.2vw, 28px);
+  margin-bottom: clamp(18px, 3vw, 28px);
 }
-.login-game-header-v17_4 {
-  min-height: clamp(130px, 15vw, 184px);
+.login-game-header-v17_5 {
+  min-height: clamp(128px, 15vw, 178px);
 }
-.login-header-copy-v17_4 {
+.login-header-copy-v17_5 {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   min-width: 0;
+  padding-bottom: 8px;
 }
-.login-chip-stack {
+.login-header-hero {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: 12px;
-  margin-bottom: 18px;
+  width: clamp(236px, 24vw, 280px);
+}
+.login-header-hero-v17_5 {
+  justify-self: end;
+}
+.login-chip-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 .login-security-chip {
   display: inline-flex;
@@ -3166,8 +3183,8 @@ button, input, textarea, select { font: inherit; }
   letter-spacing: 0.02em;
 }
 .login-emblem-wrap {
-  width: clamp(124px, 15vw, 190px);
-  height: clamp(124px, 15vw, 190px);
+  width: clamp(122px, 14vw, 176px);
+  height: clamp(122px, 14vw, 176px);
   display: grid;
   place-items: center;
   border-radius: 34px;
@@ -3189,7 +3206,7 @@ button, input, textarea, select { font: inherit; }
 }
 .login-header-copy h1 {
   margin: 0;
-  font-size: clamp(46px, 6vw, 86px);
+  font-size: clamp(46px, 6vw, 78px);
   line-height: 0.9;
   letter-spacing: -0.055em;
   text-shadow: 0 0 24px rgba(255, 255, 255, 0.12);
@@ -3201,7 +3218,7 @@ button, input, textarea, select { font: inherit; }
   grid-template-columns: minmax(320px, 1fr);
   gap: 0;
   align-items: stretch;
-  max-width: 680px;
+  max-width: 600px;
 }
 .login-form-zone {
   min-width: 0;
@@ -3245,6 +3262,12 @@ button, input, textarea, select { font: inherit; }
 }
 
 @media (max-width: 900px) {
+  .login-game-shell {
+    max-width: 100%;
+  }
+  .login-game-card {
+    width: 100%;
+  }
   .login-game-grid {
     max-width: none;
   }
@@ -3260,25 +3283,32 @@ button, input, textarea, select { font: inherit; }
   .login-game-header {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: start;
+    gap: 14px;
   }
   .signup-header {
     grid-template-columns: 1fr;
     justify-items: start;
   }
+  .login-header-hero {
+    gap: 10px;
+    width: min(100%, 220px);
+  }
+  .login-chip-row {
+    width: 100%;
+    justify-content: center;
+  }
   .login-emblem-wrap-corner {
     justify-self: end;
     align-self: start;
   }
-  .login-chip-stack {
-    gap: 10px;
-    margin-bottom: 16px;
-  }
   .login-emblem-wrap {
-    width: 124px;
-    height: 124px;
+    width: 118px;
+    height: 118px;
   }
   .login-header-copy h1 {
     font-size: 48px;
   }
+  .login-topo-ridge {
+    height: 44%;
+  }
 }
-

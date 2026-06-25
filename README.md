@@ -1,16 +1,15 @@
-# Phoenix Precision Drones Web V17.4 — Login Topo Layout Polish
+# Phoenix Precision Drones Web V17.5 — Login Layout Refine
 
-This package keeps the V17.1 Supabase portal data wiring and the later login/auth updates, then applies one more pass to the login panel layout and styling.
+This package continues from V17.4 and tightens the portal login layout based on live desktop and iPhone review screenshots.
 
-## Changes in V17.4
+## Changes in V17.5
 
-- Removed the dashboard access button stack below the login/create-account area.
-- Kept only the core login/session actions plus `Create Customer Account`.
-- Moved the emblem logo to the top-right area of the login panel.
-- Stacked `Team Access` and `Live RPC` on the left above the `Portal Login` title.
-- Strengthened the orange topographic / desert ridge background styling inside the login window.
-- Kept the emblem-only treatment inside the login panel.
-- Kept live Supabase Auth login, active-session detection, and role-based portal redirect behavior intact.
+- Narrowed the desktop login window so it no longer feels too wide on laptop screens.
+- Reworked the login header layout so the emblem remains in the upper-right area.
+- Moved the `Team Access` and `Live RPC` pills to sit under the logo as a grouped header element.
+- Rebuilt the contour styling so the topo/desert ridge lines render primarily along the bottom of the login window instead of drifting across the top.
+- Kept the cleaned-up action area: login plus `Create Customer Account`, with the extra dashboard button stack removed.
+- Kept live Supabase Auth login, active-session detection, and role-based redirect behavior intact.
 
 ## Required Vercel environment variables
 
