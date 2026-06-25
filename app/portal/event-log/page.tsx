@@ -1,3 +1,5 @@
+import PortalLinkedItemsPage from "@/components/PortalLinkedItemsPage";
+
 export default function EventLogPage() {
-  return <div>Event Log</div>;
+  return <PortalLinkedItemsPage itemType="critical_events" />;
 }
