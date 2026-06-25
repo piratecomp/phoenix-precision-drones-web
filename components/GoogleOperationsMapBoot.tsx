@@ -22,10 +22,9 @@ function loadGoogleMaps(apiKey: string): Promise<void> {
       existing.addEventListener("error", reject);
       return;
     }
-
     const script = document.createElement("script");
     script.id = "ppd-google-maps-script";
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}&libraries=marker`;
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${encodeURIComponent(apiKey)}`;
     script.async = true;
     script.defer = true;
     script.onload = () => resolve();
@@ -57,14 +56,63 @@ async function getMapPayload() {
   return data;
 }
 
+async function getMapConfig() {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return { allowed: false, auto_load: false, message: "Supabase client unavailable." };
+  const { data, error } = await supabase.rpc("ppd_get_google_maps_runtime_config");
+  if (error) throw error;
+  return data;
+}
+
+async function recordMapLoad() {
+  const supabase = getSupabaseBrowserClient();
+  if (!supabase) return { ok: false, allowed: false };
+  const { data, error } = await supabase.rpc("ppd_record_google_maps_load", {
+    p_context: { source: "portal_owner_map", version: "v24_cost_control" },
+  });
+  if (error) throw error;
+  return data;
+}
+
+function addControlButton(container: HTMLElement, label: string, onClick: () => void, message?: string) {
+  if (container.querySelector(".ppd-load-google-map-btn")) return;
+  const wrap = document.createElement("div");
+  wrap.className = "ppd-google-map-gate";
+  const button = document.createElement("button");
+  button.className = "ppd-load-google-map-btn";
+  button.type = "button";
+  button.textContent = label;
+  button.onclick = onClick;
+  const note = document.createElement("small");
+  note.textContent = message || "Custom HUD map stays active until Google Maps is requested.";
+  wrap.appendChild(button);
+  wrap.appendChild(note);
+  container.appendChild(wrap);
+}
+
+function addNote(container: HTMLElement, text: string) {
+  if (container.querySelector(".ppd-google-map-missing-key")) return;
+  const note = document.createElement("div");
+  note.className = "ppd-google-map-missing-key";
+  note.textContent = text;
+  container.appendChild(note);
+}
+
 export default function GoogleOperationsMapBoot() {
   useEffect(() => {
     let cancelled = false;
     let observer: MutationObserver | null = null;
 
-    async function mountMap() {
-      const container = document.querySelector<HTMLElement>(".portal-game-map-stage");
-      if (!container || container.dataset.googleMapReady === "true") return;
+    async function renderGoogleMap(container: HTMLElement) {
+      if (container.dataset.googleMapReady === "true" || container.dataset.googleMapLoading === "true") return;
+      container.dataset.googleMapLoading = "true";
+
+      const record = await recordMapLoad();
+      if (!record?.allowed) {
+        container.dataset.googleMapLoading = "false";
+        addNote(container, record?.config?.message || "Google Maps usage is not allowed by current PPD settings.");
+        return;
+      }
 
       const apiKey =
         process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ||
@@ -72,11 +120,8 @@ export default function GoogleOperationsMapBoot() {
         process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
 
       if (!apiKey) {
-        container.dataset.googleMapReady = "missing-key";
-        const note = document.createElement("div");
-        note.className = "ppd-google-map-missing-key";
-        note.textContent = "Add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in Vercel to activate Google Maps.";
-        container.appendChild(note);
+        container.dataset.googleMapLoading = "false";
+        addNote(container, "Add NEXT_PUBLIC_GOOGLE_MAPS_API_KEY in Vercel to activate Google Maps.");
         return;
       }
 
@@ -90,6 +135,7 @@ export default function GoogleOperationsMapBoot() {
         mapCanvas.className = "ppd-google-map-canvas";
         container.appendChild(mapCanvas);
         container.dataset.googleMapReady = "true";
+        container.dataset.googleMapLoading = "false";
 
         const map = new window.google.maps.Map(mapCanvas, {
           center,
@@ -138,16 +184,37 @@ export default function GoogleOperationsMapBoot() {
 
         if (markers.length > 1) map.fitBounds(bounds, 58);
       } catch (error) {
+        container.dataset.googleMapLoading = "false";
         container.dataset.googleMapReady = "error";
-        const note = document.createElement("div");
-        note.className = "ppd-google-map-missing-key";
-        note.textContent = "Google Maps could not load. Check API key, Maps JavaScript API, domain restrictions, and billing.";
-        container.appendChild(note);
+        addNote(container, "Google Maps could not load. Check API key, Maps JavaScript API, domain restrictions, billing, and monthly PPD usage settings.");
       }
     }
 
-    mountMap();
-    observer = new MutationObserver(() => mountMap());
+    async function mountGate() {
+      const container = document.querySelector<HTMLElement>(".portal-game-map-stage");
+      if (!container || container.dataset.googleGateReady === "true") return;
+      container.dataset.googleGateReady = "true";
+
+      let config: any = null;
+      try {
+        config = await getMapConfig();
+      } catch (err: any) {
+        config = { allowed: false, auto_load: false, message: err?.message || "Map configuration unavailable." };
+      }
+
+      if (!config?.allowed) {
+        addControlButton(container, "Google Map Disabled", () => {}, config?.message || "Google Maps is currently blocked by PPD cost-control settings.");
+        return;
+      }
+
+      const remaining = config.monthly_remaining === null ? "unlimited" : `${config.monthly_remaining} loads left this month`;
+      addControlButton(container, "Load Google Live Map", () => renderGoogleMap(container), remaining);
+
+      if (config.auto_load) renderGoogleMap(container);
+    }
+
+    mountGate();
+    observer = new MutationObserver(() => mountGate());
     observer.observe(document.body, { childList: true, subtree: true });
 
     return () => {
