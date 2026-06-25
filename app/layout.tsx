@@ -7,6 +7,7 @@ import "./launch-v21.css";
 import "./portal-map-v22.css";
 import "./google-map-v23.css";
 import "./internal-messages-v26.css";
+import "./quote-pipeline-v28.css";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
