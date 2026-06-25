@@ -102,35 +102,46 @@ export type PortalBootstrap = {
   };
 };
 
+export type PpdCommandCenter = {
+  ok?: boolean;
+  readiness?: any;
+  modules?: any[];
+  open_events?: any[];
+  pending_ai_approvals?: any[];
+  active_workflows?: any[];
+  portal_tasks?: any[];
+  notifications?: any[];
+  generated_at?: string;
+};
+
+export type PpdRoleOperationsPanel = {
+  ok?: boolean;
+  dashboard_key?: string;
+  stats?: Record<string, any>;
+  cards?: Array<{ title?: string; value?: any; label?: string }>;
+  items?: Array<Record<string, any>>;
+  generated_at?: string;
+};
+
 export async function rpc<T>(supabase: SupabaseClient, name: string, args?: Record<string, any>) {
   const { data, error } = await supabase.rpc(name, args || {});
   if (error) throw error;
   return data as T;
 }
 
-export async function checkDashboardAccess(
-  supabase: SupabaseClient,
-  dashboardPath: string
-): Promise<PortalDashboardAccess> {
+export async function checkDashboardAccess(supabase: SupabaseClient, dashboardPath: string): Promise<PortalDashboardAccess> {
   return rpc<PortalDashboardAccess>(supabase, "portal_check_dashboard_access", {
     p_dashboard_path: dashboardPath,
-    p_metadata: { source: "v17_1_portal_data_wiring" },
+    p_metadata: { source: "v20_portal_game_ui" },
   });
 }
 
-export async function getPortalBootstrap(
-  supabase: SupabaseClient,
-  dashboardPath: string
-): Promise<PortalBootstrap> {
-  return rpc<PortalBootstrap>(supabase, "portal_get_bootstrap", {
-    p_dashboard_path: dashboardPath,
-  });
+export async function getPortalBootstrap(supabase: SupabaseClient, dashboardPath: string): Promise<PortalBootstrap> {
+  return rpc<PortalBootstrap>(supabase, "portal_get_bootstrap", { p_dashboard_path: dashboardPath });
 }
 
 export async function markNotificationRead(supabase: SupabaseClient, notificationId: string) {
-  return rpc<boolean>(supabase, "portal_mark_notification_read", {
-    p_notification_id: notificationId,
-  });
+  return rpc<boolean>(supabase, "portal_mark_notification_read", { p_notification_id: notificationId });
 }
 
 export async function completeTask(supabase: SupabaseClient, taskId: string, resolution?: string) {
@@ -146,24 +157,21 @@ export async function addTaskComment(supabase: SupabaseClient, taskId: string, c
     p_comment_body: comment,
     p_comment_type: "note",
     p_internal_only: true,
-    p_metadata: { source: "v17_1_portal_data_wiring" },
+    p_metadata: { source: "v20_portal_game_ui" },
   });
 }
 
-export type PpdCommandCenter = {
-  ok?: boolean;
-  readiness?: any;
-  modules?: any[];
-  open_events?: any[];
-  pending_ai_approvals?: any[];
-  active_workflows?: any[];
-  portal_tasks?: any[];
-  notifications?: any[];
-  generated_at?: string;
-};
-
 export async function getPpdCommandCenter(supabase: SupabaseClient): Promise<PpdCommandCenter> {
   return rpc<PpdCommandCenter>(supabase, "ppd_get_command_center");
+}
+
+export async function getPpdRoleOperationsPanel(
+  supabase: SupabaseClient,
+  dashboardKey: string
+): Promise<PpdRoleOperationsPanel> {
+  return rpc<PpdRoleOperationsPanel>(supabase, "ppd_get_role_operations_panel", {
+    p_dashboard_key: dashboardKey,
+  });
 }
 
 export async function decidePpdAiApproval(
