@@ -1,15 +1,14 @@
-# Phoenix Precision Drones Web V17.7 — Login Topo Image Refine
+# Phoenix Precision Drones Web V17.8 — Login Topo Desktop Align
 
-This build continues from V17.6 and uses the uploaded desert/topo reference image directly as the bottom background treatment inside the login card.
+This build continues from V17.7 and addresses the latest login-page feedback.
 
-## Changes in V17.7
+## Changes in V17.8
 
-- Added the uploaded reference image as `public/images/login-topo-background-v17-7.png`.
-- Reworked the login card background to show the desert ridge / topo image on the lower portion of the login window.
-- Moved `Team Access` and `Live RPC` under the `Portal Login` title.
-- Tightened the login card width again for desktop/laptop screens.
-- Kept the logo on the upper-right side of the login card.
-- Kept Supabase Auth login, customer account creation, active-session detection, and role-based redirects intact.
+- Moves the logo left so it sits immediately beside the `Portal Login` title on desktop, matching the tighter mobile feel.
+- Keeps `Team Access` and `Live RPC` under the title.
+- Uses the uploaded topo/desert reference image directly again as the bottom login-card background (`public/images/login-topo-background-v17-8.png`).
+- Increases topo image visibility and scales it so the ridge/background art reads more clearly.
+- Keeps Supabase Auth login, customer account creation, and portal redirects intact.
 
 ## Required Vercel environment variables
 

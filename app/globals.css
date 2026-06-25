@@ -3062,28 +3062,28 @@ button, input, textarea, select { font: inherit; }
   }
 }
 
-/* V17.7 login topo image refine: use real topo desert background image, chips under title, tighter card */
+/* V17.8 login topo desktop align: move logo beside title and use stronger topo reference image */
 .login-game-page {
   min-height: calc(100vh - 86px);
   background:
-    radial-gradient(circle at 18% 14%, rgba(255, 142, 36, 0.18), transparent 27rem),
-    radial-gradient(circle at 82% 10%, rgba(255, 201, 88, 0.08), transparent 24rem),
+    radial-gradient(circle at 18% 14%, rgba(255, 142, 36, 0.16), transparent 27rem),
+    radial-gradient(circle at 82% 10%, rgba(255, 201, 88, 0.06), transparent 24rem),
     linear-gradient(180deg, rgba(4, 5, 9, 0.99), rgba(11, 7, 4, 0.98));
 }
 .login-game-shell {
-  max-width: 830px;
+  max-width: 920px;
 }
 .login-game-card {
   position: relative;
   overflow: hidden;
-  width: min(100%, 790px);
+  width: min(100%, 860px);
   margin: 0 auto;
-  padding: clamp(20px, 2.55vw, 32px);
+  padding: clamp(22px, 2.5vw, 34px);
   border-radius: 34px;
   border: 1px solid rgba(255, 142, 37, 0.40);
   background:
-    radial-gradient(circle at 16% 16%, rgba(255, 145, 32, 0.10), transparent 18rem),
-    linear-gradient(90deg, rgba(62, 32, 13, 0.38), rgba(10, 13, 21, 0.70) 42%, rgba(4, 6, 10, 0.98) 100%),
+    radial-gradient(circle at 18% 16%, rgba(255, 145, 32, 0.10), transparent 18rem),
+    linear-gradient(90deg, rgba(64, 33, 14, 0.42), rgba(10, 13, 21, 0.66) 40%, rgba(4, 6, 10, 0.98) 100%),
     linear-gradient(180deg, rgba(10, 14, 23, 0.94), rgba(6, 8, 13, 0.97));
   box-shadow:
     0 0 0 1px rgba(255, 255, 255, 0.04) inset,
@@ -3096,12 +3096,12 @@ button, input, textarea, select { font: inherit; }
   inset: 0;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.14;
+  opacity: 0.08;
   background-image:
     linear-gradient(rgba(255,255,255,0.024) 1px, transparent 1px),
     linear-gradient(90deg, rgba(255,255,255,0.016) 1px, transparent 1px);
   background-size: 62px 62px;
-  mask-image: linear-gradient(180deg, rgba(0,0,0,0.65), transparent 78%);
+  mask-image: linear-gradient(180deg, rgba(0,0,0,0.50), transparent 76%);
 }
 .login-game-card::after {
   content: "";
@@ -3110,47 +3110,45 @@ button, input, textarea, select { font: inherit; }
   pointer-events: none;
   z-index: 1;
   background:
-    linear-gradient(180deg, rgba(3, 5, 10, 0.82) 0%, rgba(8, 8, 10, 0.54) 38%, rgba(255, 124, 18, 0.10) 100%),
-    radial-gradient(circle at 5% 88%, rgba(255, 132, 22, 0.22), transparent 20rem),
-    linear-gradient(90deg, rgba(0,0,0,0.04), rgba(0,0,0,0.30));
-  mix-blend-mode: normal;
+    linear-gradient(180deg, rgba(3, 5, 10, 0.58) 0%, rgba(8, 8, 10, 0.22) 34%, rgba(255, 124, 18, 0.04) 100%),
+    radial-gradient(circle at 5% 88%, rgba(255, 132, 22, 0.12), transparent 18rem),
+    linear-gradient(90deg, rgba(0,0,0,0.02), rgba(0,0,0,0.18));
 }
 .login-topo-ridge {
   position: absolute;
   left: 0;
   right: 0;
   bottom: 0;
-  height: 54%;
+  height: 48%;
   pointer-events: none;
   z-index: 0;
-  opacity: 0.88;
-  background-image:
-    linear-gradient(180deg, rgba(5, 6, 8, 0.10) 0%, rgba(5, 6, 8, 0.10) 34%, rgba(5, 6, 8, 0.00) 100%),
-    url("/images/login-topo-background-v17-7.png");
-  background-repeat: no-repeat, no-repeat;
-  background-position: center bottom, center bottom;
-  background-size: cover, cover;
-  filter: saturate(1.18) contrast(1.06) brightness(0.70);
-  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.12) 6%, rgba(0,0,0,0.70) 20%, rgba(0,0,0,1) 42%, rgba(0,0,0,1) 100%);
+  opacity: 0.98;
+  background-image: url("/images/login-topo-background-v17-8.png");
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  background-size: 108% auto;
+  filter: saturate(1.34) contrast(1.18) brightness(0.95);
+  mask-image: linear-gradient(180deg, transparent 0%, rgba(0,0,0,0.02) 10%, rgba(0,0,0,0.55) 24%, rgba(0,0,0,0.98) 46%, rgba(0,0,0,1) 100%);
 }
 .login-game-header {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: start;
-  gap: clamp(16px, 2vw, 22px);
-  margin-bottom: clamp(18px, 2.5vw, 24px);
+  margin-bottom: clamp(20px, 2.6vw, 28px);
 }
-.login-game-header-v17_7 {
-  min-height: clamp(120px, 14vw, 156px);
+.login-game-header-v17_8 {
+  max-width: 640px;
 }
-.login-header-copy-v17_7 {
+.login-header-copy-v17_8 {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   min-width: 0;
-  padding-top: 8px;
+}
+.login-title-emblem-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: clamp(16px, 2vw, 22px);
 }
 .login-chip-row {
   display: flex;
@@ -3160,7 +3158,7 @@ button, input, textarea, select { font: inherit; }
   justify-content: flex-start;
 }
 .login-chip-row-under-title {
-  margin-top: 18px;
+  margin-top: 16px;
 }
 .login-chip-row .section-kicker,
 .login-chip-row .login-security-chip {
@@ -3175,16 +3173,16 @@ button, input, textarea, select { font: inherit; }
   align-items: center;
   gap: 8px;
   border-radius: 999px;
-  border: 1px solid rgba(103, 255, 156, 0.38);
+  border: 1px solid rgba(103, 255, 156, 0.40);
   color: #c9ffe0;
   background: linear-gradient(180deg, rgba(60, 145, 88, 0.16), rgba(16, 44, 24, 0.14));
-  box-shadow: inset 0 0 0 1px rgba(101, 255, 158, 0.06), 0 0 16px rgba(88, 255, 140, 0.08);
+  box-shadow: inset 0 0 0 1px rgba(101, 255, 158, 0.06), 0 0 18px rgba(88, 255, 140, 0.10);
   font-weight: 800;
   letter-spacing: 0.02em;
 }
 .login-emblem-wrap {
-  width: clamp(116px, 12.5vw, 156px);
-  height: clamp(116px, 12.5vw, 156px);
+  width: clamp(116px, 12vw, 150px);
+  height: clamp(116px, 12vw, 150px);
   display: grid;
   place-items: center;
   border-radius: 34px;
@@ -3194,9 +3192,9 @@ button, input, textarea, select { font: inherit; }
   border: 1px solid rgba(255, 153, 54, 0.22);
   box-shadow: 0 0 46px rgba(255, 130, 22, 0.12) inset;
 }
-.login-emblem-wrap-corner {
-  justify-self: end;
-  align-self: start;
+.login-emblem-wrap-inline {
+  flex: 0 0 auto;
+  margin-top: 2px;
 }
 .login-emblem-only {
   width: 132%;
@@ -3218,7 +3216,7 @@ button, input, textarea, select { font: inherit; }
   grid-template-columns: minmax(320px, 1fr);
   gap: 0;
   align-items: stretch;
-  max-width: 570px;
+  max-width: 640px;
 }
 .login-form-zone {
   min-width: 0;
@@ -3228,8 +3226,7 @@ button, input, textarea, select { font: inherit; }
 }
 .login-game-form input {
   border-color: rgba(255, 148, 38, 0.44);
-  background:
-    linear-gradient(180deg, rgba(7, 10, 16, 0.94), rgba(3, 6, 10, 0.90));
+  background: linear-gradient(180deg, rgba(7, 10, 16, 0.94), rgba(3, 6, 10, 0.90));
 }
 .login-game-actions {
   grid-template-columns: 1fr;
@@ -3268,7 +3265,8 @@ button, input, textarea, select { font: inherit; }
   .login-game-card {
     width: 100%;
   }
-  .login-game-grid {
+  .login-game-grid,
+  .login-game-header-v17_8 {
     max-width: none;
   }
 }
@@ -3280,11 +3278,8 @@ button, input, textarea, select { font: inherit; }
     border-radius: 28px;
     padding: 18px;
   }
-  .login-game-header {
-    grid-template-columns: minmax(0, 1fr) auto;
-    align-items: start;
-    gap: 12px;
-    margin-bottom: 20px;
+  .login-title-emblem-row {
+    gap: 14px;
   }
   .signup-header {
     grid-template-columns: 1fr;
@@ -3294,20 +3289,15 @@ button, input, textarea, select { font: inherit; }
     margin-top: 14px;
   }
   .login-chip-row {
-    gap: 7px;
-    transform: scale(0.92);
-    transform-origin: top left;
+    gap: 8px;
+    flex-wrap: nowrap;
   }
   .login-chip-row .section-kicker,
   .login-chip-row .login-security-chip {
-    padding: 0 10px;
+    padding: 0 12px;
     min-height: 38px;
     font-size: 11px;
     letter-spacing: 0.05em;
-  }
-  .login-emblem-wrap-corner {
-    justify-self: end;
-    align-self: start;
   }
   .login-emblem-wrap {
     width: 112px;
@@ -3317,9 +3307,9 @@ button, input, textarea, select { font: inherit; }
     font-size: 46px;
   }
   .login-topo-ridge {
-    height: 42%;
-    background-size: auto 100%, cover;
-    background-position: center bottom, center bottom;
-    filter: saturate(1.22) contrast(1.08) brightness(0.70);
+    height: 46%;
+    background-size: 165% auto;
+    background-position: center bottom;
+    filter: saturate(1.38) contrast(1.18) brightness(0.95);
   }
 }

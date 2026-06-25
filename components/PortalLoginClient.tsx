@@ -82,24 +82,25 @@ export default function PortalLoginClient() {
         <div className="login-game-card panel-card">
           <div className="login-topo-ridge" aria-hidden="true" />
 
-          <div className="login-game-header login-game-header-v17_7">
-            <div className="login-header-copy login-header-copy-v17_7">
-              <h1>Portal Login</h1>
+          <div className="login-game-header login-game-header-v17_8">
+            <div className="login-header-copy login-header-copy-v17_8">
+              <div className="login-title-emblem-row">
+                <h1>Portal Login</h1>
+                <div className="login-emblem-wrap login-emblem-wrap-inline">
+                  <Image
+                    src="/images/logo-emblem-clean.png"
+                    alt="Phoenix Precision Drones logo"
+                    width={1026}
+                    height={1028}
+                    className="login-emblem-only"
+                    priority
+                  />
+                </div>
+              </div>
               <div className="login-chip-row login-chip-row-under-title">
                 <span className="section-kicker">Team Access</span>
                 <div className="login-security-chip"><Shield size={16} /> Live RPC</div>
               </div>
-            </div>
-
-            <div className="login-emblem-wrap login-emblem-wrap-corner">
-              <Image
-                src="/images/logo-emblem-clean.png"
-                alt="Phoenix Precision Drones logo"
-                width={1026}
-                height={1028}
-                className="login-emblem-only"
-                priority
-              />
             </div>
           </div>
 
