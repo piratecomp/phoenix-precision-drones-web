@@ -1,3 +1,4 @@
+import "./styles.css";
 import ZPanel from "@/components/ZPanel";
 
 export default function Page() {
