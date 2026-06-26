@@ -1,3 +1,7 @@
 export default function Page() {
-  return <main />;
+  return (
+    <main>
+      <h1>PPD</h1>
+    </main>
+  );
 }
