@@ -7,6 +7,7 @@ const links = [
   ["Pilot Network", "/pilots"],
   ["Customer Portal", "/customer-portal"],
   ["Pilot Dashboard", "/pilot-dashboard"],
+  ["Workspace", "/workspace"],
   ["About", "/about"],
   ["Contact", "/contact"],
 ];
