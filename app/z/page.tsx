@@ -1,10 +1,11 @@
+import ZPanel from "@/components/ZPanel";
+
 export default function Page() {
   return (
     <main className="site-shell">
       <section className="section-pad">
         <div className="container">
-          <h1>PPD</h1>
-          <p>Portal workspace.</p>
+          <ZPanel />
         </div>
       </section>
     </main>
