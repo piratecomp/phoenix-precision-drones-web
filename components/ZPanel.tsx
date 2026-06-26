@@ -33,7 +33,7 @@ export default function ZPanel() {
     setSelected(active);
     if (active) {
       const result = await supabase.rpc("ppd_desk_notes", { p_box: active });
-      if (!result.error) setNotes((result.data?.notes || []) as NoteRow[]);
+      if (!result.error && result.data?.ok !== false) setNotes((result.data?.notes || []) as NoteRow[]);
     }
     setStatus("Synced.");
   }
@@ -42,11 +42,13 @@ export default function ZPanel() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase || !selected) return;
     setStatus("Queueing...");
-    const { error } = await supabase.rpc("ppd_desk_send", { p_box: selected, p_to: to, p_subject: subject, p_body: body });
-    if (error) {
-      setStatus(error.message);
+    const { data, error } = await supabase.rpc("ppd_desk_send", { p_box: selected, p_to: to, p_subject: subject, p_body: body });
+    if (error || data?.ok === false) {
+      setStatus(error?.message || data?.error || "Unable to queue message.");
       return;
     }
+    const queuedSubject = subject || "Phoenix Precision Drones";
+    setNotes((current) => [{ id: data?.outbox_id || `${Date.now()}`, subject: queuedSubject, status: "queued" }, ...current]);
     setTo("");
     setSubject("");
     setBody("");
