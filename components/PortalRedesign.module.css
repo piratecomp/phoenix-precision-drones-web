@@ -1,0 +1,201 @@
+.portalRedesignScope {
+  display: block;
+}
+
+.portalRedesignScope :global(.ppd-command-shell) {
+  grid-template-columns: 228px minmax(0, 1fr);
+  height: calc(100dvh - 95px);
+  min-height: 720px;
+  overflow: hidden;
+  background: radial-gradient(circle at 72% 18%, rgba(255, 132, 24, 0.12), transparent 24rem), #050608;
+}
+
+.portalRedesignScope :global(.ppd-command-rail) {
+  min-height: auto;
+  height: 100%;
+  padding: 14px 12px;
+  overflow: hidden;
+}
+
+.portalRedesignScope :global(.ppd-rail-nav) {
+  max-height: calc(100dvh - 265px);
+  overflow: auto;
+  padding-right: 2px;
+}
+
+.portalRedesignScope :global(.ppd-rail-nav a) {
+  min-height: 36px;
+  padding: 8px 10px;
+  font-size: 13px;
+}
+
+.portalRedesignScope :global(.ppd-rail-status) {
+  margin-top: 12px;
+  padding: 12px;
+  border-radius: 18px;
+}
+
+.portalRedesignScope :global(.ppd-dashboard-main) {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  padding: 14px;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 10px;
+}
+
+.portalRedesignScope :global(.ppd-command-topbar) {
+  min-height: 74px;
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 20px;
+}
+
+.portalRedesignScope :global(.ppd-command-topbar h1) {
+  margin: 2px 0 0;
+  font-size: clamp(24px, 2.4vw, 36px);
+  letter-spacing: -0.04em;
+}
+
+.portalRedesignScope :global(.ppd-dashboard-grid-shell) {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(245px, 0.72fr) minmax(520px, 1.5fr) minmax(270px, 0.82fr);
+  gap: 10px;
+  overflow: hidden;
+}
+
+.portalRedesignScope :global(.ppd-left-stack),
+.portalRedesignScope :global(.ppd-center-stack),
+.portalRedesignScope :global(.ppd-right-stack) {
+  min-height: 0;
+  display: grid;
+  gap: 10px;
+  overflow: hidden;
+}
+
+.portalRedesignScope :global(.ppd-left-stack) { grid-template-rows: minmax(0, 1fr) auto; }
+.portalRedesignScope :global(.ppd-center-stack) { grid-template-rows: auto minmax(0, 1fr) auto; }
+.portalRedesignScope :global(.ppd-right-stack) { grid-template-rows: minmax(0, 1fr) minmax(170px, 0.7fr); }
+
+.portalRedesignScope :global(.ppd-panel-heading) {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.portalRedesignScope :global(.ppd-panel-heading h3) {
+  margin: 6px 0 0;
+  font-size: 18px;
+}
+
+.portalRedesignScope :global(.ppd-live-chip),
+.portalRedesignScope :global(.ppd-panel-heading > span:not(.section-kicker)) {
+  border: 1px solid rgba(103, 255, 156, 0.3);
+  border-radius: 999px;
+  padding: 6px 9px;
+  color: #cbffd8;
+  background: rgba(103, 255, 156, 0.08);
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.portalRedesignScope :global(.ppd-comms-console),
+.portalRedesignScope :global(.ppd-quick-actions-panel),
+.portalRedesignScope :global(.ppd-ops-map-card),
+.portalRedesignScope :global(.ppd-ai-approval-panel),
+.portalRedesignScope :global(.ppd-role-ops-compact),
+.portalRedesignScope :global(.ppd-module-panel),
+.portalRedesignScope :global(.ppd-work-queue-panel) {
+  border-radius: 20px;
+  padding: 14px;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.portalRedesignScope :global(.ppd-comms-console) {
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+}
+
+.portalRedesignScope :global(.ppd-comms-tabs) {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+  margin: 12px 0;
+}
+
+.portalRedesignScope :global(.ppd-comms-tabs button),
+.portalRedesignScope :global(.ppd-ai-mini-console button),
+.portalRedesignScope :global(.ppd-mobile-menu),
+.portalRedesignScope :global(.ppd-detail-drawer button) {
+  border: 1px solid rgba(255, 153, 54, 0.24);
+  border-radius: 12px;
+  background: rgba(255, 153, 54, 0.07);
+  color: #ffe6c9;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.portalRedesignScope :global(.ppd-comms-tabs button) {
+  min-height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 11px;
+}
+
+.portalRedesignScope :global(.ppd-comms-tabs button.active) {
+  color: #1a0900;
+  background: linear-gradient(180deg, #ffc865, #ff8b1f);
+  border-color: rgba(255, 205, 104, 0.8);
+}
+
+.portalRedesignScope :global(.ppd-comms-body),
+.portalRedesignScope :global(.ppd-mini-list),
+.portalRedesignScope :global(.ppd-module-list),
+.portalRedesignScope :global(.ppd-approval-list) {
+  min-height: 0;
+  overflow: auto;
+}
+
+.portalRedesignScope :global(.ppd-mini-list),
+.portalRedesignScope :global(.ppd-module-list) {
+  display: grid;
+  gap: 8px;
+}
+
+.portalRedesignScope :global(.ppd-message-row),
+.portalRedesignScope :global(.ppd-module-row),
+.portalRedesignScope :global(.ppd-action-tile) {
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.045);
+  color: inherit;
+}
+
+.portalRedesignScope :global(.ppd-message-row) {
+  width: 100%;
+  display: grid;
+  gap: 4px;
+  padding: 10px;
+  text-align: left;
+}
+
+.portalRedesignScope :global(.ppd-message-row strong),
+.portalRedesignScope :global(.ppd-module-row strong),
+.portalRedesignScope :global(.ppd-action-tile strong) {
+  color: #fff;
+  font-size: 13px;
+}
+
+.portalRedesignScope :global(.ppd-message-row span),
+.portalRedesignScope :global(.ppd-message-row small),
+.portalRedesignScope :global(.ppd-module-row span) {
+  color: rgba(237, 244, 255, 0.66);
+  font-size: 12px;
+  line-height: 1.35;
+}
