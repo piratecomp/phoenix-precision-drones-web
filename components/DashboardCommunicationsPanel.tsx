@@ -27,11 +27,12 @@ type Props = {
   dashboardKey: string;
   notifications: PortalNotification[];
   onRefresh?: () => Promise<void> | void;
+  compact?: boolean;
 };
 
 type Tab = "internal" | "email" | "alerts" | "ai";
 
-export default function DashboardCommunicationsPanel({ dashboardKey, notifications, onRefresh }: Props) {
+export default function DashboardCommunicationsPanel({ dashboardKey, notifications, onRefresh, compact = false }: Props) {
   const [tab, setTab] = useState<Tab>("internal");
   const [loading, setLoading] = useState(false);
   const [threads, setThreads] = useState<Thread[]>([]);
@@ -49,7 +50,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
     try {
       const { data, error } = await supabase.rpc("ppd_get_internal_thread", {
         p_thread_id: threadId,
-        p_limit: 80,
+        p_limit: compact ? 25 : 80,
       });
       if (error) throw error;
       setMessages(data?.messages || []);
@@ -62,16 +63,16 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
     }
   }
 
-  async function loadInbox() {
+  async function loadInbox(showLoading = true) {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    setLoading(true);
+    if (showLoading) setLoading(true);
     try {
       const { data: sessionData } = await supabase.auth.getSession();
       if (!sessionData.session) return;
       const { data, error } = await supabase.rpc("ppd_get_internal_inbox", {
         p_dashboard_key: dashboardKey,
-        p_limit: 30,
+        p_limit: compact ? 12 : 30,
       });
       if (error) throw error;
       const nextThreads = data?.threads || [];
@@ -85,7 +86,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
     } catch (err: any) {
       setNotice(err?.message || "Internal communications unavailable.");
     } finally {
-      setLoading(false);
+      if (showLoading) setLoading(false);
     }
   }
 
@@ -108,7 +109,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
       });
       if (error) throw error;
       await loadThread(activeThread.id, false);
-      await loadInbox();
+      await loadInbox(false);
       setNotice(null);
     } catch (err: any) {
       setNotice(err?.message || "Unable to send internal message.");
@@ -130,11 +131,10 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
   }
 
   useEffect(() => {
-    loadInbox();
-    const timer = window.setInterval(loadInbox, 15000);
-    return () => window.clearInterval(timer);
+    void loadInbox();
   }, [dashboardKey]);
 
+  const emailNotifications = notifications.filter((note) => String(note.notification_title || note.notification_type || "").toLowerCase().includes("email"));
   const tabButtons: Array<{ key: Tab; label: string; icon: React.ReactNode }> = [
     { key: "internal", label: "Internal", icon: <MessageSquare size={15} /> },
     { key: "email", label: "Email", icon: <Mail size={15} /> },
@@ -143,21 +143,23 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
   ];
 
   return (
-    <article className="panel-card portal-workflow-card portal-embedded-comms">
-      <div className="portal-game-panel-head">
+    <article className={`panel-card portal-workflow-card portal-embedded-comms ${compact ? "compact" : ""}`}>
+      <div className="portal-game-panel-head portal-comms-head">
         <div>
           <span className="section-kicker">Communications</span>
           <h3>Message Center</h3>
         </div>
         <button className="compact-portal-btn ghost-btn" type="button" onClick={() => { void loadInbox(); void onRefresh?.(); }}>
-          <RefreshCw size={15} /> Refresh
+          <RefreshCw size={15} />
+          <span>Refresh</span>
         </button>
       </div>
 
       <div className="portal-action-list portal-comms-tabs">
         {tabButtons.map((item) => (
-          <button className={`compact-portal-btn ghost-btn ${tab === item.key ? "active" : ""}`} key={item.key} type="button" onClick={() => setTab(item.key)}>
-            {item.icon} {item.label}
+          <button className={`compact-portal-btn ghost-btn ${tab === item.key ? "active" : ""}`} key={item.key} type="button" onClick={() => setTab(item.key)} title={item.label}>
+            {item.icon}
+            <span>{item.label}</span>
           </button>
         ))}
       </div>
@@ -165,7 +167,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
       {tab === "internal" && (
         <div className="portal-comms-grid">
           <aside className="portal-comms-thread-list">
-            {threads.length === 0 && <p>No internal channels loaded yet.</p>}
+            {threads.length === 0 && <p>No channels loaded.</p>}
             {threads.map((thread) => (
               <button className={thread.id === activeThread?.id ? "active" : ""} key={thread.id} type="button" onClick={() => loadThread(thread.id)}>
                 <strong>{thread.thread_title}</strong>
@@ -192,7 +194,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
               ))}
             </div>
             <form className="portal-comms-compose" onSubmit={sendMessage}>
-              <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Message employee channel or PPD AI..." />
+              <input value={draft} onChange={(event) => setDraft(event.target.value)} placeholder="Message PPD AI..." />
               <button type="submit" disabled={!draft.trim() || loading}><Send size={18} /></button>
             </form>
           </main>
@@ -201,8 +203,8 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
 
       {tab === "email" && (
         <div className="portal-task-list portal-comms-simple-list">
-          {notifications.filter((note) => String(note.notification_title || note.notification_type || "").toLowerCase().includes("email")).length === 0 && <p>No unread email notifications.</p>}
-          {notifications.filter((note) => String(note.notification_title || note.notification_type || "").toLowerCase().includes("email")).slice(0, 8).map((note) => (
+          {emailNotifications.length === 0 && <p>No unread email notifications.</p>}
+          {emailNotifications.slice(0, compact ? 4 : 8).map((note) => (
             <div className="portal-task-row" key={note.id}>
               <div><strong>{note.notification_title}</strong><span>{note.notification_body || note.notification_type}</span></div>
               <button type="button" onClick={() => markRead(note)}><CheckCircle2 size={16} /> Read</button>
@@ -214,7 +216,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
       {tab === "alerts" && (
         <div className="portal-task-list portal-comms-simple-list">
           {notifications.length === 0 && <p>No unread alerts.</p>}
-          {notifications.slice(0, 8).map((note) => (
+          {notifications.slice(0, compact ? 4 : 8).map((note) => (
             <div className="portal-task-row" key={note.id}>
               <div><strong>{note.notification_title}</strong><span>{note.notification_body || note.notification_type}</span></div>
               <button type="button" onClick={() => markRead(note)}><CheckCircle2 size={16} /> Read</button>
@@ -225,7 +227,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
 
       {tab === "ai" && (
         <div className="portal-task-list portal-comms-simple-list">
-          <div className="portal-action-row"><Bot size={18} /><div><strong>PPD AI internal mode</strong><span>Use the Internal tab to message the active department channel. PPD AI replies are written into the same thread.</span></div></div>
+          <div className="portal-action-row"><Bot size={18} /><div><strong>PPD AI internal mode</strong><span>Use Internal to message the active department channel. PPD AI replies are written into the same thread.</span></div></div>
           <div className="portal-action-row"><Mail size={18} /><div><strong>Email status</strong><span>Inbound email drafts are created by Communication AI. Outbound delivery depends on the email worker processing the queue.</span></div></div>
         </div>
       )}
