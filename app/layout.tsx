@@ -13,7 +13,6 @@ import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 import ChatWidget from "@/components/ChatWidget";
 import GoogleOperationsMapBoot from "@/components/GoogleOperationsMapBoot";
-import InternalMessageWindow from "@/components/InternalMessageWindow";
 import DashboardClickLinker from "@/components/DashboardClickLinker";
 
 export const metadata: Metadata = {
@@ -37,7 +36,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Footer />
           <ChatWidget />
           <GoogleOperationsMapBoot />
-          <InternalMessageWindow />
           <DashboardClickLinker />
         </div>
       </body>
