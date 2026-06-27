@@ -25,6 +25,7 @@ function getSessionId() {
 }
 
 export default function ChatWidget() {
+  const [portalPage, setPortalPage] = useState(false);
   const [open, setOpen] = useState(false);
   const [sessionId, setSessionId] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([
@@ -43,6 +44,7 @@ export default function ChatWidget() {
 
   useEffect(() => {
     setSessionId(getSessionId());
+    setPortalPage(window.location.pathname.startsWith("/portal"));
   }, []);
 
   useEffect(() => {
@@ -99,6 +101,8 @@ export default function ChatWidget() {
     event.preventDefault();
     void sendMessage();
   }
+
+  if (portalPage) return null;
 
   return (
     <div className="ppd-chat-root" aria-live="polite">
