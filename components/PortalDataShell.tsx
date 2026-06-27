@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import PortalShell from "@/components/PortalRedesignShell";
 import styles from "@/components/PortalRedesign.module.css";
+import phoneStyles from "@/components/PortalPhone.module.css";
 import { portalDashboards } from "@/lib/portal";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseClient";
 import { checkDashboardAccess } from "@/lib/portalApi";
@@ -114,7 +115,7 @@ export function PortalIndexClient() {
 
 export function PortalDashboardDataShell({ dashboardKey }: { dashboardKey: string }) {
   return (
-    <div className={styles.portalRedesignScope}>
+    <div className={`${styles.portalRedesignScope} ${phoneStyles.scope}`}>
       <PortalShell dashboardKey={dashboardKey} />
     </div>
   );
