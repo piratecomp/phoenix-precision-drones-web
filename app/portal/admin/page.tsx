@@ -1,4 +1,4 @@
-import { PortalDashboardDataShell } from "@/components/PortalDataShell";
+import { default as PortalDashboardDataShell } from "@/components/PortalRedesignShell";
 
 export default function PortalDashboardPage() {
   return (
