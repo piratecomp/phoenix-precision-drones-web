@@ -1,37 +1,474 @@
-.portal-embedded-comms{min-height:420px;display:grid;grid-template-rows:auto auto minmax(0,1fr);overflow:hidden}.portal-comms-tabs{grid-template-columns:repeat(4,minmax(0,1fr));display:grid;margin:10px 0}.portal-comms-tabs .active{background:linear-gradient(180deg,#ffc04a,#ff8618)!important;color:#1b0b00!important;border-color:rgba(255,192,74,.8)!important}.portal-comms-grid{display:grid;grid-template-columns:230px minmax(0,1fr);min-height:0;overflow:hidden;border:1px solid rgba(255,145,34,.16);border-radius:18px;background:rgba(0,0,0,.22)}.portal-comms-thread-list{padding:10px;border-right:1px solid rgba(255,145,34,.16);overflow:auto}.portal-comms-thread-list button{width:100%;position:relative;text-align:left;border:1px solid rgba(255,145,34,.14);background:rgba(255,145,34,.045);color:#fff;border-radius:14px;padding:10px 30px 10px 10px;margin-bottom:8px;cursor:pointer}.portal-comms-thread-list button.active{border-color:rgba(255,145,34,.58);background:rgba(255,145,34,.12)}.portal-comms-thread-list strong{display:block;font-size:.92rem}.portal-comms-thread-list span{display:block;margin-top:4px;color:rgba(255,238,216,.62);font-size:.8rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.portal-comms-thread-list em{position:absolute;right:8px;top:9px;min-width:20px;height:20px;border-radius:50%;display:grid;place-items:center;background:#ff3b2f;color:#fff;font-size:.72rem;font-style:normal}.portal-comms-thread{min-height:0;display:grid;grid-template-rows:auto minmax(0,1fr) auto}.portal-comms-title{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-bottom:1px solid rgba(255,145,34,.14)}.portal-comms-title span{color:#ffbd68;text-transform:uppercase;font-size:.73rem;letter-spacing:.08em}.portal-comms-messages{padding:12px;display:flex;flex-direction:column;gap:9px;overflow:auto}.portal-comms-bubble{max-width:88%;border:1px solid rgba(255,145,34,.18);border-radius:16px;padding:10px 12px;background:rgba(255,145,34,.06)}.portal-comms-bubble.user{align-self:flex-end;background:rgba(255,145,34,.14);border-color:rgba(255,145,34,.38)}.portal-comms-bubble.ai,.portal-comms-bubble.system{align-self:flex-start;background:rgba(45,255,121,.07);border-color:rgba(45,255,121,.22)}.portal-comms-bubble span{display:block;color:#ffbd68;font-weight:950;font-size:.76rem;text-transform:uppercase}.portal-comms-bubble p{margin:5px 0 0;color:#f8ead8;line-height:1.4}.portal-comms-compose{display:flex;gap:8px;padding:10px;border-top:1px solid rgba(255,145,34,.14)}.portal-comms-compose input{flex:1;border:1px solid rgba(255,145,34,.22);border-radius:14px;background:rgba(0,0,0,.54);color:#fff;padding:12px 13px}.portal-comms-compose button{border:1px solid rgba(255,145,34,.34);background:rgba(255,145,34,.12);color:#ffd18d;border-radius:12px;padding:9px;cursor:pointer}.portal-review-drawer{position:fixed;top:118px;right:22px;width:min(420px,calc(100vw - 44px));z-index:80}.portal-dashboard-redesign .portal-game-stat-card{cursor:pointer}.portal-dashboard-redesign .portal-game-stat-card em{position:static;display:block;white-space:normal;line-height:1.1}.portal-dashboard-redesign .portal-game-stat-card strong{line-height:1}.portal-dashboard-redesign .ppd-injected-review-btn{display:none}@media(max-width:760px){.portal-comms-grid{grid-template-columns:1fr}.portal-comms-thread-list{display:flex;gap:8px;overflow-x:auto;border-right:0;border-bottom:1px solid rgba(255,145,34,.18)}.portal-comms-thread-list button{min-width:210px}.portal-comms-bubble{max-width:94%}.portal-comms-tabs{grid-template-columns:repeat(2,minmax(0,1fr))}}
-
-/* v42 dashboard communications placement fix */
-@media(min-width:981px){
-  .portal-dashboard-redesign .portal-sidebar::before{display:none!important}
-  .portal-dashboard-redesign .portal-sidebar{padding-top:278px!important;overflow:visible!important}
-  .portal-dashboard-redesign .portal-embedded-comms{position:fixed!important;left:14px!important;top:112px!important;width:272px!important;height:248px!important;min-height:248px!important;max-height:248px!important;z-index:40!important;display:grid!important;grid-template-rows:auto auto minmax(0,1fr)!important;overflow:hidden!important;padding:10px!important;border-radius:20px!important}
-  .portal-dashboard-redesign .portal-embedded-comms .portal-game-panel-head{margin-bottom:6px!important;gap:6px!important;align-items:center!important}
-  .portal-dashboard-redesign .portal-embedded-comms .portal-game-panel-head h3{font-size:1rem!important;margin:2px 0 0!important;line-height:1.05!important}
-  .portal-dashboard-redesign .portal-embedded-comms .section-kicker{font-size:.66rem!important;letter-spacing:.08em!important}
-  .portal-dashboard-redesign .portal-embedded-comms .portal-game-panel-head .ghost-btn{font-size:0!important;width:32px!important;height:32px!important;min-height:32px!important;padding:0!important;justify-content:center!important}
-  .portal-dashboard-redesign .portal-comms-tabs{grid-template-columns:repeat(4,minmax(0,1fr))!important;gap:5px!important;margin:4px 0 6px!important}
-  .portal-dashboard-redesign .portal-comms-tabs .compact-portal-btn{min-height:28px!important;padding:5px!important;font-size:0!important;border-radius:10px!important;justify-content:center!important}
-  .portal-dashboard-redesign .portal-comms-tabs .compact-portal-btn svg{width:14px!important;height:14px!important}
-  .portal-dashboard-redesign .portal-comms-grid{grid-template-columns:92px minmax(0,1fr)!important;height:100%!important;min-height:0!important;overflow:hidden!important;border-radius:14px!important}
-  .portal-dashboard-redesign .portal-comms-thread-list{padding:6px!important;min-height:0!important;overflow:auto!important}
-  .portal-dashboard-redesign .portal-comms-thread-list button{padding:7px!important;margin-bottom:5px!important;border-radius:10px!important;min-height:46px!important}
-  .portal-dashboard-redesign .portal-comms-thread-list strong{font-size:.68rem!important;line-height:1.05!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-  .portal-dashboard-redesign .portal-comms-thread-list span{font-size:.62rem!important;line-height:1.05!important;margin-top:3px!important}
-  .portal-dashboard-redesign .portal-comms-thread{min-height:0!important;grid-template-rows:auto minmax(0,1fr) auto!important;overflow:hidden!important}
-  .portal-dashboard-redesign .portal-comms-title{padding:6px 8px!important;gap:5px!important;display:block!important}
-  .portal-dashboard-redesign .portal-comms-title span{display:block!important;font-size:.58rem!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-  .portal-dashboard-redesign .portal-comms-title strong{display:block!important;font-size:.66rem!important;white-space:nowrap!important;overflow:hidden!important;text-overflow:ellipsis!important}
-  .portal-dashboard-redesign .portal-comms-messages{padding:7px!important;gap:6px!important;min-height:0!important;max-height:none!important;overflow:auto!important;scrollbar-width:thin!important}
-  .portal-dashboard-redesign .portal-comms-bubble{max-width:96%!important;border-radius:11px!important;padding:7px!important;font-size:.65rem!important;line-height:1.22!important}
-  .portal-dashboard-redesign .portal-comms-bubble span{font-size:.56rem!important}
-  .portal-dashboard-redesign .portal-comms-bubble p{line-height:1.22!important;margin-top:3px!important}
-  .portal-dashboard-redesign .portal-comms-compose{padding:6px!important;gap:5px!important}
-  .portal-dashboard-redesign .portal-comms-compose input{height:30px!important;padding:6px 8px!important;font-size:.66rem!important;border-radius:10px!important;min-width:0!important}
-  .portal-dashboard-redesign .portal-comms-compose button{width:32px!important;height:30px!important;padding:0!important;border-radius:10px!important;display:grid!important;place-items:center!important}
-  .portal-dashboard-redesign .portal-operating-grid{display:block!important}
-  .portal-dashboard-redesign .portal-operating-grid>.portal-game-map-card{width:100%!important;min-height:360px!important}
+/* Dashboard communications: attached sidebar panel, no floating overlay. */
+.portal-dashboard-redesign .portal-sidebar::before {
+  display: none !important;
 }
-@media(max-width:980px){
-  .portal-dashboard-redesign .portal-sidebar::before{display:none!important}
-  .portal-dashboard-redesign .portal-embedded-comms{height:420px!important;max-height:420px!important;min-height:420px!important}
+
+.portal-dashboard-redesign .portal-sidebar-with-comms {
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+  overflow: hidden !important;
+}
+
+.portal-dashboard-redesign .portal-sidebar-comms {
+  flex: 0 0 auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+}
+
+.portal-dashboard-redesign .portal-sidebar-brand {
+  flex: 0 0 auto !important;
+}
+
+.portal-dashboard-redesign .portal-sidebar-nav {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+}
+
+.portal-dashboard-redesign .portal-session-card,
+.portal-dashboard-redesign .portal-signout {
+  flex: 0 0 auto !important;
+}
+
+.portal-embedded-comms {
+  min-height: 420px;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr);
+  overflow: hidden;
+}
+
+.portal-sidebar-comms .portal-embedded-comms,
+.portal-embedded-comms.compact {
+  position: static !important;
+  width: 100% !important;
+  height: 260px !important;
+  min-height: 260px !important;
+  max-height: 260px !important;
+  padding: 10px !important;
+  border-radius: 20px !important;
+  display: grid !important;
+  grid-template-rows: auto auto minmax(0, 1fr) !important;
+  overflow: hidden !important;
+  z-index: auto !important;
+}
+
+.portal-comms-head {
+  align-items: center !important;
+  gap: 8px !important;
+  margin-bottom: 6px !important;
+}
+
+.portal-sidebar-comms .portal-comms-head h3,
+.portal-embedded-comms.compact .portal-comms-head h3 {
+  font-size: 1.02rem !important;
+  line-height: 1.05 !important;
+  margin: 2px 0 0 !important;
+}
+
+.portal-sidebar-comms .portal-comms-head .section-kicker,
+.portal-embedded-comms.compact .portal-comms-head .section-kicker {
+  font-size: .66rem !important;
+  letter-spacing: .08em !important;
+}
+
+.portal-sidebar-comms .portal-comms-head .ghost-btn,
+.portal-embedded-comms.compact .portal-comms-head .ghost-btn {
+  width: 32px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 !important;
+  justify-content: center !important;
+  font-size: 0 !important;
+  flex: 0 0 32px !important;
+}
+
+.portal-sidebar-comms .portal-comms-head .ghost-btn span,
+.portal-embedded-comms.compact .portal-comms-head .ghost-btn span {
+  display: none !important;
+}
+
+.portal-comms-tabs {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  display: grid;
+  gap: 8px;
+  margin: 10px 0;
+}
+
+.portal-sidebar-comms .portal-comms-tabs,
+.portal-embedded-comms.compact .portal-comms-tabs {
+  gap: 5px !important;
+  margin: 4px 0 7px !important;
+}
+
+.portal-comms-tabs .active {
+  background: linear-gradient(180deg, #ffc04a, #ff8618) !important;
+  color: #1b0b00 !important;
+  border-color: rgba(255, 192, 74, .8) !important;
+}
+
+.portal-sidebar-comms .portal-comms-tabs .compact-portal-btn,
+.portal-embedded-comms.compact .portal-comms-tabs .compact-portal-btn {
+  min-height: 28px !important;
+  padding: 5px !important;
+  border-radius: 10px !important;
+  font-size: 0 !important;
+  justify-content: center !important;
+}
+
+.portal-sidebar-comms .portal-comms-tabs .compact-portal-btn span,
+.portal-embedded-comms.compact .portal-comms-tabs .compact-portal-btn span {
+  display: none !important;
+}
+
+.portal-sidebar-comms .portal-comms-tabs .compact-portal-btn svg,
+.portal-embedded-comms.compact .portal-comms-tabs .compact-portal-btn svg {
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.portal-comms-grid {
+  display: grid;
+  grid-template-columns: 230px minmax(0, 1fr);
+  min-height: 0;
+  overflow: hidden;
+  border: 1px solid rgba(255, 145, 34, .16);
+  border-radius: 18px;
+  background: rgba(0, 0, 0, .22);
+}
+
+.portal-sidebar-comms .portal-comms-grid,
+.portal-embedded-comms.compact .portal-comms-grid {
+  grid-template-columns: 92px minmax(0, 1fr) !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  overflow: hidden !important;
+  border-radius: 14px !important;
+}
+
+.portal-comms-thread-list {
+  padding: 10px;
+  border-right: 1px solid rgba(255, 145, 34, .16);
+  overflow: auto;
+  min-height: 0;
+}
+
+.portal-sidebar-comms .portal-comms-thread-list,
+.portal-embedded-comms.compact .portal-comms-thread-list {
+  padding: 6px !important;
+}
+
+.portal-comms-thread-list button {
+  width: 100%;
+  position: relative;
+  text-align: left;
+  border: 1px solid rgba(255, 145, 34, .14);
+  background: rgba(255, 145, 34, .045);
+  color: #fff;
+  border-radius: 14px;
+  padding: 10px 30px 10px 10px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.portal-sidebar-comms .portal-comms-thread-list button,
+.portal-embedded-comms.compact .portal-comms-thread-list button {
+  padding: 7px !important;
+  margin-bottom: 5px !important;
+  border-radius: 10px !important;
+  min-height: 46px !important;
+}
+
+.portal-comms-thread-list button.active {
+  border-color: rgba(255, 145, 34, .58);
+  background: rgba(255, 145, 34, .12);
+}
+
+.portal-comms-thread-list strong {
+  display: block;
+  font-size: .92rem;
+}
+
+.portal-sidebar-comms .portal-comms-thread-list strong,
+.portal-embedded-comms.compact .portal-comms-thread-list strong {
+  font-size: .68rem !important;
+  line-height: 1.05 !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.portal-comms-thread-list span {
+  display: block;
+  margin-top: 4px;
+  color: rgba(255, 238, 216, .62);
+  font-size: .8rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.portal-sidebar-comms .portal-comms-thread-list span,
+.portal-embedded-comms.compact .portal-comms-thread-list span {
+  font-size: .62rem !important;
+  line-height: 1.05 !important;
+  margin-top: 3px !important;
+}
+
+.portal-comms-thread-list em {
+  position: absolute;
+  right: 8px;
+  top: 9px;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #ff3b2f;
+  color: #fff;
+  font-size: .72rem;
+  font-style: normal;
+}
+
+.portal-comms-thread {
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  overflow: hidden;
+}
+
+.portal-comms-title {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-bottom: 1px solid rgba(255, 145, 34, .14);
+}
+
+.portal-sidebar-comms .portal-comms-title,
+.portal-embedded-comms.compact .portal-comms-title {
+  display: block !important;
+  padding: 6px 8px !important;
+  gap: 5px !important;
+}
+
+.portal-comms-title span {
+  color: #ffbd68;
+  text-transform: uppercase;
+  font-size: .73rem;
+  letter-spacing: .08em;
+}
+
+.portal-sidebar-comms .portal-comms-title span,
+.portal-embedded-comms.compact .portal-comms-title span {
+  display: block !important;
+  font-size: .58rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.portal-sidebar-comms .portal-comms-title strong,
+.portal-embedded-comms.compact .portal-comms-title strong {
+  display: block !important;
+  font-size: .66rem !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.portal-comms-messages {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  overflow: auto;
+  min-height: 0;
+  overscroll-behavior: contain;
+}
+
+.portal-sidebar-comms .portal-comms-messages,
+.portal-embedded-comms.compact .portal-comms-messages {
+  padding: 7px !important;
+  gap: 6px !important;
+  max-height: none !important;
+  scrollbar-width: thin !important;
+}
+
+.portal-comms-bubble {
+  max-width: 88%;
+  border: 1px solid rgba(255, 145, 34, .18);
+  border-radius: 16px;
+  padding: 10px 12px;
+  background: rgba(255, 145, 34, .06);
+}
+
+.portal-sidebar-comms .portal-comms-bubble,
+.portal-embedded-comms.compact .portal-comms-bubble {
+  max-width: 96% !important;
+  border-radius: 11px !important;
+  padding: 7px !important;
+  font-size: .65rem !important;
+  line-height: 1.22 !important;
+}
+
+.portal-comms-bubble.user {
+  align-self: flex-end;
+  background: rgba(255, 145, 34, .14);
+  border-color: rgba(255, 145, 34, .38);
+}
+
+.portal-comms-bubble.ai,
+.portal-comms-bubble.system {
+  align-self: flex-start;
+  background: rgba(45, 255, 121, .07);
+  border-color: rgba(45, 255, 121, .22);
+}
+
+.portal-comms-bubble span {
+  display: block;
+  color: #ffbd68;
+  font-weight: 950;
+  font-size: .76rem;
+  text-transform: uppercase;
+}
+
+.portal-sidebar-comms .portal-comms-bubble span,
+.portal-embedded-comms.compact .portal-comms-bubble span {
+  font-size: .56rem !important;
+}
+
+.portal-comms-bubble p {
+  margin: 5px 0 0;
+  color: #f8ead8;
+  line-height: 1.4;
+}
+
+.portal-sidebar-comms .portal-comms-bubble p,
+.portal-embedded-comms.compact .portal-comms-bubble p {
+  line-height: 1.22 !important;
+  margin-top: 3px !important;
+}
+
+.portal-comms-compose {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid rgba(255, 145, 34, .14);
+}
+
+.portal-sidebar-comms .portal-comms-compose,
+.portal-embedded-comms.compact .portal-comms-compose {
+  padding: 6px !important;
+  gap: 5px !important;
+}
+
+.portal-comms-compose input {
+  flex: 1;
+  min-width: 0;
+  border: 1px solid rgba(255, 145, 34, .22);
+  border-radius: 14px;
+  background: rgba(0, 0, 0, .54);
+  color: #fff;
+  padding: 12px 13px;
+}
+
+.portal-sidebar-comms .portal-comms-compose input,
+.portal-embedded-comms.compact .portal-comms-compose input {
+  height: 30px !important;
+  padding: 6px 8px !important;
+  font-size: .66rem !important;
+  border-radius: 10px !important;
+}
+
+.portal-comms-compose button {
+  border: 1px solid rgba(255, 145, 34, .34);
+  background: rgba(255, 145, 34, .12);
+  color: #ffd18d;
+  border-radius: 12px;
+  padding: 9px;
+  cursor: pointer;
+}
+
+.portal-sidebar-comms .portal-comms-compose button,
+.portal-embedded-comms.compact .portal-comms-compose button {
+  width: 32px !important;
+  height: 30px !important;
+  padding: 0 !important;
+  border-radius: 10px !important;
+  display: grid !important;
+  place-items: center !important;
+}
+
+.portal-comms-simple-list {
+  min-height: 0;
+  overflow: auto;
+}
+
+.portal-review-drawer {
+  position: fixed;
+  top: 118px;
+  right: 22px;
+  width: min(420px, calc(100vw - 44px));
+  z-index: 80;
+}
+
+.portal-dashboard-redesign .portal-game-stat-card {
+  cursor: pointer;
+}
+
+.portal-dashboard-redesign .portal-game-stat-card em {
+  position: static;
+  display: block;
+  white-space: normal;
+  line-height: 1.1;
+}
+
+.portal-dashboard-redesign .portal-game-stat-card strong {
+  line-height: 1;
+}
+
+.portal-dashboard-redesign .ppd-injected-review-btn {
+  display: none;
+}
+
+.portal-main-map-card {
+  margin-top: 12px;
+}
+
+@media (max-width: 980px) {
+  .portal-dashboard-redesign .portal-sidebar-with-comms {
+    overflow: visible !important;
+  }
+
+  .portal-sidebar-comms .portal-embedded-comms,
+  .portal-embedded-comms.compact {
+    height: 420px !important;
+    max-height: 420px !important;
+    min-height: 420px !important;
+  }
+
+  .portal-comms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .portal-comms-thread-list {
+    display: flex;
+    gap: 8px;
+    overflow-x: auto;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 145, 34, .18);
+  }
+
+  .portal-comms-thread-list button {
+    min-width: 210px;
+  }
+
+  .portal-comms-bubble {
+    max-width: 94%;
+  }
+
+  .portal-comms-tabs {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
