@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 
+const facebookPageUrl = "https://www.facebook.com/share/1HNquNL2eq/?mibextid=wwXIfr";
+
 export default function Footer() {
   return (
     <footer className="site-footer">
@@ -29,6 +31,7 @@ export default function Footer() {
           <h4>Contact</h4>
           <div className="footer-meta">
             <span>sales@phoenixprecisiondrones.com</span>
+            <a href={facebookPageUrl} target="_blank" rel="noopener noreferrer">Facebook</a>
             <span>Phoenix, Arizona</span>
             <span>Commercial drone services, customer portals, and pilot workflows.</span>
           </div>
