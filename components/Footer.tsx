@@ -3,6 +3,8 @@ import Link from "next/link";
 
 const facebookPageUrl = "https://www.facebook.com/share/1HNquNL2eq/?mibextid=wwXIfr";
 const salesEmail = "sales@phoenixprecisiondrones.com";
+const salesPhoneDisplay = "(602) 780-2980";
+const salesPhoneHref = "+16027802980";
 
 const footerContactStackStyle = {
   gap: "6px",
@@ -59,6 +61,7 @@ export default function Footer() {
         <div>
           <h4>Contact</h4>
           <div className="footer-meta" style={footerContactStackStyle}>
+            <a href={`tel:${salesPhoneHref}`} style={footerContactLinkStyle}>{salesPhoneDisplay}</a>
             <a href={`mailto:${salesEmail}`} style={footerContactLinkStyle}>{salesEmail}</a>
             <a href={facebookPageUrl} target="_blank" rel="noopener noreferrer" style={footerContactLinkStyle}>
               <FacebookIcon />
