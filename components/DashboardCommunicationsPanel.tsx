@@ -1,9 +1,15 @@
 "use client";
 
-import { FormEvent, useEffect, useMemo, useState } from "react";
-import { Bell, Bot, CheckCircle2, Mail, MessageSquare, RefreshCw, Send } from "lucide-react";
+import { FormEvent, useEffect, useMemo, useState, type ReactNode } from "react";
+import { Bell, Bot, CheckCircle2, Clock, Mail, MessageSquare, PhoneCall, RefreshCw, Send } from "lucide-react";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
-import { markNotificationRead, type PortalNotification } from "@/lib/portalApi";
+import {
+  getPpdVoiceFollowupPanel,
+  markNotificationRead,
+  type PortalNotification,
+  type PpdVoiceFollowupCall,
+  type PpdVoiceFollowupPanel,
+} from "@/lib/portalApi";
 
 type Thread = {
   id: string;
@@ -32,6 +38,45 @@ type Props = {
 
 type Tab = "internal" | "email" | "alerts" | "ai";
 
+function formatVoiceDate(value?: string | null) {
+  if (!value) return "recent";
+  const date = new Date(value);
+  if (Number.isNaN(date.getTime())) return "recent";
+  return date.toLocaleString([], { month: "short", day: "numeric", hour: "numeric", minute: "2-digit" });
+}
+
+function cleanVoiceLabel(value?: string | null) {
+  if (!value) return "general";
+  return value.replaceAll("_", " ");
+}
+
+function voiceTitle(call: PpdVoiceFollowupCall) {
+  const intent = String(call.caller_intent || call.next_action || "voice follow-up").toLowerCase();
+  if (intent.includes("quote")) return "Voice quote request";
+  if (intent.includes("callback") || intent.includes("handoff") || intent.includes("follow")) return "Voice callback request";
+  return "Voice follow-up";
+}
+
+function voiceSnippet(call: PpdVoiceFollowupCall) {
+  return (
+    call.summary ||
+    call.transcript ||
+    call.follow_up_note ||
+    call.latest_voice_response ||
+    "Voice call captured. Review transcript and follow up if needed."
+  );
+}
+
+function voiceMeta(call: PpdVoiceFollowupCall) {
+  const parts = [
+    call.caller_number || "unknown caller",
+    cleanVoiceLabel(call.call_status),
+    cleanVoiceLabel(call.latest_service_key || call.caller_intent),
+    formatVoiceDate(call.updated_at || call.started_at),
+  ].filter(Boolean);
+  return parts.join(" · ");
+}
+
 export default function DashboardCommunicationsPanel({ dashboardKey, notifications, onRefresh, compact = false }: Props) {
   const [tab, setTab] = useState<Tab>("internal");
   const [loading, setLoading] = useState(false);
@@ -40,8 +85,12 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
   const [messages, setMessages] = useState<Message[]>([]);
   const [draft, setDraft] = useState("");
   const [notice, setNotice] = useState<string | null>(null);
+  const [voicePanel, setVoicePanel] = useState<PpdVoiceFollowupPanel | null>(null);
+  const [voiceLoading, setVoiceLoading] = useState(false);
 
   const activeThread = useMemo(() => threads.find((thread) => thread.id === activeThreadId) || threads[0], [threads, activeThreadId]);
+  const voiceCalls = voicePanel?.calls || [];
+  const openVoiceFollowups = Number(voicePanel?.open_voice_followups || voiceCalls.length || 0);
 
   async function loadThread(threadId: string, showLoading = true) {
     const supabase = getSupabaseBrowserClient();
@@ -60,6 +109,22 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
       setNotice(err?.message || "Unable to load internal thread.");
     } finally {
       if (showLoading) setLoading(false);
+    }
+  }
+
+  async function loadVoiceFollowups(showLoading = true) {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    if (showLoading) setVoiceLoading(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) return;
+      const data = await getPpdVoiceFollowupPanel(supabase, dashboardKey, compact ? 6 : 12);
+      setVoicePanel(data);
+    } catch (err: any) {
+      setNotice(err?.message || "Voice follow-ups unavailable.");
+    } finally {
+      if (showLoading) setVoiceLoading(false);
     }
   }
 
@@ -88,6 +153,10 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
     } finally {
       if (showLoading) setLoading(false);
     }
+  }
+
+  async function refreshPanel() {
+    await Promise.allSettled([loadInbox(false), loadVoiceFollowups(false), onRefresh?.()]);
   }
 
   async function sendMessage(event: FormEvent<HTMLFormElement>) {
@@ -132,13 +201,14 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
 
   useEffect(() => {
     void loadInbox();
+    void loadVoiceFollowups(false);
   }, [dashboardKey]);
 
   const emailNotifications = notifications.filter((note) => String(note.notification_title || note.notification_type || "").toLowerCase().includes("email"));
-  const tabButtons: Array<{ key: Tab; label: string; icon: React.ReactNode }> = [
+  const tabButtons: Array<{ key: Tab; label: string; icon: ReactNode; count?: number }> = [
     { key: "internal", label: "Internal", icon: <MessageSquare size={15} /> },
     { key: "email", label: "Email", icon: <Mail size={15} /> },
-    { key: "alerts", label: "Alerts", icon: <Bell size={15} /> },
+    { key: "alerts", label: openVoiceFollowups > 0 ? `Alerts ${openVoiceFollowups}` : "Alerts", icon: <Bell size={15} />, count: openVoiceFollowups },
     { key: "ai", label: "PPD AI", icon: <Bot size={15} /> },
   ];
 
@@ -149,7 +219,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
           <span className="section-kicker">Communications</span>
           <h3>Message Center</h3>
         </div>
-        <button className="compact-portal-btn ghost-btn" type="button" onClick={() => { void loadInbox(); void onRefresh?.(); }}>
+        <button className="compact-portal-btn ghost-btn" type="button" onClick={() => { void refreshPanel(); }}>
           <RefreshCw size={15} />
           <span>Refresh</span>
         </button>
@@ -215,8 +285,27 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
 
       {tab === "alerts" && (
         <div className="portal-task-list portal-comms-simple-list">
-          {notifications.length === 0 && <p>No unread alerts.</p>}
-          {notifications.slice(0, compact ? 4 : 8).map((note) => (
+          <div className="portal-action-row">
+            <PhoneCall size={18} />
+            <div>
+              <strong>Voice follow-ups</strong>
+              <span>{openVoiceFollowups} open voice follow-up{openVoiceFollowups === 1 ? "" : "s"} · {voicePanel?.total_recent_calls || 0} calls in 30 days</span>
+            </div>
+          </div>
+          {voiceLoading && <p>Loading voice follow-ups...</p>}
+          {!voiceLoading && voiceCalls.length === 0 && <p>No voice quote or callback follow-ups.</p>}
+          {!voiceLoading && voiceCalls.slice(0, compact ? 3 : 6).map((call) => (
+            <div className="portal-task-row" key={call.id}>
+              <div>
+                <strong>{voiceTitle(call)}</strong>
+                <span>{voiceSnippet(call)}</span>
+                <small><Clock size={12} /> {voiceMeta(call)}</small>
+              </div>
+              {call.caller_number && <a className="compact-portal-btn ghost-btn" href={`tel:${call.caller_number}`}>Call</a>}
+            </div>
+          ))}
+          {notifications.length === 0 && voiceCalls.length === 0 && <p>No unread alerts.</p>}
+          {notifications.slice(0, compact ? 3 : 6).map((note) => (
             <div className="portal-task-row" key={note.id}>
               <div><strong>{note.notification_title}</strong><span>{note.notification_body || note.notification_type}</span></div>
               <button type="button" onClick={() => markRead(note)}><CheckCircle2 size={16} /> Read</button>
@@ -228,6 +317,7 @@ export default function DashboardCommunicationsPanel({ dashboardKey, notificatio
       {tab === "ai" && (
         <div className="portal-task-list portal-comms-simple-list">
           <div className="portal-action-row"><Bot size={18} /><div><strong>PPD AI internal mode</strong><span>Use Internal to message the active department channel. PPD AI replies are written into the same thread.</span></div></div>
+          <div className="portal-action-row"><PhoneCall size={18} /><div><strong>Voice status</strong><span>Voice quote and callback requests now appear in Alerts after PPD AI captures the call.</span></div></div>
           <div className="portal-action-row"><Mail size={18} /><div><strong>Email status</strong><span>Inbound email drafts are created by Communication AI. Outbound delivery depends on the email worker processing the queue.</span></div></div>
         </div>
       )}
