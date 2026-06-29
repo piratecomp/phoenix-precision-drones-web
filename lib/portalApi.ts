@@ -133,6 +133,36 @@ export type PpdQuotePipelinePanel = {
   generated_at?: string;
 };
 
+export type PpdVoiceFollowupCall = {
+  id: string;
+  provider_call_sid?: string | null;
+  caller_number?: string | null;
+  called_number?: string | null;
+  call_status?: string | null;
+  caller_intent?: string | null;
+  summary?: string | null;
+  transcript?: string | null;
+  quote_intake_id?: string | null;
+  started_at?: string | null;
+  ended_at?: string | null;
+  updated_at?: string | null;
+  needs_follow_up?: boolean;
+  follow_up_note?: string | null;
+  next_action?: string | null;
+  latest_service_key?: string | null;
+  latest_voice_response?: string | null;
+  latest_turn_number?: string | number | null;
+};
+
+export type PpdVoiceFollowupPanel = {
+  ok?: boolean;
+  dashboard_key?: string;
+  total_recent_calls?: number;
+  open_voice_followups?: number;
+  calls?: PpdVoiceFollowupCall[];
+  generated_at?: string;
+};
+
 export async function rpc<T>(supabase: SupabaseClient, name: string, args?: Record<string, any>) {
   const { data, error } = await supabase.rpc(name, args || {});
   if (error) throw error;
@@ -191,6 +221,17 @@ export async function getPpdQuotePipelinePanel(
   return rpc<PpdQuotePipelinePanel>(supabase, "ppd_get_sales_pipeline_panel", {
     p_dashboard_key: dashboardKey,
     p_limit: 20,
+  });
+}
+
+export async function getPpdVoiceFollowupPanel(
+  supabase: SupabaseClient,
+  dashboardKey: string,
+  limit = 12
+): Promise<PpdVoiceFollowupPanel> {
+  return rpc<PpdVoiceFollowupPanel>(supabase, "ppd_get_voice_followup_panel", {
+    p_dashboard_key: dashboardKey,
+    p_limit: limit,
   });
 }
 
