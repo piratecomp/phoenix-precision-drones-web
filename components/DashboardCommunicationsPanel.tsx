@@ -47,7 +47,7 @@ function formatVoiceDate(value?: string | null) {
 
 function cleanVoiceLabel(value?: string | null) {
   if (!value) return "general";
-  return value.replaceAll("_", " ");
+  return value.replace(/_/g, " ");
 }
 
 function voiceTitle(call: PpdVoiceFollowupCall) {
