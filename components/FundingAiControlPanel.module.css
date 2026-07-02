@@ -1,0 +1,251 @@
+.window {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 80;
+  width: min(720px, calc(100vw - 48px));
+  max-height: min(86vh, 880px);
+  overflow: auto;
+  border: 1px solid rgba(255, 165, 60, 0.44);
+  border-radius: 24px;
+  padding: 18px;
+  color: var(--text);
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255, 148, 31, 0.18), transparent 20rem),
+    linear-gradient(180deg, rgba(7, 10, 16, 0.98), rgba(4, 6, 10, 0.98));
+  box-shadow: 0 18px 90px rgba(0, 0, 0, 0.58), var(--shadow);
+  backdrop-filter: blur(18px);
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.header h2 {
+  margin: 12px 0 8px;
+  font-size: clamp(24px, 3vw, 36px);
+  line-height: 1;
+}
+
+.header p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.closeButton,
+.floatingOpenButton {
+  border: 1px solid rgba(255, 173, 82, 0.48);
+  border-radius: 999px;
+  color: var(--text);
+  background: rgba(255, 148, 31, 0.12);
+  cursor: pointer;
+}
+
+.closeButton {
+  padding: 10px 14px;
+}
+
+.floatingOpenButton {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 48px;
+  padding: 0 18px;
+  font-weight: 800;
+  box-shadow: var(--shadow);
+}
+
+.loading,
+.error {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.error {
+  color: #ffd2c2;
+  border: 1px solid rgba(255, 92, 92, 0.35);
+}
+
+.spin {
+  animation: fundingSpin 1s linear infinite;
+}
+
+@keyframes fundingSpin {
+  to { transform: rotate(360deg); }
+}
+
+.statusBar,
+.actions,
+.rowActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.statusBar {
+  margin-bottom: 14px;
+  color: var(--soft);
+  font-size: 13px;
+}
+
+.statusBar span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 173, 82, 0.18);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.good { color: var(--green); }
+.warn { color: var(--gold); }
+
+.metricsGrid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.metricsGrid div {
+  min-height: 82px;
+  padding: 12px;
+  border: 1px solid rgba(255, 173, 82, 0.18);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.055);
+}
+
+.metricsGrid span,
+.compactItem span,
+.queueItem em {
+  display: block;
+  color: var(--soft);
+  font-size: 12px;
+}
+
+.metricsGrid strong {
+  display: block;
+  margin-top: 8px;
+  color: var(--gold);
+  font-size: 24px;
+}
+
+.actions {
+  margin-bottom: 16px;
+}
+
+.sectionBlock {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid rgba(255, 173, 82, 0.16);
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.sectionHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.sectionHead h3 {
+  margin: 0;
+}
+
+.sectionHead span {
+  color: var(--gold);
+  font-weight: 800;
+}
+
+.list {
+  display: grid;
+  gap: 10px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid rgba(255, 173, 82, 0.12);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.rowMain strong,
+.compactItem strong,
+.queueItem strong {
+  display: block;
+  margin-bottom: 4px;
+}
+
+.rowMain span,
+.rowMain small {
+  display: block;
+  color: var(--soft);
+  line-height: 1.45;
+}
+
+.iconLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--gold);
+  font-size: 13px;
+}
+
+.twoColumn {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.compactItem,
+.queueItem {
+  margin: 0 0 10px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.queueItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.queueItem span {
+  color: var(--gold);
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 760px) {
+  .window {
+    inset: auto 12px 12px 12px;
+    width: auto;
+  }
+
+  .metricsGrid,
+  .twoColumn,
+  .row {
+    grid-template-columns: 1fr;
+  }
+}
