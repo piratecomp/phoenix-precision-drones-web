@@ -24,6 +24,13 @@ type FundingOpportunity = {
   go_status?: string | null;
   accuracy_status?: string | null;
   accuracy_reason?: string | null;
+  fit_status?: string | null;
+  fit_score?: number | string | null;
+  applyability_status?: string | null;
+  applyability_reason?: string | null;
+  funding_lane?: string | null;
+  funding_instrument?: string | null;
+  source_quality?: string | null;
 };
 
 type FundingPanel = {
@@ -33,6 +40,8 @@ type FundingPanel = {
   control?: Record<string, any>;
   cron_jobs?: Array<Record<string, any>>;
   opportunities?: FundingOpportunity[];
+  startup_grants?: FundingOpportunity[];
+  needs_review?: FundingOpportunity[];
   applications?: Array<Record<string, any>>;
   documents?: Array<Record<string, any>>;
   execution_queue?: Array<Record<string, any>>;
@@ -66,6 +75,10 @@ function shortDate(value?: string | null) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function cleanLabel(value?: string | null) {
+  return String(value || "unknown").replace(/_/g, " ");
 }
 
 function asText(value: unknown, fallback = "Not extracted yet") {
@@ -115,6 +128,8 @@ export default function FundingAiControlPanel() {
 
   const counts = panel?.counts || {};
   const opportunities = useMemo(() => panel?.opportunities || [], [panel]);
+  const startupSources = panel?.startup_grants || [];
+  const needsReview = panel?.needs_review || [];
   const applications = panel?.applications || [];
   const documents = panel?.documents || [];
   const queue = panel?.execution_queue || [];
@@ -145,12 +160,27 @@ export default function FundingAiControlPanel() {
     setError(null);
     try {
       await invokeFundingWorker("funding-source-monitor", { source: "finance_payroll_dashboard", force: true, limit: 5 });
-      await invokeFundingWorker("funding-search-worker", { source: "finance_payroll_dashboard", force: true, limit: 4 });
+      await invokeFundingWorker("funding-search-worker", { source: "finance_payroll_dashboard", force: true, limit: 6 });
       await invokeFundingWorker("funding-opportunity-extractor", { source: "finance_payroll_dashboard", force: true, limit: 10 });
       await rpc("ppd_funding_dashboard_refresh");
       await loadPanel();
     } catch (err: any) {
       setError(err?.message || "Funding AI hunt failed.");
+    } finally {
+      setBusy(null);
+    }
+  }
+
+  async function runStartupGrantHunt() {
+    setBusy("startup");
+    setError(null);
+    try {
+      await invokeFundingWorker("funding-search-worker", { source: "finance_payroll_dashboard", force: true, limit: 10, lane: "startup_grants" });
+      await invokeFundingWorker("funding-opportunity-extractor", { source: "finance_payroll_dashboard", force: true, limit: 12 });
+      await rpc("ppd_funding_dashboard_refresh");
+      await loadPanel();
+    } catch (err: any) {
+      setError(err?.message || "Startup grant hunt failed.");
     } finally {
       setBusy(null);
     }
@@ -213,6 +243,36 @@ export default function FundingAiControlPanel() {
     }
   }
 
+  function renderOpportunityRow(opportunity: FundingOpportunity) {
+    const link = opportunity.application_url || opportunity.source_url;
+    const packageReady = opportunity.package_status === "package_ready";
+    const goAllowed = packageReady && opportunity.owner_go_enabled === true;
+
+    return (
+      <article className={styles.row} key={opportunity.id}>
+        <div className={styles.rowMain}>
+          <strong>{opportunity.title || "Untitled opportunity"}</strong>
+          <span>{opportunity.source_name || opportunity.source_type || "Unknown source"} · {shortDate(opportunity.deadline_date || opportunity.deadline_text)}</span>
+          <small>{money(opportunity.value)} · Score {opportunity.score || 0} · Confidence {pct(opportunity.confidence_score)}</small>
+          <small>{cleanLabel(opportunity.funding_lane)} · {cleanLabel(opportunity.funding_instrument)} · {cleanLabel(opportunity.source_quality)}</small>
+          {opportunity.go_status && <small>Go status: {cleanLabel(opportunity.go_status)}</small>}
+        </div>
+        <div className={styles.rowActions}>
+          {link && <a className={styles.iconLink} href={link} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Source</a>}
+          <button className="ghost-btn compact-portal-btn" type="button" onClick={() => explainOpportunity(opportunity.id)} disabled={Boolean(busy) || explanationLoading}>
+            {explanationLoading ? <Loader2 className={styles.spin} size={14} /> : <Info size={14} />} Explain Fit
+          </button>
+          <button className="ghost-btn compact-portal-btn" type="button" onClick={() => preparePackage(opportunity.id)} disabled={Boolean(busy)}>
+            {packageReady ? "Rebuild Package" : "Prepare"}
+          </button>
+          <button className="primary-btn compact-portal-btn" type="button" onClick={() => approveGo(opportunity)} disabled={!goAllowed || Boolean(busy)}>
+            {goAllowed ? "Go" : "Verify First"}
+          </button>
+        </div>
+      </article>
+    );
+  }
+
   if (!open) {
     return (
       <button className={styles.floatingOpenButton} type="button" onClick={() => setOpen(true)}>
@@ -227,7 +287,7 @@ export default function FundingAiControlPanel() {
         <div>
           <span className="section-kicker">Finance Funding AI</span>
           <h2>Grant & Contract Control Window</h2>
-          <p>Hunt opportunities, prepare application packages, explain rules and fit, and queue owner-approved Go workflows.</p>
+          <p>Hunt opportunities, separate grants from loans/resources, explain rules and fit, and queue owner-approved Go workflows.</p>
         </div>
         <button className={styles.closeButton} type="button" onClick={() => setOpen(false)}>Minimize</button>
       </div>
@@ -247,9 +307,15 @@ export default function FundingAiControlPanel() {
           {error && <p className={styles.error}>{error}</p>}
 
           <div className={styles.metricsGrid}>
-            <div><span>Opportunities</span><strong>{counts.opportunities || 0}</strong></div>
-            <div><span>Packages Ready</span><strong>{counts.package_ready || 0}</strong></div>
+            <div><span>Actual Startup Grants</span><strong>{counts.startup_grants || 0}</strong></div>
+            <div><span>Startup Loans</span><strong>{counts.startup_loans || 0}</strong></div>
+            <div><span>Startup Resources</span><strong>{counts.startup_resources || 0}</strong></div>
+            <div><span>SBIR/STTR</span><strong>{counts.sbir_sttr || 0}</strong></div>
+            <div><span>Contracts</span><strong>{counts.contracts_procurement || 0}</strong></div>
             <div><span>Go Ready</span><strong>{counts.go_ready || 0}</strong></div>
+            <div><span>Top Opportunities</span><strong>{counts.opportunities || 0}</strong></div>
+            <div><span>Needs Review</span><strong>{counts.needs_review || 0}</strong></div>
+            <div><span>Packages Ready</span><strong>{counts.package_ready || 0}</strong></div>
             <div><span>Pending Queue</span><strong>{counts.pending_execution || 0}</strong></div>
             <div><span>Rejected Noise</span><strong>{counts.rejected_noise || 0}</strong></div>
             <div><span>AI Recs</span><strong>{counts.open_recommendations || 0}</strong></div>
@@ -257,7 +323,10 @@ export default function FundingAiControlPanel() {
 
           <div className={styles.actions}>
             <button className="primary-btn" type="button" onClick={runHuntCycle} disabled={Boolean(busy)}>
-              {busy === "hunt" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Hunt Now
+              {busy === "hunt" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Hunt All
+            </button>
+            <button className="primary-btn" type="button" onClick={runStartupGrantHunt} disabled={Boolean(busy)}>
+              {busy === "startup" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Hunt Startup Grants
             </button>
             <button className="ghost-btn" type="button" onClick={refreshFundingAi} disabled={Boolean(busy)}>
               {busy === "refresh" ? <Loader2 className={styles.spin} size={16} /> : <RefreshCw size={16} />} Refresh Scores
@@ -265,35 +334,16 @@ export default function FundingAiControlPanel() {
           </div>
 
           <section className={styles.sectionBlock}>
+            <div className={styles.sectionHead}><h3>Startup Funding Sources</h3><span>{startupSources.length}</span></div>
+            <div className={styles.list}>
+              {startupSources.length ? startupSources.slice(0, 8).map(renderOpportunityRow) : <p className={styles.compactItem}><strong>No official startup grants yet.</strong><span>Loans/resources may appear here separately when found. Go stays locked until fit is verified.</span></p>}
+            </div>
+          </section>
+
+          <section className={styles.sectionBlock}>
             <div className={styles.sectionHead}><h3>Top Funding Opportunities</h3><span>{opportunities.length}</span></div>
             <div className={styles.list}>
-              {opportunities.slice(0, 8).map((opportunity) => {
-                const link = opportunity.application_url || opportunity.source_url;
-                const packageReady = opportunity.package_status === "package_ready";
-                const goAllowed = packageReady && opportunity.owner_go_enabled === true;
-                return (
-                  <article className={styles.row} key={opportunity.id}>
-                    <div className={styles.rowMain}>
-                      <strong>{opportunity.title || "Untitled opportunity"}</strong>
-                      <span>{opportunity.source_name || opportunity.source_type || "Unknown source"} · {shortDate(opportunity.deadline_date || opportunity.deadline_text)}</span>
-                      <small>{money(opportunity.value)} · Score {opportunity.score || 0} · Confidence {pct(opportunity.confidence_score)}</small>
-                      {opportunity.go_status && <small>Go status: {opportunity.go_status}</small>}
-                    </div>
-                    <div className={styles.rowActions}>
-                      {link && <a className={styles.iconLink} href={link} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Source</a>}
-                      <button className="ghost-btn compact-portal-btn" type="button" onClick={() => explainOpportunity(opportunity.id)} disabled={Boolean(busy) || explanationLoading}>
-                        {explanationLoading ? <Loader2 className={styles.spin} size={14} /> : <Info size={14} />} Explain Fit
-                      </button>
-                      <button className="ghost-btn compact-portal-btn" type="button" onClick={() => preparePackage(opportunity.id)} disabled={Boolean(busy)}>
-                        {packageReady ? "Rebuild Package" : "Prepare"}
-                      </button>
-                      <button className="primary-btn compact-portal-btn" type="button" onClick={() => approveGo(opportunity)} disabled={!goAllowed || Boolean(busy)}>
-                        {goAllowed ? "Go" : "Verify First"}
-                      </button>
-                    </div>
-                  </article>
-                );
-              })}
+              {opportunities.slice(0, 8).map(renderOpportunityRow)}
             </div>
           </section>
 
@@ -344,6 +394,17 @@ export default function FundingAiControlPanel() {
               </div>
             </section>
           )}
+
+          <section className={styles.sectionBlock}>
+            <div className={styles.sectionHead}><h3>Needs Review / Held</h3><span>{needsReview.length}</span></div>
+            {needsReview.slice(0, 6).map((item) => (
+              <p className={styles.queueItem} key={item.id}>
+                <strong>{item.title}</strong>
+                <span>{cleanLabel(item.go_status)}</span>
+                <em>{cleanLabel(item.funding_lane)} · {cleanLabel(item.funding_instrument)} · {cleanLabel(item.source_quality)}</em>
+              </p>
+            ))}
+          </section>
 
           <section className={styles.twoColumn}>
             <div className={styles.sectionBlock}>
