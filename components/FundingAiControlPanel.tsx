@@ -22,6 +22,8 @@ type FundingOpportunity = {
   package_status?: string | null;
   owner_go_enabled?: boolean;
   go_status?: string | null;
+  accuracy_status?: string | null;
+  accuracy_reason?: string | null;
 };
 
 type FundingPanel = {
@@ -249,7 +251,7 @@ export default function FundingAiControlPanel() {
             <div><span>Packages Ready</span><strong>{counts.package_ready || 0}</strong></div>
             <div><span>Go Ready</span><strong>{counts.go_ready || 0}</strong></div>
             <div><span>Pending Queue</span><strong>{counts.pending_execution || 0}</strong></div>
-            <div><span>Research Queries</span><strong>{counts.research_queries || 0}</strong></div>
+            <div><span>Rejected Noise</span><strong>{counts.rejected_noise || 0}</strong></div>
             <div><span>AI Recs</span><strong>{counts.open_recommendations || 0}</strong></div>
           </div>
 
@@ -268,12 +270,14 @@ export default function FundingAiControlPanel() {
               {opportunities.slice(0, 8).map((opportunity) => {
                 const link = opportunity.application_url || opportunity.source_url;
                 const packageReady = opportunity.package_status === "package_ready";
+                const goAllowed = packageReady && opportunity.owner_go_enabled === true;
                 return (
                   <article className={styles.row} key={opportunity.id}>
                     <div className={styles.rowMain}>
                       <strong>{opportunity.title || "Untitled opportunity"}</strong>
                       <span>{opportunity.source_name || opportunity.source_type || "Unknown source"} · {shortDate(opportunity.deadline_date || opportunity.deadline_text)}</span>
                       <small>{money(opportunity.value)} · Score {opportunity.score || 0} · Confidence {pct(opportunity.confidence_score)}</small>
+                      {opportunity.go_status && <small>Go status: {opportunity.go_status}</small>}
                     </div>
                     <div className={styles.rowActions}>
                       {link && <a className={styles.iconLink} href={link} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Source</a>}
@@ -283,8 +287,8 @@ export default function FundingAiControlPanel() {
                       <button className="ghost-btn compact-portal-btn" type="button" onClick={() => preparePackage(opportunity.id)} disabled={Boolean(busy)}>
                         {packageReady ? "Rebuild Package" : "Prepare"}
                       </button>
-                      <button className="primary-btn compact-portal-btn" type="button" onClick={() => approveGo(opportunity)} disabled={!packageReady || Boolean(busy)}>
-                        Go
+                      <button className="primary-btn compact-portal-btn" type="button" onClick={() => approveGo(opportunity)} disabled={!goAllowed || Boolean(busy)}>
+                        {goAllowed ? "Go" : "Verify First"}
                       </button>
                     </div>
                   </article>
