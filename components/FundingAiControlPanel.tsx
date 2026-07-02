@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ExternalLink, Loader2, RefreshCw, Rocket, ShieldCheck, Sparkles } from "lucide-react";
+import { ExternalLink, Info, Loader2, RefreshCw, Rocket, ShieldCheck, Sparkles } from "lucide-react";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseClient";
 import styles from "./FundingAiControlPanel.module.css";
 
@@ -36,6 +36,17 @@ type FundingPanel = {
   execution_queue?: Array<Record<string, any>>;
 };
 
+type FundingExplanation = {
+  ok?: boolean;
+  generated_at?: string;
+  opportunity?: Record<string, any>;
+  rules?: Record<string, any>;
+  fit?: Record<string, any>;
+  gaps?: string[];
+  documents?: Array<Record<string, any>>;
+  next_step?: string;
+};
+
 function money(value: unknown) {
   const numeric = Number(value || 0);
   if (!Number.isFinite(numeric) || numeric <= 0) return "$0";
@@ -53,6 +64,25 @@ function shortDate(value?: string | null) {
   const date = new Date(value);
   if (Number.isNaN(date.getTime())) return value;
   return date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+}
+
+function asText(value: unknown, fallback = "Not extracted yet") {
+  if (value === null || value === undefined) return fallback;
+  if (Array.isArray(value)) return value.length ? value.join("; ") : fallback;
+  if (typeof value === "object") return JSON.stringify(value, null, 2);
+  const text = String(value).trim();
+  return text || fallback;
+}
+
+function renderList(value: unknown, fallback = "Not extracted yet") {
+  if (Array.isArray(value) && value.length) {
+    return (
+      <ul className={styles.explanationList}>
+        {value.map((item, index) => <li key={`${String(item)}-${index}`}>{asText(item)}</li>)}
+      </ul>
+    );
+  }
+  return <p>{fallback}</p>;
 }
 
 async function rpc<T>(name: string, args?: Record<string, any>) {
@@ -78,6 +108,8 @@ export default function FundingAiControlPanel() {
   const [busy, setBusy] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [open, setOpen] = useState(true);
+  const [explanation, setExplanation] = useState<FundingExplanation | null>(null);
+  const [explanationLoading, setExplanationLoading] = useState(false);
 
   const counts = panel?.counts || {};
   const opportunities = useMemo(() => panel?.opportunities || [], [panel]);
@@ -135,12 +167,26 @@ export default function FundingAiControlPanel() {
     }
   }
 
+  async function explainOpportunity(opportunityId: string) {
+    setExplanationLoading(true);
+    setError(null);
+    try {
+      const data = await rpc<FundingExplanation>("ppd_get_funding_opportunity_explanation", { p_opportunity_id: opportunityId });
+      setExplanation(data);
+    } catch (err: any) {
+      setError(err?.message || "Funding explanation failed.");
+    } finally {
+      setExplanationLoading(false);
+    }
+  }
+
   async function preparePackage(opportunityId: string) {
     setBusy(`prepare-${opportunityId}`);
     setError(null);
     try {
       await rpc("ppd_funding_prepare_package", { p_opportunity_id: opportunityId });
       await loadPanel();
+      await explainOpportunity(opportunityId);
     } catch (err: any) {
       setError(err?.message || "Package preparation failed.");
     } finally {
@@ -157,6 +203,7 @@ export default function FundingAiControlPanel() {
     try {
       await rpc("ppd_funding_owner_go", { p_opportunity_id: opportunity.id });
       await loadPanel();
+      await explainOpportunity(opportunity.id);
     } catch (err: any) {
       setError(err?.message || "Owner Go failed.");
     } finally {
@@ -178,7 +225,7 @@ export default function FundingAiControlPanel() {
         <div>
           <span className="section-kicker">Finance Funding AI</span>
           <h2>Grant & Contract Control Window</h2>
-          <p>Hunt opportunities, prepare application packages, and queue owner-approved Go workflows.</p>
+          <p>Hunt opportunities, prepare application packages, explain rules and fit, and queue owner-approved Go workflows.</p>
         </div>
         <button className={styles.closeButton} type="button" onClick={() => setOpen(false)}>Minimize</button>
       </div>
@@ -230,6 +277,9 @@ export default function FundingAiControlPanel() {
                     </div>
                     <div className={styles.rowActions}>
                       {link && <a className={styles.iconLink} href={link} target="_blank" rel="noreferrer"><ExternalLink size={15} /> Source</a>}
+                      <button className="ghost-btn compact-portal-btn" type="button" onClick={() => explainOpportunity(opportunity.id)} disabled={Boolean(busy) || explanationLoading}>
+                        {explanationLoading ? <Loader2 className={styles.spin} size={14} /> : <Info size={14} />} Explain Fit
+                      </button>
                       <button className="ghost-btn compact-portal-btn" type="button" onClick={() => preparePackage(opportunity.id)} disabled={Boolean(busy)}>
                         {packageReady ? "Rebuild Package" : "Prepare"}
                       </button>
@@ -242,6 +292,54 @@ export default function FundingAiControlPanel() {
               })}
             </div>
           </section>
+
+          {explanation && (
+            <section className={styles.explanationPanel}>
+              <div className={styles.sectionHead}>
+                <div>
+                  <span className="section-kicker">Grant Explanation</span>
+                  <h3>{explanation.opportunity?.title || "Funding opportunity"}</h3>
+                </div>
+                <button className={styles.closeButton} type="button" onClick={() => setExplanation(null)}>Close</button>
+              </div>
+
+              <div className={styles.explanationGrid}>
+                <div className={styles.explanationCard}>
+                  <h4>Rules & Requirements</h4>
+                  <p><b>Source:</b> {asText(explanation.rules?.source)}</p>
+                  <p><b>Type:</b> {asText(explanation.rules?.opportunity_type)}</p>
+                  <p><b>Deadline:</b> {asText(explanation.rules?.deadline, "Monitor")}</p>
+                  <p><b>Estimated Value:</b> {money(explanation.rules?.estimated_value)}</p>
+                  <p><b>Eligibility:</b> {asText(explanation.rules?.eligibility_summary)}</p>
+                  <p><b>Application Summary:</b> {asText(explanation.rules?.application_summary)}</p>
+                </div>
+
+                <div className={styles.explanationCard}>
+                  <h4>Why PPD Fits</h4>
+                  <p><b>Company:</b> {asText(explanation.fit?.company)}</p>
+                  <p><b>Stage:</b> {asText(explanation.fit?.business_stage)}</p>
+                  <p><b>Location:</b> {asText(explanation.fit?.location)}</p>
+                  <p><b>Industry Fit:</b> {asText(explanation.fit?.industry_fit)}</p>
+                  <p><b>Founder Fit:</b> {asText(explanation.fit?.founder_fit)}</p>
+                  <p><b>Use of Funds:</b> {asText(explanation.fit?.use_of_funds_fit)}</p>
+                </div>
+
+                <div className={styles.explanationCard}>
+                  <h4>Required Documents</h4>
+                  {renderList(explanation.rules?.required_documents)}
+                  <h4>Application Questions</h4>
+                  {renderList(explanation.rules?.application_questions)}
+                </div>
+
+                <div className={styles.explanationCard}>
+                  <h4>Missing / Risk Items</h4>
+                  {renderList(explanation.gaps, "No missing items flagged yet.")}
+                  <h4>Next Step</h4>
+                  <p>{explanation.next_step || "Review the package and confirm the source rules before clicking Go."}</p>
+                </div>
+              </div>
+            </section>
+          )}
 
           <section className={styles.twoColumn}>
             <div className={styles.sectionBlock}>
