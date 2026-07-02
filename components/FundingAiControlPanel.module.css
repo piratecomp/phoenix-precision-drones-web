@@ -150,12 +150,20 @@
   margin-bottom: 16px;
 }
 
-.sectionBlock {
+.sectionBlock,
+.explanationPanel {
   margin-top: 14px;
   padding: 14px;
   border: 1px solid rgba(255, 173, 82, 0.16);
   border-radius: 20px;
   background: rgba(255, 255, 255, 0.045);
+}
+
+.explanationPanel {
+  border-color: rgba(103, 255, 156, 0.26);
+  background:
+    radial-gradient(circle at 10% 0%, rgba(103, 255, 156, 0.09), transparent 18rem),
+    rgba(255, 255, 255, 0.045);
 }
 
 .sectionHead {
@@ -212,10 +220,44 @@
   font-size: 13px;
 }
 
-.twoColumn {
+.twoColumn,
+.explanationGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.explanationCard {
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  background: rgba(0, 0, 0, 0.14);
+}
+
+.explanationCard h4 {
+  margin: 0 0 10px;
+  color: var(--gold);
+}
+
+.explanationCard p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.explanationCard b {
+  color: var(--text);
+}
+
+.explanationList {
+  margin: 0 0 14px;
+  padding-left: 18px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.explanationList li {
+  margin-bottom: 6px;
 }
 
 .compactItem,
@@ -245,6 +287,7 @@
 
   .metricsGrid,
   .twoColumn,
+  .explanationGrid,
   .row {
     grid-template-columns: 1fr;
   }
