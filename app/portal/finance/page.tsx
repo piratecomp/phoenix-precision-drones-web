@@ -1,3 +1,4 @@
+import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
 import FundingAiControlPanel from "@/components/FundingAiControlPanel";
 import PayrollAiControlPanel from "@/components/PayrollAiControlPanel";
 import { PortalDashboardDataShell } from "@/components/PortalDataShell";
@@ -7,6 +8,7 @@ export default function PortalDashboardPage() {
   return (
     <main className={styles.financeDashboardPage}>
       <PortalDashboardDataShell dashboardKey="finance_payroll" />
+      <DashboardCommandWorkspace dashboardKey="finance_payroll" />
 
       <section className={styles.aiPanelsSection} aria-label="Finance AI control panels">
         <div className={styles.aiPanelsHeader}>
