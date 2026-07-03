@@ -1,0 +1,251 @@
+.workspace {
+  width: min(1680px, calc(100% - 32px));
+  margin: 22px auto;
+  border: 1px solid rgba(255, 173, 82, 0.2);
+  border-radius: 28px;
+  padding: 18px;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 148, 31, 0.16), transparent 24rem),
+    linear-gradient(180deg, rgba(8, 12, 18, 0.97), rgba(4, 6, 10, 0.98));
+  box-shadow: var(--shadow);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  align-items: flex-start;
+  margin-bottom: 14px;
+}
+
+.header h2 {
+  margin: 10px 0 8px;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1;
+}
+
+.header p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.statusPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 173, 82, 0.35);
+  color: var(--gold);
+  background: rgba(255, 148, 31, 0.08);
+  font-size: 13px;
+  font-weight: 800;
+  white-space: nowrap;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.75fr) minmax(360px, 1.35fr) minmax(260px, 0.8fr);
+  gap: 14px;
+  min-height: 520px;
+}
+
+.panel {
+  min-height: 0;
+  border: 1px solid rgba(255, 173, 82, 0.14);
+  border-radius: 22px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.045);
+}
+
+.panelHead {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.panelHead h3 {
+  margin: 0;
+  font-size: 18px;
+}
+
+.panelHead span {
+  color: var(--gold);
+  font-weight: 900;
+}
+
+.cardGrid {
+  display: grid;
+  gap: 10px;
+}
+
+.statCard,
+.queueItem,
+.actionButton {
+  width: 100%;
+  text-align: left;
+  border: 1px solid rgba(255, 173, 82, 0.14);
+  border-radius: 18px;
+  padding: 12px;
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.16);
+}
+
+.statCard {
+  cursor: pointer;
+}
+
+.statCard.active,
+.queueItem.active {
+  border-color: rgba(255, 191, 77, 0.68);
+  background: rgba(255, 148, 31, 0.12);
+}
+
+.statCard span,
+.queueItem span,
+.actionButton span,
+.meta {
+  display: block;
+  color: var(--soft);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.statCard strong {
+  display: block;
+  margin: 7px 0 4px;
+  color: var(--gold);
+  font-size: 28px;
+}
+
+.queueList {
+  display: grid;
+  gap: 10px;
+  max-height: 420px;
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.queueItem {
+  cursor: pointer;
+}
+
+.queueItem strong,
+.actionButton strong {
+  display: block;
+  margin-bottom: 5px;
+}
+
+.queueItem em {
+  display: block;
+  margin-top: 6px;
+  color: var(--gold);
+  font-size: 12px;
+  font-style: normal;
+  text-transform: uppercase;
+}
+
+.inspector {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  gap: 12px;
+}
+
+.inspectorCard {
+  min-height: 260px;
+  border-radius: 20px;
+  padding: 16px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(103, 255, 156, 0.08), transparent 18rem),
+    rgba(0, 0, 0, 0.18);
+  border: 1px solid rgba(103, 255, 156, 0.18);
+}
+
+.inspectorCard h3 {
+  margin: 0 0 10px;
+  font-size: clamp(22px, 2.5vw, 34px);
+}
+
+.inspectorCard p {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.metaGrid div {
+  border: 1px solid rgba(255, 173, 82, 0.12);
+  border-radius: 16px;
+  padding: 10px;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.metaGrid strong {
+  display: block;
+  margin-top: 3px;
+  color: var(--gold);
+  font-size: 14px;
+  word-break: break-word;
+}
+
+.actions {
+  display: grid;
+  gap: 10px;
+}
+
+.actionButton {
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.actionButton:hover {
+  transform: translateY(-1px);
+  border-color: rgba(255, 191, 77, 0.55);
+}
+
+.actionButton.disabled {
+  opacity: 0.58;
+  cursor: not-allowed;
+}
+
+.notice {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 173, 82, 0.18);
+  color: var(--muted);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+@media (max-width: 1200px) {
+  .board {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .queueList {
+    max-height: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .workspace {
+    width: min(100% - 20px, 1680px);
+    padding: 12px;
+    border-radius: 20px;
+  }
+
+  .header,
+  .metaGrid {
+    grid-template-columns: 1fr;
+    display: grid;
+  }
+}
