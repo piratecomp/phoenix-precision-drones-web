@@ -71,6 +71,7 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
   const [notice, setNotice] = useState<string | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeCard, setActiveCard] = useState(0);
+  const [actionBusy, setActionBusy] = useState(false);
 
   const cards = panel?.cards || [];
   const items = panel?.items || [];
@@ -92,6 +93,28 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
       setNotice(err?.message || "Workspace data unavailable.");
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function requestDashboardAction() {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase) return;
+    setActionBusy(true);
+    setNotice(null);
+    try {
+      const { data, error } = await supabase.rpc("ppd_request_dashboard_action", {
+        p_dashboard_key: dashboardKey,
+        p_action_key: "review_selected_item",
+        p_selected_item: selected || {},
+        p_note: `Review requested from ${titles[dashboardKey] || "dashboard"}: ${itemTitle(selected)}`,
+      });
+      if (error) throw error;
+      setNotice(`Action queued for review. Task: ${data?.task_id || "created"}.`);
+      await loadWorkspace();
+    } catch (err: any) {
+      setNotice(err?.message || "Unable to queue dashboard action.");
+    } finally {
+      setActionBusy(false);
     }
   }
 
@@ -162,9 +185,9 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
               <strong>Open dashboard route</strong>
               <span>Use the existing protected route while this workspace is being expanded.</span>
             </Link>
-            <button className={`${styles.actionButton} ${styles.disabled}`} type="button" disabled>
-              <strong>Department action executor</strong>
-              <span>Next build step: connect approve, hold, release, assign, send, or complete actions for this department.</span>
+            <button className={styles.actionButton} type="button" onClick={requestDashboardAction} disabled={actionBusy}>
+              <strong>{actionBusy ? "Queuing action…" : "Queue department review"}</strong>
+              <span>Create a protected department task from the selected work item. Safe mode: review queue only, no direct execution.</span>
             </button>
           </div>
         </aside>
