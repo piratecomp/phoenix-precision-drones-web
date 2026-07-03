@@ -1,7 +1,11 @@
+import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
 import { PortalDashboardDataShell } from "@/components/PortalDataShell";
 
 export default function PortalDashboardPage() {
   return (
-    <PortalDashboardDataShell dashboardKey="owner" />
+    <>
+      <PortalDashboardDataShell dashboardKey="owner" />
+      <DashboardCommandWorkspace dashboardKey="owner" />
+    </>
   );
 }
