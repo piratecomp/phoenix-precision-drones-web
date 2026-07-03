@@ -1,11 +1,12 @@
 import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
-import { PortalDashboardDataShell } from "@/components/PortalDataShell";
+import PortalDashboardChrome from "@/components/PortalDashboardChrome";
+import QuotePipelinePanel from "@/components/QuotePipelinePanel";
 
 export default function PortalDashboardPage() {
   return (
-    <>
-      <PortalDashboardDataShell dashboardKey="sales_marketing" />
+    <PortalDashboardChrome dashboardKey="sales_marketing">
       <DashboardCommandWorkspace dashboardKey="sales_marketing" />
-    </>
+      <QuotePipelinePanel dashboardKey="sales_marketing" />
+    </PortalDashboardChrome>
   );
 }
