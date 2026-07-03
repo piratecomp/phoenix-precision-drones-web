@@ -1,15 +1,12 @@
 import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
-import { PortalDashboardDataShell } from "@/components/PortalDataShell";
 import MaintenanceBridgePanel from "@/components/MaintenanceBridgePanel";
+import PortalDashboardChrome from "@/components/PortalDashboardChrome";
 
 export default function PortalDashboardPage() {
   return (
-    <>
-      <PortalDashboardDataShell dashboardKey="maintenance" />
+    <PortalDashboardChrome dashboardKey="maintenance">
       <DashboardCommandWorkspace dashboardKey="maintenance" />
-      <div className="portal-main-area maintenance-bridge-inline-host">
-        <MaintenanceBridgePanel dashboardKey="maintenance" />
-      </div>
-    </>
+      <MaintenanceBridgePanel dashboardKey="maintenance" />
+    </PortalDashboardChrome>
   );
 }
