@@ -1,0 +1,43 @@
+.financeDashboardPage {
+  display: grid;
+  gap: 24px;
+}
+
+.aiPanelsSection {
+  display: grid;
+  gap: 18px;
+  width: 100%;
+}
+
+.aiPanelsHeader {
+  padding: 18px;
+  border: 1px solid rgba(255, 173, 82, 0.18);
+  border-radius: 22px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 148, 31, 0.12), transparent 18rem),
+    rgba(255, 255, 255, 0.04);
+}
+
+.aiPanelsHeader h2 {
+  margin: 8px 0;
+  font-size: clamp(26px, 3vw, 42px);
+}
+
+.aiPanelsHeader p {
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.aiPanelsGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 18px;
+  align-items: start;
+}
+
+@media (min-width: 1500px) {
+  .aiPanelsGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
