@@ -64,6 +64,10 @@ function routeFor(key: string) {
   return `/portal/${key}`;
 }
 
+function isDepartmentTask(item?: Item | null) {
+  return Boolean(item?.id && (item?.task_title || item?.task_status || item?.task_type || item?.source === "dashboard_command_workspace"));
+}
+
 export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardKey: string }) {
   const [configured] = useState(isSupabaseConfigured());
   const [panel, setPanel] = useState<PpdRoleOperationsPanel | null>(null);
@@ -76,6 +80,7 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
   const cards = panel?.cards || [];
   const items = panel?.items || [];
   const selected = items[selectedIndex] || null;
+  const selectedIsTask = isDepartmentTask(selected);
 
   async function loadWorkspace() {
     if (!configured) {
@@ -113,6 +118,27 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
       await loadWorkspace();
     } catch (err: any) {
       setNotice(err?.message || "Unable to queue dashboard action.");
+    } finally {
+      setActionBusy(false);
+    }
+  }
+
+  async function updateTaskStatus(status: string) {
+    const supabase = getSupabaseBrowserClient();
+    if (!supabase || !selected?.id) return;
+    setActionBusy(true);
+    setNotice(null);
+    try {
+      const { data, error } = await supabase.rpc("ppd_update_dashboard_task_status", {
+        p_task_id: selected.id,
+        p_task_status: status,
+        p_resolution: `${titles[dashboardKey] || "Dashboard"} moved task to ${status}.`,
+      });
+      if (error) throw error;
+      setNotice(`Task updated: ${clean(data?.new_status || status)}.`);
+      await loadWorkspace();
+    } catch (err: any) {
+      setNotice(err?.message || "Unable to update task status.");
     } finally {
       setActionBusy(false);
     }
@@ -189,6 +215,22 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
               <strong>{actionBusy ? "Queuing action…" : "Queue department review"}</strong>
               <span>Create a protected department task from the selected work item. Safe mode: review queue only, no direct execution.</span>
             </button>
+            {selectedIsTask && (
+              <>
+                <button className={styles.actionButton} type="button" onClick={() => updateTaskStatus("in_progress")} disabled={actionBusy}>
+                  <strong>Start task</strong>
+                  <span>Move the selected department task into active review.</span>
+                </button>
+                <button className={styles.actionButton} type="button" onClick={() => updateTaskStatus("blocked")} disabled={actionBusy}>
+                  <strong>Block / hold task</strong>
+                  <span>Mark the task blocked while keeping it visible in the dashboard queue.</span>
+                </button>
+                <button className={styles.actionButton} type="button" onClick={() => updateTaskStatus("completed")} disabled={actionBusy}>
+                  <strong>Complete task</strong>
+                  <span>Close the task with a safe dashboard resolution. No external execution.</span>
+                </button>
+              </>
+            )}
           </div>
         </aside>
       </div>
