@@ -40,17 +40,17 @@ function clean(value: unknown, fallback = "pending") {
   return (text || fallback).replace(/_/g, " ");
 }
 
-function itemTitle(item?: Item | null) {
+function titleOf(item?: Item | null) {
   if (!item) return "Select a work item";
   return item.title || item.task_title || item.action_title || item.notification_title || item.status || "Workspace item";
 }
 
-function itemStatus(item?: Item | null) {
+function statusOf(item?: Item | null) {
   if (!item) return "idle";
   return item.status || item.task_status || item.finance_status || item.review_status || item.delivery_status || item.verification_status || item.approval_status || item.source || "review";
 }
 
-function itemSummary(item?: Item | null) {
+function summaryOf(item?: Item | null) {
   if (!item) return "Choose a queue item to inspect details and next steps.";
   return item.summary || item.task_summary || item.action_summary || item.next_step || item.required_action || item.release_notes || item.description || "No summary available yet.";
 }
@@ -64,35 +64,52 @@ function routeFor(key: string) {
   return `/portal/${key}`;
 }
 
-function isDepartmentTask(item?: Item | null) {
-  return Boolean(item?.id && (item?.task_title || item?.task_status || item?.task_type || item?.source === "dashboard_command_workspace"));
+function isTask(item?: Item | null) {
+  return Boolean(item?.id && (item?.type === "department_task" || item?.task_title || item?.task_status || item?.source === "portal_department_tasks"));
+}
+
+function mergeItems(a: Item[], b: Item[]) {
+  const seen = new Set<string>();
+  return [...a, ...b].filter((item, index) => {
+    const key = `${item.source || item.type || "item"}:${item.id || titleOf(item) || index}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardKey: string }) {
   const [configured] = useState(isSupabaseConfigured());
   const [panel, setPanel] = useState<PpdRoleOperationsPanel | null>(null);
+  const [queue, setQueue] = useState<Item[]>([]);
+  const [queueCounts, setQueueCounts] = useState<Record<string, any>>({});
   const [loading, setLoading] = useState(configured);
   const [notice, setNotice] = useState<string | null>(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [activeCard, setActiveCard] = useState(0);
-  const [actionBusy, setActionBusy] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const cards = panel?.cards || [];
-  const items = panel?.items || [];
+  const items = mergeItems(queue, panel?.items || []);
   const selected = items[selectedIndex] || null;
-  const selectedIsTask = isDepartmentTask(selected);
 
   async function loadWorkspace() {
-    if (!configured) {
+    const supabase = getSupabaseBrowserClient();
+    if (!configured || !supabase) {
       setLoading(false);
       return;
     }
-    const supabase = getSupabaseBrowserClient();
-    if (!supabase) return;
     setLoading(true);
     try {
-      const data = await getPpdRoleOperationsPanel(supabase, dashboardKey);
-      setPanel(data);
+      const [rolePanel, queueResult] = await Promise.all([
+        getPpdRoleOperationsPanel(supabase, dashboardKey),
+        supabase.rpc("ppd_get_dashboard_workspace_queue", { p_dashboard_key: dashboardKey }),
+      ]);
+      if (queueResult.error) throw queueResult.error;
+      setPanel(rolePanel);
+      setQueue(queueResult.data?.items || []);
+      setQueueCounts(queueResult.data?.counts || {});
+      setSelectedIndex(0);
       setNotice(null);
     } catch (err: any) {
       setNotice(err?.message || "Workspace data unavailable.");
@@ -101,33 +118,31 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
     }
   }
 
-  async function requestDashboardAction() {
+  async function queueReview() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    setActionBusy(true);
-    setNotice(null);
+    setBusy(true);
     try {
       const { data, error } = await supabase.rpc("ppd_request_dashboard_action", {
         p_dashboard_key: dashboardKey,
         p_action_key: "review_selected_item",
         p_selected_item: selected || {},
-        p_note: `Review requested from ${titles[dashboardKey] || "dashboard"}: ${itemTitle(selected)}`,
+        p_note: `Review requested from ${titles[dashboardKey] || "dashboard"}: ${titleOf(selected)}`,
       });
       if (error) throw error;
-      setNotice(`Action queued for review. Task: ${data?.task_id || "created"}.`);
+      setNotice(`Action queued. Task: ${data?.task_id || "created"}.`);
       await loadWorkspace();
     } catch (err: any) {
-      setNotice(err?.message || "Unable to queue dashboard action.");
+      setNotice(err?.message || "Unable to queue action.");
     } finally {
-      setActionBusy(false);
+      setBusy(false);
     }
   }
 
-  async function updateTaskStatus(status: string) {
+  async function setTaskStatus(status: string) {
     const supabase = getSupabaseBrowserClient();
     if (!supabase || !selected?.id) return;
-    setActionBusy(true);
-    setNotice(null);
+    setBusy(true);
     try {
       const { data, error } = await supabase.rpc("ppd_update_dashboard_task_status", {
         p_task_id: selected.id,
@@ -138,99 +153,44 @@ export default function DashboardCommandWorkspace({ dashboardKey }: { dashboardK
       setNotice(`Task updated: ${clean(data?.new_status || status)}.`);
       await loadWorkspace();
     } catch (err: any) {
-      setNotice(err?.message || "Unable to update task status.");
+      setNotice(err?.message || "Unable to update task.");
     } finally {
-      setActionBusy(false);
+      setBusy(false);
     }
   }
 
-  useEffect(() => {
-    void loadWorkspace();
-  }, [dashboardKey]);
+  useEffect(() => { void loadWorkspace(); }, [dashboardKey]);
 
   return (
     <section className={styles.workspace} aria-label={`${dashboardKey} command workspace`}>
       <div className={styles.header}>
-        <div>
-          <span className="section-kicker">Dashboard Command Workspace</span>
-          <h2>{titles[dashboardKey] || "Dashboard Workspace"}</h2>
-          <p>{subtitles[dashboardKey] || "Live queue, status filters, item inspector, and dashboard actions."}</p>
-        </div>
-        <button className={styles.statusPill} type="button" onClick={loadWorkspace} disabled={loading}>
-          {loading ? <Loader2 className="portal-spin" size={16} /> : <RefreshCw size={16} />}
-          Refresh
-        </button>
+        <div><span className="section-kicker">Dashboard Command Workspace</span><h2>{titles[dashboardKey] || "Dashboard Workspace"}</h2><p>{subtitles[dashboardKey] || "Live queue, status filters, item inspector, and dashboard actions."}</p></div>
+        <button className={styles.statusPill} type="button" onClick={loadWorkspace} disabled={loading}>{loading ? <Loader2 className="portal-spin" size={16} /> : <RefreshCw size={16} />} Refresh</button>
       </div>
-
       {notice && <p className={styles.notice}>{notice}</p>}
-
       <div className={styles.board}>
         <aside className={styles.panel}>
-          <div className={styles.panelHead}><h3>Status filters</h3><span>{cards.length}</span></div>
+          <div className={styles.panelHead}><h3>Status filters</h3><span>{cards.length + 1}</span></div>
           <div className={styles.cardGrid}>
-            {cards.length === 0 && <p className={styles.notice}>No status cards returned yet.</p>}
-            {cards.map((card, index) => (
-              <button className={`${styles.statCard} ${index === activeCard ? styles.active : ""}`} key={`${card.title}-${index}`} type="button" onClick={() => setActiveCard(index)}>
-                <span>{card.title || "Status"}</span>
-                <strong>{card.value ?? 0}</strong>
-                <em className={styles.meta}>{card.label || "Live count"}</em>
-              </button>
-            ))}
+            <button className={`${styles.statCard} ${activeCard === -1 ? styles.active : ""}`} type="button" onClick={() => setActiveCard(-1)}><span>Workspace Queue</span><strong>{queueCounts.total_items ?? items.length}</strong><em className={styles.meta}>{queueCounts.department_tasks || 0} tasks · {queueCounts.operational_events || 0} events</em></button>
+            {cards.map((card, index) => <button className={`${styles.statCard} ${index === activeCard ? styles.active : ""}`} key={`${card.title}-${index}`} type="button" onClick={() => setActiveCard(index)}><span>{card.title || "Status"}</span><strong>{card.value ?? 0}</strong><em className={styles.meta}>{card.label || "Live count"}</em></button>)}
           </div>
         </aside>
-
         <main className={styles.panel}>
           <div className={styles.panelHead}><h3>Live work queue</h3><span>{items.length}</span></div>
           <div className={styles.queueList}>
             {loading && <p className={styles.notice}>Loading live queue…</p>}
             {!loading && items.length === 0 && <p className={styles.notice}>No live queue items yet. This dashboard needs its department records wired next.</p>}
-            {items.map((item, index) => (
-              <button className={`${styles.queueItem} ${index === selectedIndex ? styles.active : ""}`} key={item.id || `${itemTitle(item)}-${index}`} type="button" onClick={() => setSelectedIndex(index)}>
-                <strong>{itemTitle(item)}</strong>
-                <span>{itemSummary(item)}</span>
-                <em>{clean(itemStatus(item))}</em>
-              </button>
-            ))}
+            {items.map((item, index) => <button className={`${styles.queueItem} ${index === selectedIndex ? styles.active : ""}`} key={`${item.source || item.type || "item"}-${item.id || index}`} type="button" onClick={() => setSelectedIndex(index)}><strong>{titleOf(item)}</strong><span>{summaryOf(item)}</span><em>{clean(statusOf(item))}</em></button>)}
           </div>
         </main>
-
         <aside className={`${styles.panel} ${styles.inspector}`}>
           <div className={styles.panelHead}><h3>Inspector</h3><span><Eye size={16} /></span></div>
-          <div className={styles.inspectorCard}>
-            <h3>{itemTitle(selected)}</h3>
-            <p>{itemSummary(selected)}</p>
-            <div className={styles.metaGrid}>
-              <div><span>Status</span><strong>{clean(itemStatus(selected))}</strong></div>
-              <div><span>Type</span><strong>{clean(selected?.type || selected?.source || selected?.finance_type || selected?.task_type)}</strong></div>
-              <div><span>Value</span><strong>{selected?.amount !== undefined ? `$${Number(selected.amount || 0).toLocaleString()}` : clean(selected?.value || selected?.readiness_score || selected?.risk_score)}</strong></div>
-              <div><span>Next</span><strong>{clean(selected?.next_step || selected?.required_action || selected?.action_label || selected?.created_at)}</strong></div>
-            </div>
-          </div>
+          <div className={styles.inspectorCard}><h3>{titleOf(selected)}</h3><p>{summaryOf(selected)}</p><div className={styles.metaGrid}><div><span>Status</span><strong>{clean(statusOf(selected))}</strong></div><div><span>Type</span><strong>{clean(selected?.type || selected?.source || selected?.finance_type || selected?.task_type)}</strong></div><div><span>Value</span><strong>{selected?.amount !== undefined ? `$${Number(selected.amount || 0).toLocaleString()}` : clean(selected?.value || selected?.readiness_score || selected?.risk_score)}</strong></div><div><span>Next</span><strong>{clean(selected?.next_step || selected?.required_action || selected?.action_label || selected?.created_at)}</strong></div></div></div>
           <div className={styles.actions}>
-            <Link className={styles.actionButton} href={routeFor(dashboardKey)}>
-              <strong>Open dashboard route</strong>
-              <span>Use the existing protected route while this workspace is being expanded.</span>
-            </Link>
-            <button className={styles.actionButton} type="button" onClick={requestDashboardAction} disabled={actionBusy}>
-              <strong>{actionBusy ? "Queuing action…" : "Queue department review"}</strong>
-              <span>Create a protected department task from the selected work item. Safe mode: review queue only, no direct execution.</span>
-            </button>
-            {selectedIsTask && (
-              <>
-                <button className={styles.actionButton} type="button" onClick={() => updateTaskStatus("in_progress")} disabled={actionBusy}>
-                  <strong>Start task</strong>
-                  <span>Move the selected department task into active review.</span>
-                </button>
-                <button className={styles.actionButton} type="button" onClick={() => updateTaskStatus("blocked")} disabled={actionBusy}>
-                  <strong>Block / hold task</strong>
-                  <span>Mark the task blocked while keeping it visible in the dashboard queue.</span>
-                </button>
-                <button className={styles.actionButton} type="button" onClick={() => updateTaskStatus("completed")} disabled={actionBusy}>
-                  <strong>Complete task</strong>
-                  <span>Close the task with a safe dashboard resolution. No external execution.</span>
-                </button>
-              </>
-            )}
+            <Link className={styles.actionButton} href={routeFor(dashboardKey)}><strong>Open dashboard route</strong><span>Use the protected route while this workspace is being expanded.</span></Link>
+            <button className={styles.actionButton} type="button" onClick={queueReview} disabled={busy}><strong>{busy ? "Working…" : "Queue department review"}</strong><span>Create a protected department task. Safe mode: review queue only.</span></button>
+            {isTask(selected) && <><button className={styles.actionButton} type="button" onClick={() => setTaskStatus("in_progress")} disabled={busy}><strong>Start task</strong><span>Move the selected task into active review.</span></button><button className={styles.actionButton} type="button" onClick={() => setTaskStatus("blocked")} disabled={busy}><strong>Block / hold task</strong><span>Keep this task visible as blocked.</span></button><button className={styles.actionButton} type="button" onClick={() => setTaskStatus("completed")} disabled={busy}><strong>Complete task</strong><span>Close the task with a dashboard resolution.</span></button></>}
           </div>
         </aside>
       </div>
