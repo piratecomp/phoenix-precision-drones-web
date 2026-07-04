@@ -10,11 +10,7 @@ import "./internal-messages-v26.css";
 import "./quote-pipeline-v28.css";
 import "./maintenance-bridge-v35.css";
 import "./dashboard-comms-v41.css";
-import Nav from "@/components/Nav";
-import Footer from "@/components/Footer";
-import ChatWidget from "@/components/ChatWidget";
-import GoogleOperationsMapBoot from "@/components/GoogleOperationsMapBoot";
-import DashboardClickLinker from "@/components/DashboardClickLinker";
+import SiteShell from "@/components/SiteShell";
 
 export const metadata: Metadata = {
   title: "Phoenix Precision Drones | Commercial Drone Services & Portal Experience",
@@ -31,14 +27,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <body>
-        <div className="site-shell">
-          <Nav />
-          <main className="main">{children}</main>
-          <Footer />
-          <ChatWidget />
-          <GoogleOperationsMapBoot />
-          <DashboardClickLinker />
-        </div>
+        <SiteShell>{children}</SiteShell>
       </body>
     </html>
   );
