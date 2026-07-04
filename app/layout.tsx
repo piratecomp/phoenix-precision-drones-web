@@ -10,6 +10,7 @@ import "./internal-messages-v26.css";
 import "./quote-pipeline-v28.css";
 import "./maintenance-bridge-v35.css";
 import "./dashboard-comms-v41.css";
+import "./dashboard-shell-v42.css";
 import SiteShell from "@/components/SiteShell";
 
 export const metadata: Metadata = {
