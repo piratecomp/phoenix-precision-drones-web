@@ -1,0 +1,230 @@
+.portal-route-shell {
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 18% 0%, rgba(255, 123, 0, 0.14), transparent 26rem),
+    radial-gradient(circle at 86% 12%, rgba(255, 190, 64, 0.09), transparent 24rem),
+    linear-gradient(135deg, #050608 0%, #0c0d11 44%, #050608 100%);
+  overflow: hidden;
+}
+
+.portal-route-main {
+  min-height: 100vh;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.portal-command-only-shell {
+  height: 100vh;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: 14px;
+  padding: 14px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(255, 94, 0, 0.12), transparent 22rem),
+    radial-gradient(circle at 45% 0%, rgba(255, 164, 42, 0.12), transparent 25rem);
+}
+
+.portal-command-only-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.018) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: radial-gradient(circle at center, black, transparent 75%);
+}
+
+.portal-command-only-shell .portal-sidebar {
+  position: relative;
+  top: auto;
+  height: calc(100vh - 28px);
+  max-height: calc(100vh - 28px);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: minmax(250px, 330px) auto 1fr auto auto;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid rgba(255, 136, 31, 0.34);
+  border-radius: 26px;
+  background:
+    radial-gradient(circle at 0% 0%, rgba(255, 145, 31, 0.18), transparent 20rem),
+    rgba(4, 6, 10, 0.92);
+  box-shadow: 0 0 28px rgba(255, 94, 0, 0.18), inset 0 0 28px rgba(255, 255, 255, 0.035);
+}
+
+.portal-command-only-shell .portal-sidebar-comms {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.portal-command-only-shell .portal-sidebar-brand {
+  min-height: 56px;
+  justify-content: center;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 173, 82, 0.25);
+  background: rgba(255, 255, 255, 0.055);
+  font-size: 18px;
+  letter-spacing: 0.06em;
+}
+
+.portal-command-only-shell .portal-sidebar-nav {
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+  padding-right: 4px;
+}
+
+.portal-command-only-shell .portal-sidebar-nav a {
+  min-height: 50px;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 173, 82, 0.12);
+  background: rgba(13, 16, 24, 0.82);
+  color: rgba(255,255,255,0.86);
+  font-size: 15px;
+  font-weight: 850;
+}
+
+.portal-command-only-shell .portal-sidebar-nav a.active {
+  color: #fff7d0;
+  border-color: rgba(255, 176, 58, 0.75);
+  background:
+    linear-gradient(90deg, rgba(255, 117, 17, 0.45), rgba(255, 181, 54, 0.14)),
+    rgba(18, 12, 6, 0.9);
+  box-shadow: 0 0 22px rgba(255, 115, 0, 0.26);
+}
+
+.portal-command-only-shell .portal-session-card {
+  padding: 10px 12px;
+  border-radius: 16px;
+  min-height: 84px;
+}
+
+.portal-command-only-shell .portal-signout {
+  min-height: 44px;
+  border-radius: 16px;
+}
+
+.portal-command-main-area {
+  min-width: 0;
+  height: calc(100vh - 28px);
+  max-height: calc(100vh - 28px);
+  overflow: hidden;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  gap: 14px;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+.portal-command-main-area .portal-topbar {
+  min-height: 118px;
+  border-radius: 26px;
+  border: 1px solid rgba(255, 139, 31, 0.38);
+  background:
+    linear-gradient(90deg, rgba(255, 123, 0, 0.14), rgba(255, 255, 255, 0.035)),
+    rgba(7, 9, 14, 0.88);
+  box-shadow: inset 0 0 20px rgba(255, 255, 255, 0.04), 0 0 24px rgba(255, 103, 0, 0.12);
+}
+
+.portal-command-main-area .portal-topbar h1 {
+  margin: 8px 0 6px;
+  font-size: clamp(28px, 3vw, 48px);
+  letter-spacing: -0.04em;
+}
+
+.portal-live-status-stack {
+  display: grid;
+  gap: 10px;
+  justify-items: end;
+}
+
+.portal-status-pill {
+  border-radius: 999px;
+  padding: 12px 18px;
+  border: 1px solid rgba(255, 184, 74, 0.55);
+  color: #ffe38a;
+  font-weight: 900;
+  background: rgba(255, 143, 31, 0.12);
+}
+
+.portal-small-counts {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  justify-content: end;
+}
+
+.portal-small-counts span {
+  border-radius: 999px;
+  padding: 8px 11px;
+  border: 1px solid rgba(255, 184, 74, 0.28);
+  color: #ffd36d;
+  background: rgba(255, 255, 255, 0.045);
+  font-size: 12px;
+  font-weight: 850;
+}
+
+.portal-command-main-area .workspace {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  margin: 0;
+  padding: 14px;
+  border-radius: 26px;
+  overflow: hidden;
+}
+
+.portal-command-main-area .board {
+  height: calc(100% - 102px);
+  min-height: 0;
+  grid-template-columns: 250px minmax(360px, 1.25fr) minmax(260px, 0.85fr);
+}
+
+.portal-command-main-area .panel,
+.portal-command-main-area .inspector {
+  min-height: 0;
+  overflow: hidden;
+}
+
+.portal-command-main-area .queueList,
+.portal-command-main-area .cardGrid,
+.portal-command-main-area .actions {
+  max-height: calc(100vh - 325px);
+  overflow: auto;
+  padding-right: 4px;
+}
+
+.portal-command-main-area .inspectorCard {
+  min-height: 0;
+  max-height: 45vh;
+  overflow: auto;
+}
+
+.portal-command-only-shell .dashboard-comms-panel,
+.portal-command-only-shell .dashboard-communications-panel,
+.portal-command-only-shell [class*="communications"],
+.portal-command-only-shell [class*="Comms"] {
+  font-size: 13px;
+}
+
+@media (max-width: 1180px) {
+  .portal-command-only-shell {
+    grid-template-columns: 1fr;
+    overflow: auto;
+    height: auto;
+  }
+  .portal-command-only-shell .portal-sidebar,
+  .portal-command-main-area {
+    height: auto;
+    max-height: none;
+  }
+  .portal-command-main-area .board {
+    height: auto;
+    grid-template-columns: 1fr;
+  }
+}
