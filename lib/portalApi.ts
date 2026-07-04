@@ -123,6 +123,28 @@ export type PpdRoleOperationsPanel = {
   generated_at?: string;
 };
 
+export type PpdDashboardAppSnapshot = {
+  ok?: boolean;
+  dashboard_key?: string;
+  executive_scope?: boolean;
+  generated_at?: string;
+  counts?: Record<string, any>;
+  cards?: Array<{ title?: string; value?: any; label?: string }>;
+  fleet?: { drones?: Array<Record<string, any>> };
+  communications?: {
+    threads?: Array<Record<string, any>>;
+    messages?: Array<Record<string, any>>;
+    voice_calls?: Array<Record<string, any>>;
+    communication_queue?: Array<Record<string, any>>;
+    email_queue?: Array<Record<string, any>>;
+    email_outbox?: Array<Record<string, any>>;
+    unified_events?: Array<Record<string, any>>;
+  };
+  launch?: { items?: Array<Record<string, any>> };
+  funding?: { applications?: Array<Record<string, any>>; opportunities?: Array<Record<string, any>> };
+  notifications?: Array<Record<string, any>>;
+};
+
 export type PpdQuotePipelinePanel = {
   ok?: boolean;
   dashboard_key?: string;
@@ -210,6 +232,15 @@ export async function getPpdRoleOperationsPanel(
   dashboardKey: string
 ): Promise<PpdRoleOperationsPanel> {
   return rpc<PpdRoleOperationsPanel>(supabase, "ppd_get_role_operations_panel", {
+    p_dashboard_key: dashboardKey,
+  });
+}
+
+export async function getPpdDashboardAppSnapshot(
+  supabase: SupabaseClient,
+  dashboardKey: string
+): Promise<PpdDashboardAppSnapshot> {
+  return rpc<PpdDashboardAppSnapshot>(supabase, "ppd_get_dashboard_app_snapshot", {
     p_dashboard_key: dashboardKey,
   });
 }
