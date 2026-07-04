@@ -19,6 +19,7 @@ import {
   type LucideIcon,
 } from "lucide-react";
 import DashboardCommunicationsPanel from "@/components/DashboardCommunicationsPanel";
+import PortalOperationsSnapshot from "@/components/PortalOperationsSnapshot";
 import { getPortalDashboard, portalDashboards } from "@/lib/portal";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseClient";
 import { checkDashboardAccess, getPortalBootstrap, type PortalBootstrap } from "@/lib/portalApi";
@@ -39,6 +40,11 @@ const dashboardIcons: Record<string, LucideIcon> = {
 function DashboardIcon({ dashboardKey, size = 18 }: { dashboardKey: string; size?: number }) {
   const Icon = dashboardIcons[dashboardKey] || LayoutDashboard;
   return <Icon size={size} />;
+}
+
+function initials(name?: string | null) {
+  const parts = String(name || "PPD").trim().split(/\s+/).filter(Boolean);
+  return (parts.map((part) => part[0]).join("").slice(0, 2) || "PP").toUpperCase();
 }
 
 function PortalLoading({ title }: { title: string }) {
@@ -138,6 +144,7 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
   const departmentName = bootstrap?.dashboards?.find((d: any) => d.dashboard_path === dashboardPath)?.department_name || dashboard.department;
   const liveDashboardKey = bootstrap?.dashboard_key || dashboardKey;
   const notifications = bootstrap?.notifications || [];
+  const displayName = bootstrap?.current_user?.full_name || "PPD User";
   const navDashboards = bootstrap?.dashboards?.length
     ? bootstrap.dashboards.map((d: any) => ({ key: d.dashboard_key, path: d.dashboard_path, role: d.dashboard_name }))
     : portalDashboards.map((d) => ({ key: d.key, path: d.path, role: d.department }));
@@ -145,10 +152,16 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
   return (
     <section className="portal-app-shell portal-live-shell portal-dashboard-redesign portal-command-only-shell">
       <aside className="portal-sidebar portal-sidebar-with-comms">
-        <div className="portal-sidebar-comms">
-          <DashboardCommunicationsPanel dashboardKey={liveDashboardKey} notifications={notifications} onRefresh={loadLiveData} compact />
+        <Link className="portal-brand-card" href="/portal">
+          <img src="/images/logo-emblem-clean.png" alt="Phoenix Precision Drones" />
+          <div><strong>PHOENIX</strong><span>Precision Drones</span></div>
+        </Link>
+
+        <div className="portal-profile-card">
+          <div className="portal-profile-avatar">{initials(displayName)}</div>
+          <div><strong>{displayName}</strong><span>{departmentName}</span><small>{dashboardName}</small></div>
         </div>
-        <Link className="portal-sidebar-brand" href="/portal"><LayoutDashboard size={22} /><span>PPD Portal</span></Link>
+
         <nav className="portal-sidebar-nav">
           {navDashboards.map((item: any) => (
             <Link className={item.path === dashboardPath ? "active" : ""} href={item.path} key={item.key}>
@@ -156,6 +169,11 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
             </Link>
           ))}
         </nav>
+
+        <div className="portal-sidebar-comms">
+          <DashboardCommunicationsPanel dashboardKey={liveDashboardKey} notifications={notifications} onRefresh={loadLiveData} compact />
+        </div>
+
         <div className="panel-card portal-session-card">
           <span className="section-kicker">System Status</span>
           <p><span className="green-dot" /> Dashboard workspace live</p>
@@ -165,11 +183,11 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
       </aside>
 
       <div className="portal-main-area portal-command-main-area">
-        <div className="portal-topbar panel-card">
+        <div className="portal-topbar portal-app-topbar panel-card">
           <div>
             <span className="section-kicker">{departmentName}</span>
             <h1>{dashboardName}</h1>
-            <p className="portal-live-subtitle">{bootstrap?.current_user?.full_name ? `Signed in as ${bootstrap.current_user.full_name}` : "Connected to Supabase portal backend."}</p>
+            <p className="portal-live-subtitle">Signed in as {displayName}. Dashboard counts are live Supabase data.</p>
           </div>
           <div className="portal-live-status-stack">
             <div className="portal-status-pill">Command Workspace</div>
@@ -180,7 +198,19 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
             </div>
           </div>
         </div>
-        {children}
+
+        <main className="portal-workspace-scroll">
+          <PortalOperationsSnapshot dashboardKey={liveDashboardKey} />
+          <div className="portal-dashboard-children">{children}</div>
+        </main>
+
+        <nav className="portal-mobile-bottom-nav">
+          {navDashboards.slice(0, 5).map((item: any) => (
+            <Link className={item.path === dashboardPath ? "active" : ""} href={item.path} key={item.key}>
+              <DashboardIcon dashboardKey={item.key} size={18} /><span>{item.role.split(" /")[0]}</span>
+            </Link>
+          ))}
+        </nav>
       </div>
     </section>
   );
