@@ -45,7 +45,7 @@
   max-height: calc(100vh - 28px);
   overflow: hidden;
   display: grid;
-  grid-template-rows: minmax(250px, 330px) auto 1fr auto auto;
+  grid-template-rows: minmax(280px, 360px) auto 1fr auto auto;
   gap: 10px;
   padding: 10px;
   border: 1px solid rgba(255, 136, 31, 0.34);
@@ -205,11 +205,151 @@
   overflow: auto;
 }
 
-.portal-command-only-shell .dashboard-comms-panel,
-.portal-command-only-shell .dashboard-communications-panel,
-.portal-command-only-shell [class*="communications"],
-.portal-command-only-shell [class*="Comms"] {
+.portal-command-only-shell .portal-embedded-comms {
+  height: 100%;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  gap: 8px;
+  padding: 12px;
+  border-radius: 20px;
+  background: rgba(7, 9, 14, 0.88);
+}
+
+.portal-command-only-shell .portal-comms-head h3 {
+  font-size: 20px;
+  margin: 4px 0 0;
+}
+
+.portal-command-only-shell .portal-comms-tabs {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.portal-command-only-shell .portal-comms-tabs button {
+  min-height: 38px;
+  justify-content: center;
+  padding: 6px;
+  font-size: 0;
+}
+
+.portal-command-only-shell .portal-comms-tabs button svg {
+  width: 18px;
+  height: 18px;
+}
+
+.portal-command-only-shell .portal-comms-grid {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 92px minmax(0, 1fr);
+  gap: 8px;
+  overflow: hidden;
+}
+
+.portal-command-only-shell .portal-comms-thread-list {
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  gap: 6px;
+  padding-right: 3px;
+}
+
+.portal-command-only-shell .portal-comms-thread-list button {
+  min-height: 62px;
+  padding: 8px;
+  border-radius: 12px;
+  font-size: 11px;
+  line-height: 1.25;
+}
+
+.portal-command-only-shell .portal-comms-thread-list strong {
+  display: block;
+  font-size: 11px;
+  line-height: 1.2;
+  max-height: 28px;
+  overflow: hidden;
+}
+
+.portal-command-only-shell .portal-comms-thread-list span {
+  display: block;
+  max-height: 30px;
+  overflow: hidden;
+  color: rgba(255,255,255,0.72);
+}
+
+.portal-command-only-shell .portal-comms-thread {
+  min-width: 0;
+  min-height: 0;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.portal-command-only-shell .portal-comms-title {
+  padding: 8px 10px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.portal-command-only-shell .portal-comms-title strong {
+  display: block;
   font-size: 13px;
+  line-height: 1.25;
+}
+
+.portal-command-only-shell .portal-comms-messages {
+  min-height: 0;
+  overflow: auto;
+  display: grid;
+  gap: 8px;
+  padding-right: 3px;
+}
+
+.portal-command-only-shell .portal-comms-bubble {
+  padding: 9px 10px;
+  border-radius: 13px;
+  background: rgba(255,255,255,0.065);
+  border: 1px solid rgba(255, 173, 82, 0.12);
+}
+
+.portal-command-only-shell .portal-comms-bubble span {
+  display: block;
+  color: #ffd36d;
+  font-size: 11px;
+  font-weight: 850;
+  margin-bottom: 4px;
+}
+
+.portal-command-only-shell .portal-comms-bubble p {
+  margin: 0;
+  color: rgba(255,255,255,0.86);
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.portal-command-only-shell .portal-comms-compose {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 38px;
+  gap: 6px;
+}
+
+.portal-command-only-shell .portal-comms-compose input {
+  min-width: 0;
+  height: 40px;
+  border-radius: 12px;
+  font-size: 12px;
+}
+
+.portal-command-only-shell .portal-comms-compose button {
+  height: 40px;
+  border-radius: 12px;
+}
+
+.portal-command-only-shell .portal-comms-simple-list,
+.portal-command-only-shell .portal-task-list {
+  min-height: 0;
+  overflow: auto;
 }
 
 @media (max-width: 1180px) {
