@@ -145,6 +145,23 @@ export type PpdDashboardAppSnapshot = {
   notifications?: Array<Record<string, any>>;
 };
 
+export type CustomerDashboardSnapshot = {
+  ok?: boolean;
+  mode?: string;
+  generated_at?: string;
+  viewer?: Record<string, any>;
+  selected_customer_id?: string | null;
+  customer?: { id?: string; name?: string | null; email?: string | null; created_at?: string } | null;
+  customers?: Array<Record<string, any>>;
+  counts?: Record<string, any>;
+  intakes?: Array<Record<string, any>>;
+  quotes?: Array<Record<string, any>>;
+  jobs?: Array<Record<string, any>>;
+  deliveries?: Array<Record<string, any>>;
+  invoices?: Array<Record<string, any>>;
+  timeline?: Array<Record<string, any>>;
+};
+
 export type PpdQuotePipelinePanel = {
   ok?: boolean;
   dashboard_key?: string;
@@ -242,6 +259,24 @@ export async function getPpdDashboardAppSnapshot(
 ): Promise<PpdDashboardAppSnapshot> {
   return rpc<PpdDashboardAppSnapshot>(supabase, "ppd_get_dashboard_app_snapshot", {
     p_dashboard_key: dashboardKey,
+  });
+}
+
+export async function getCustomerDashboardSnapshot(
+  supabase: SupabaseClient,
+  customerId?: string | null
+): Promise<CustomerDashboardSnapshot> {
+  return rpc<CustomerDashboardSnapshot>(supabase, "ppd_get_customer_dashboard_snapshot", {
+    p_customer_id: customerId || null,
+  });
+}
+
+export async function submitCustomerQuoteIntake(
+  supabase: SupabaseClient,
+  payload: Record<string, any>
+) {
+  return rpc<any>(supabase, "ppd_customer_submit_quote_intake", {
+    p_payload: payload || {},
   });
 }
 
