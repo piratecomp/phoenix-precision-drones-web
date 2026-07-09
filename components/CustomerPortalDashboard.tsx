@@ -7,13 +7,17 @@ import {
   CreditCard,
   Download,
   FileText,
+  FolderDown,
+  LayoutDashboard,
   Loader2,
-  MessageCircle,
+  MapPinned,
+  MessageSquareText,
   PackageCheck,
   PlusCircle,
   RefreshCw,
   Send,
   ShieldCheck,
+  UploadCloud,
 } from "lucide-react";
 import { getSupabaseBrowserClient, isSupabaseConfigured } from "@/lib/supabaseClient";
 import {
@@ -77,7 +81,7 @@ function LoadingScreen({ text }: { text: string }) {
       <div className={styles.loadingCard}>
         <Loader2 className={styles.spin} size={34} />
         <h1>{text}</h1>
-        <p className={styles.muted}>Loading your Phoenix Precision Drones customer dashboard.</p>
+        <p>Loading customer workspace.</p>
       </div>
     </section>
   );
@@ -110,6 +114,12 @@ export default function CustomerPortalDashboard() {
   const invoices = snapshot?.invoices || [];
   const timeline = snapshot?.timeline || [];
   const customers = snapshot?.customers || [];
+
+  const activeJob = jobs[0];
+  const latestIntake = intakes[0];
+  const latestQuote = quotes[0];
+  const latestDelivery = deliveries[0];
+  const latestInvoice = invoices[0];
 
   async function loadDashboard(customerId?: string) {
     const supabase = getSupabaseBrowserClient();
@@ -193,162 +203,175 @@ export default function CustomerPortalDashboard() {
   }
 
   const steps = useMemo(() => {
-    if (timeline.length > 0) return timeline;
-    return [
-      { type: "ready", title: "Ready for request", status: "start", detail: "Submit a job request and PPD AI will prepare it for quote review." },
-      { type: "quote", title: "Quote review", status: "pending", detail: "Quotes appear here when ready for approval." },
-      { type: "delivery", title: "Deliverables", status: "pending", detail: "Downloads appear after owner review and release." },
+    const base = [
+      { label: "Request", done: intakes.length > 0, value: intakes.length || 0 },
+      { label: "Quote", done: quotes.length > 0, value: quotes.length || 0 },
+      { label: "Scheduled", done: jobs.length > 0, value: jobs.length || 0 },
+      { label: "Delivered", done: num(counts.ready_downloads) > 0, value: num(counts.ready_downloads) },
     ];
-  }, [timeline.length]);
+    return base;
+  }, [intakes.length, quotes.length, jobs.length, counts.ready_downloads]);
 
   if (checking) return <LoadingScreen text="Customer Portal" />;
 
   return (
     <section className={styles.shell}>
-      <header className={styles.topbar}>
+      <aside className={styles.rail}>
         <Link className={styles.brand} href="/portal/customer">
           <img src="/images/logo-emblem-clean.png" alt="Phoenix Precision Drones" />
           <div><strong>PHOENIX</strong><span>Precision Drones</span></div>
         </Link>
-        <div className={styles.identity}>
-          <span className={styles.kicker}>Customer Dashboard</span>
-          <h1>{customer?.name || "Customer Portal"}</h1>
-          <p>{staffPreview ? "Owner preview is customer-safe and read-only." : "Order jobs, track status, approve quotes, download deliverables, and manage invoices."}</p>
-        </div>
-        <div className={styles.topActions}>
-          {staffPreview && (
-            <select
-              className={styles.select}
-              value={selectedCustomerId}
-              onChange={(event) => {
-                const value = event.target.value;
-                setSelectedCustomerId(value);
-                void loadDashboard(value || undefined);
-              }}
-            >
-              <option value="">Select customer preview</option>
-              {customers.map((item: any) => <option key={item.id} value={item.id}>{item.name || item.email}</option>)}
-            </select>
-          )}
-          <button className={styles.iconBtn} type="button" onClick={() => loadDashboard(selectedCustomerId || undefined)} disabled={loading}>
-            {loading ? <Loader2 className={styles.spin} size={16} /> : <RefreshCw size={16} />} Refresh
-          </button>
-          <button className={styles.iconBtn} type="button"><MessageCircle size={16} /> Support</button>
-        </div>
-      </header>
 
-      <main className={styles.mainGrid}>
-        <aside className={styles.column}>
-          <form className={styles.formCard} onSubmit={submitRequest}>
+        <nav className={styles.navStack} aria-label="Customer dashboard sections">
+          <a className={styles.activeNav} href="#overview"><LayoutDashboard size={18} /> Overview</a>
+          <a href="#requests"><FileText size={18} /> Requests</a>
+          <a href="#deliverables"><FolderDown size={18} /> Deliverables</a>
+          <a href="#billing"><CreditCard size={18} /> Billing</a>
+        </nav>
+
+        <div className={styles.railStatus}>
+          <span>Portal Status</span>
+          <strong>{staffPreview ? "Owner Preview" : "Customer Live"}</strong>
+          <small>{customer?.email || snapshot?.viewer?.email || "Signed in"}</small>
+        </div>
+      </aside>
+
+      <main className={styles.board} id="overview">
+        <header className={styles.topbar}>
+          <div>
+            <span className={styles.kicker}>Customer Portal</span>
+            <h1>{customer?.name || "Customer Workspace"}</h1>
+            <p>{staffPreview ? "Previewing the protected customer dashboard with customer-safe data only." : "Project requests, status, files, reports, messages, invoices, and delivery history."}</p>
+          </div>
+          <div className={styles.topActions}>
+            {staffPreview && (
+              <select
+                className={styles.select}
+                value={selectedCustomerId}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  setSelectedCustomerId(value);
+                  void loadDashboard(value || undefined);
+                }}
+              >
+                <option value="">Select customer preview</option>
+                {customers.map((item: any) => <option key={item.id} value={item.id}>{item.name || item.email}</option>)}
+              </select>
+            )}
+            <button className={styles.iconBtn} type="button" onClick={() => loadDashboard(selectedCustomerId || undefined)} disabled={loading}>
+              {loading ? <Loader2 className={styles.spin} size={16} /> : <RefreshCw size={16} />} Refresh
+            </button>
+            <button className={styles.iconBtn} type="button"><MessageSquareText size={16} /> Message PPD</button>
+          </div>
+        </header>
+
+        <section className={styles.previewGrid}>
+          <section className={`${styles.panel} ${styles.heroPanel}`}>
             <div className={styles.panelHead}>
-              <div><span className={styles.kicker}><PlusCircle size={14} /> Order</span><h2>Request a Job</h2></div>
+              <div><span className={styles.kicker}><ShieldCheck size={14} /> Project Visibility</span><h2>{activeJob?.job_address || latestIntake?.project_location || "No active project yet"}</h2></div>
+              <em className={styles.statusPill}>{clean(activeJob?.status || latestIntake?.intake_status || "ready for request")}</em>
+            </div>
+            <div className={styles.missionVisual}>
+              <div className={styles.scanGrid} />
+              <div className={styles.scanPulse} />
+              <MapPinned className={styles.mapPin} size={32} />
+              <div className={styles.visualText}>
+                <strong>{clean(activeJob?.weather_status || activeJob?.safety_status || latestIntake?.service_type || "Aerial data workspace")}</strong>
+                <span>{activeJob?.scheduled_start ? `Scheduled ${shortDate(activeJob.scheduled_start)}` : "Submit location, service needs, timing, and deliverable goals."}</span>
+              </div>
+            </div>
+            <div className={styles.phaseStrip}>
+              {steps.map((step) => (
+                <article className={step.done ? styles.donePhase : ""} key={step.label}>
+                  <CheckCircle2 size={17} />
+                  <span>{step.label}</span>
+                  <strong>{step.value}</strong>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <form className={`${styles.panel} ${styles.requestPanel}`} id="requests" onSubmit={submitRequest}>
+            <div className={styles.panelHead}>
+              <div><span className={styles.kicker}><PlusCircle size={14} /> Request</span><h3>Start New Job</h3></div>
             </div>
             <div className={styles.formGrid}>
               <select className={styles.select} value={form.service_type} onChange={(event) => setForm({ ...form, service_type: event.target.value })}>
                 {serviceOptions.map(([value, label]) => <option key={value} value={value}>{label}</option>)}
               </select>
               <input className={styles.input} placeholder="Project address / location" value={form.project_location} onChange={(event) => setForm({ ...form, project_location: event.target.value })} />
-              <input className={styles.input} type="date" value={form.requested_date} onChange={(event) => setForm({ ...form, requested_date: event.target.value })} />
-              <input className={styles.input} placeholder="Budget range, optional" value={form.budget_range} onChange={(event) => setForm({ ...form, budget_range: event.target.value })} />
-              <textarea className={styles.textarea} placeholder="What do you need captured, mapped, inspected, or delivered?" value={form.project_summary} onChange={(event) => setForm({ ...form, project_summary: event.target.value })} />
-              <div className={styles.formActions}>
-                <button className={styles.primaryBtn} type="submit" disabled={submitting || staffPreview}>
-                  {submitting ? <Loader2 className={styles.spin} size={16} /> : <Send size={16} />}
-                  Submit Job Request
-                </button>
-                {staffPreview && <p className={styles.notice}>Read-only preview: customer submissions are disabled while viewing as owner/admin.</p>}
+              <div className={styles.twoFieldGrid}>
+                <input className={styles.input} type="date" value={form.requested_date} onChange={(event) => setForm({ ...form, requested_date: event.target.value })} />
+                <input className={styles.input} placeholder="Budget, optional" value={form.budget_range} onChange={(event) => setForm({ ...form, budget_range: event.target.value })} />
               </div>
+              <textarea className={styles.textarea} placeholder="Scope, notes, access details, deliverable goals" value={form.project_summary} onChange={(event) => setForm({ ...form, project_summary: event.target.value })} />
+              <button className={styles.primaryBtn} type="submit" disabled={submitting || staffPreview}>
+                {submitting ? <Loader2 className={styles.spin} size={16} /> : <Send size={16} />}
+                Submit Request
+              </button>
             </div>
           </form>
 
-          <section className={styles.panel}>
-            <div className={styles.panelHead}><div><span className={styles.kicker}>Quotes</span><h3>Approvals</h3></div></div>
-            <div className={styles.scrollList}>
-              {quotes.length === 0 ? <EmptyCard text="No quotes yet. Submit a request and approved quotes will appear here." /> : quotes.map((quote: any) => (
+          <section className={`${styles.panel} ${styles.metricPanel}`}>
+            <article><span>Open Requests</span><strong>{num(counts.open_requests)}</strong></article>
+            <article><span>Quotes</span><strong>{num(counts.quotes)}</strong></article>
+            <article><span>Active Jobs</span><strong>{num(counts.active_jobs)}</strong></article>
+            <article><span>Downloads</span><strong>{num(counts.ready_downloads)}</strong></article>
+            <article><span>Balance Due</span><strong>{money(counts.balance_due)}</strong></article>
+          </section>
+
+          <section className={`${styles.panel} ${styles.quotesPanel}`}>
+            <div className={styles.panelHead}><div><span className={styles.kicker}>Quote Details</span><h3>Approvals</h3></div></div>
+            <div className={styles.stackList}>
+              {quotes.length === 0 ? <EmptyCard text="No quotes yet. Approved quotes will appear here." /> : quotes.map((quote: any) => (
                 <article className={styles.rowCard} key={quote.id}>
-                  <strong>{quote.quote_number || "Quote"} · {money(quote.estimated_total)}</strong>
-                  <span>Status: {clean(quote.status)} · Expires {shortDate(quote.expiration_date)}</span>
-                  <div className={styles.rowActions}>
-                    <button className={styles.primaryBtn} type="button" onClick={() => acceptQuote(quote)} disabled={staffPreview || busyQuoteId === quote.id || quote.job_id}>
-                      {busyQuoteId === quote.id ? "Accepting..." : quote.job_id ? "Accepted" : "Accept Quote"}
-                    </button>
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-        </aside>
-
-        <section className={styles.centerColumn}>
-          <div className={styles.statGrid}>
-            <article className={styles.statCard}><span>Requests</span><strong>{num(counts.open_requests)}</strong></article>
-            <article className={styles.statCard}><span>Quotes</span><strong>{num(counts.quotes)}</strong></article>
-            <article className={styles.statCard}><span>Active Jobs</span><strong>{num(counts.active_jobs)}</strong></article>
-            <article className={styles.statCard}><span>Ready Downloads</span><strong>{num(counts.ready_downloads)}</strong></article>
-            <article className={styles.statCard}><span>Balance Due</span><strong>{money(counts.balance_due)}</strong></article>
-          </div>
-
-          <section className={styles.panel}>
-            <div className={styles.panelHead}><div><span className={styles.kicker}><ShieldCheck size={14} /> Status</span><h2>Project Timeline</h2></div></div>
-            <div className={styles.timeline}>
-              {steps.map((step: any, index: number) => (
-                <article className={styles.timelineStep} key={`${step.type}-${step.title}-${index}`}>
-                  <div className={styles.stepDot}>{index + 1}</div>
-                  <div><strong>{clean(step.title, "Project update")}</strong><span>{clean(step.detail, "No detail yet")}</span></div>
-                  <em className={styles.statusPill}>{clean(step.status)}</em>
+                  <div><strong>{quote.quote_number || "Quote"} · {money(quote.estimated_total)}</strong><span>{clean(quote.status)} · expires {shortDate(quote.expiration_date)}</span></div>
+                  <button className={styles.primaryBtn} type="button" onClick={() => acceptQuote(quote)} disabled={staffPreview || busyQuoteId === quote.id || quote.job_id}>{quote.job_id ? "Accepted" : "Accept"}</button>
                 </article>
               ))}
             </div>
           </section>
 
-          <section className={styles.panel}>
-            <div className={styles.panelHead}><div><span className={styles.kicker}><FileText size={14} /> Requests</span><h3>Recent Job Requests</h3></div></div>
-            <div className={styles.scrollList}>
-              {intakes.length === 0 ? <EmptyCard text="No job requests yet." /> : intakes.map((item: any) => (
+          <section className={`${styles.panel} ${styles.timelinePanel}`}>
+            <div className={styles.panelHead}><div><span className={styles.kicker}>Updates</span><h3>Project History</h3></div></div>
+            <div className={styles.stackList}>
+              {timeline.length === 0 ? <EmptyCard text="Project activity history will appear here." /> : timeline.slice(0, 5).map((item: any, index: number) => (
+                <article className={styles.updateRow} key={`${item.type}-${index}`}>
+                  <span>{index + 1}</span>
+                  <div><strong>{clean(item.title, "Project update")}</strong><small>{clean(item.status)} · {shortDate(item.event_at)}</small></div>
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className={`${styles.panel} ${styles.deliveryPanel}`} id="deliverables">
+            <div className={styles.panelHead}><div><span className={styles.kicker}><PackageCheck size={14} /> Deliverables</span><h3>Reports & Files</h3></div></div>
+            <div className={styles.stackList}>
+              {deliveries.length === 0 ? <EmptyCard text="Reports, maps, photos, inspection records, and file links will appear here after release." /> : deliveries.map((item: any) => (
                 <article className={styles.rowCard} key={item.id}>
-                  <strong>{clean(item.service_type, "Drone service")} · {money(item.estimated_price)}</strong>
-                  <span>{item.project_location || "Location pending"}</span>
-                  <small>{clean(item.intake_status, "received")} · requested {shortDate(item.requested_date)}</small>
+                  <div><strong>{item.package_title || "Delivery package"}</strong><span>{clean(item.package_type, "deliverable")} · {clean(item.delivery_status)}</span></div>
+                  {item.public_url ? <a className={styles.secondaryBtn} href={item.public_url} target="_blank" rel="noreferrer"><Download size={15} /> Download</a> : <button className={styles.secondaryBtn} disabled type="button"><UploadCloud size={15} /> Pending</button>}
+                </article>
+              ))}
+            </div>
+          </section>
+
+          <section className={`${styles.panel} ${styles.billingPanel}`} id="billing">
+            <div className={styles.panelHead}><div><span className={styles.kicker}><CreditCard size={14} /> Billing</span><h3>Invoices</h3></div></div>
+            <div className={styles.stackList}>
+              {invoices.length === 0 ? <EmptyCard text="No invoices yet." /> : invoices.map((item: any) => (
+                <article className={styles.rowCard} key={item.id}>
+                  <div><strong>{money(item.balance_due)} due</strong><span>Total {money(item.total_amount)} · {clean(item.pipeline_status)}</span></div>
+                  <button className={styles.secondaryBtn} type="button" disabled>Payment Link Pending</button>
                 </article>
               ))}
             </div>
           </section>
         </section>
 
-        <aside className={styles.column}>
-          <section className={styles.panel}>
-            <div className={styles.panelHead}><div><span className={styles.kicker}><PackageCheck size={14} /> Downloads</span><h2>Deliverables</h2></div></div>
-            <div className={styles.scrollList}>
-              {deliveries.length === 0 ? <EmptyCard text="No deliverables released yet. Finished files will appear here after review." /> : deliveries.map((item: any) => (
-                <article className={styles.rowCard} key={item.id}>
-                  <strong>{item.package_title || "Delivery package"}</strong>
-                  <span>{clean(item.package_type, "deliverable")} · {clean(item.delivery_status)}</span>
-                  {item.release_notes && <small>{item.release_notes}</small>}
-                  <div className={styles.rowActions}>
-                    {item.public_url ? <a className={styles.primaryBtn} href={item.public_url} target="_blank" rel="noreferrer"><Download size={16} /> Download</a> : <button className={styles.secondaryBtn} disabled type="button"><Download size={16} /> Not released</button>}
-                  </div>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section className={styles.panel}>
-            <div className={styles.panelHead}><div><span className={styles.kicker}><CreditCard size={14} /> Billing</span><h2>Invoices</h2></div></div>
-            <div className={styles.scrollList}>
-              {invoices.length === 0 ? <EmptyCard text="No invoices yet." /> : invoices.map((item: any) => (
-                <article className={styles.rowCard} key={item.id}>
-                  <strong>{money(item.balance_due)} due</strong>
-                  <span>Total {money(item.total_amount)} · Paid {money(item.amount_paid)}</span>
-                  <small>{clean(item.pipeline_status)} · {clean(item.next_step, "No next step")}</small>
-                  <button className={styles.secondaryBtn} type="button" disabled>Payment link pending</button>
-                </article>
-              ))}
-            </div>
-          </section>
-        </aside>
+        {(latestQuote || latestDelivery || latestInvoice) && <div className={styles.hiddenSummary} aria-hidden="true" />}
+        {(message || error) && <p className={error ? styles.error : styles.notice}>{error || message}</p>}
       </main>
-
-      {(message || error) && <p className={error ? styles.error : styles.notice}>{error || message}</p>}
     </section>
   );
 }
