@@ -1,10 +1,5 @@
-import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
-import PortalDashboardChrome from "@/components/PortalDashboardChrome";
+import CustomerPortalDashboard from "@/components/CustomerPortalDashboard";
 
-export default function PortalDashboardPage() {
-  return (
-    <PortalDashboardChrome dashboardKey="customer">
-      <DashboardCommandWorkspace dashboardKey="customer" />
-    </PortalDashboardChrome>
-  );
+export default function CustomerPortalPage() {
+  return <CustomerPortalDashboard />;
 }
