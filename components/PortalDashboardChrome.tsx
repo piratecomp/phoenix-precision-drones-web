@@ -145,6 +145,8 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
   const liveDashboardKey = bootstrap?.dashboard_key || dashboardKey;
   const notifications = bootstrap?.notifications || [];
   const displayName = bootstrap?.current_user?.full_name || "PPD User";
+  const isExecutive = ["owner", "admin"].includes(bootstrap?.current_user?.legacy_role || "");
+  const isInternalUser = bootstrap?.current_user?.legacy_role !== "customer";
   const navDashboards = bootstrap?.dashboards?.length
     ? bootstrap.dashboards.map((d: any) => ({ key: d.dashboard_key, path: d.dashboard_path, role: d.dashboard_name }))
     : portalDashboards.map((d) => ({ key: d.key, path: d.path, role: d.department }));
@@ -171,7 +173,7 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
         </nav>
 
         <div className="portal-sidebar-comms">
-          <DashboardCommunicationsPanel dashboardKey={liveDashboardKey} notifications={notifications} onRefresh={loadLiveData} compact />
+          {isInternalUser && <DashboardCommunicationsPanel dashboardKey={liveDashboardKey} notifications={notifications} onRefresh={loadLiveData} compact />}
         </div>
 
         <div className="panel-card portal-session-card">
@@ -200,7 +202,7 @@ export default function PortalDashboardChrome({ dashboardKey, children }: { dash
         </div>
 
         <main className="portal-workspace-scroll">
-          <PortalOperationsSnapshot dashboardKey={liveDashboardKey} />
+          {isExecutive && <PortalOperationsSnapshot dashboardKey={liveDashboardKey} />}
           <div className="portal-dashboard-children">{children}</div>
         </main>
 
