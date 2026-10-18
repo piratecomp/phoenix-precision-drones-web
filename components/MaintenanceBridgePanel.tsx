@@ -16,12 +16,12 @@ export default function MaintenanceBridgePanel({ dashboardKey }: { dashboardKey:
   const [busy, setBusy] = useState(false);
   const [view, setView] = useState<"all" | "github" | "database" | "credentials" | "exceptions">("all");
   const [detail, setDetail] = useState<any | null>(null);
-  const visible = ["owner", "admin", "maintenance", "safety"].includes(dashboardKey);
+  const visible = ["owner", "admin", "maintenance"].includes(dashboardKey);
 
   async function loadStatus() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    const { data, error } = await supabase.rpc("ppd_maintenance_ai_bridge_status");
+    const { data, error } = await supabase.rpc("ppd_get_maintenance_dashboard_state");
     if (error) {
       setMessage(error.message);
       return;
@@ -123,8 +123,7 @@ export default function MaintenanceBridgePanel({ dashboardKey }: { dashboardKey:
         <div className="maintenance-bridge-buttons">
           <button className="maintenance-bridge-refresh" type="button" onClick={loadStatus} disabled={busy}>Refresh</button>
           <button className="maintenance-bridge-refresh" type="button" onClick={runVercelWatch} disabled={busy}>Check Vercel</button>
-          <button className="maintenance-bridge-refresh" type="button" onClick={createBridgeCheck} disabled={busy}>Create Test PR</button>
-          <button className="maintenance-bridge-refresh" type="button" onClick={createDatabaseCheck} disabled={busy}>Create DB Check</button>
+          <button className="maintenance-bridge-refresh" type="button" disabled title="Automated repair execution needs validation and review.">Repair Actions Held</button>
         </div>
       </div>
 
@@ -148,8 +147,8 @@ export default function MaintenanceBridgePanel({ dashboardKey }: { dashboardKey:
       )}
 
       <div className="maintenance-bridge-grid">
-        {(view === "all" || view === "github" || view === "exceptions") && <article className="maintenance-bridge-card"><h4>GitHub repair queue</h4>{filteredGithub.length === 0 && <p>No GitHub actions in this view.</p>}{filteredGithub.slice(0,8).map((a:any)=><div className="maintenance-bridge-row" key={a.id}><strong>{a.file_path || a.action_type}</strong><span>{a.action_status} · {a.risk_tier}</span><small>{a.pull_request_url || a.target_branch || a.repo_full_name}</small><div className="maintenance-bridge-row-actions"><button className="maintenance-bridge-run" type="button" onClick={() => showDetail("github", a.id)} disabled={busy}>Details</button>{a.pull_request_url && <a className="maintenance-bridge-run" href={a.pull_request_url} target="_blank" rel="noreferrer">Open PR</a>}{["queued","drafted"].includes(a.action_status) && <button className="maintenance-bridge-run" type="button" onClick={() => runGitHubAction(a.id)} disabled={busy}>Run Bridge</button>}</div></div>)}</article>}
-        {(view === "all" || view === "database" || view === "exceptions") && <article className="maintenance-bridge-card"><h4>Supabase repair queue</h4>{filteredDatabase.length === 0 && <p>No database actions in this view.</p>}{filteredDatabase.slice(0,8).map((a:any)=><div className="maintenance-bridge-row" key={a.id}><strong>{a.migration_name || a.action_type}</strong><span>{a.action_status} · {a.risk_tier}</span><small>{a.target_table || a.target_function || "Draft"}</small><div className="maintenance-bridge-row-actions"><button className="maintenance-bridge-run" type="button" onClick={() => showDetail("database", a.id)} disabled={busy}>Details</button>{["queued","drafted","validated"].includes(a.action_status) && <button className="maintenance-bridge-run" type="button" onClick={() => runDatabaseAction(a.id)} disabled={busy}>Run DB Executor</button>}</div></div>)}</article>}
+        {(view === "all" || view === "github" || view === "exceptions") && <article className="maintenance-bridge-card"><h4>GitHub repair queue</h4>{filteredGithub.length === 0 && <p>No GitHub actions in this view.</p>}{filteredGithub.slice(0,8).map((a:any)=><div className="maintenance-bridge-row" key={a.id}><strong>{a.file_path || a.action_type}</strong><span>{a.action_status} · {a.risk_tier}</span><small>{a.pull_request_url || a.target_branch || a.repo_full_name}</small><div className="maintenance-bridge-row-actions"><button className="maintenance-bridge-run" type="button" onClick={() => showDetail("github", a.id)} disabled={busy}>Details</button>{a.pull_request_url && <a className="maintenance-bridge-run" href={a.pull_request_url} target="_blank" rel="noreferrer">Open PR</a>}{["queued","drafted"].includes(a.action_status) && <small>Execution held.</small>}</div></div>)}</article>}
+        {(view === "all" || view === "database" || view === "exceptions") && <article className="maintenance-bridge-card"><h4>Supabase repair queue</h4>{filteredDatabase.length === 0 && <p>No database actions in this view.</p>}{filteredDatabase.slice(0,8).map((a:any)=><div className="maintenance-bridge-row" key={a.id}><strong>{a.migration_name || a.action_type}</strong><span>{a.action_status} · {a.risk_tier}</span><small>{a.target_table || a.target_function || "Draft"}</small><div className="maintenance-bridge-row-actions"><button className="maintenance-bridge-run" type="button" onClick={() => showDetail("database", a.id)} disabled={busy}>Details</button>{["queued","drafted","validated"].includes(a.action_status) && <small>Execution held.</small>}</div></div>)}</article>}
       </div>
 
       {(view === "all" || view === "credentials") && <div className="maintenance-credential-strip">{credentials.map((c:any)=><span className={c.active ? "active" : c.configured ? "configured" : "missing"} key={c.tool_key}>{c.tool_key}: {c.active ? "active" : c.configured ? "configured" : "needs setup"}</span>)}</div>}

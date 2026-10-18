@@ -15,8 +15,8 @@ export default function AICyclePanel() {
   async function load() {
     const supabase = getSupabaseBrowserClient();
     if (!supabase) return;
-    const { data, error } = await supabase.rpc("ppd_ai_cycle_status");
-    if (error) setMessage(error.message); else { setStatus(data as CycleStatus); setMessage(null); }
+    const { data, error } = await supabase.rpc("ppd_get_ai_command_dashboard");
+    if (error) setMessage(error.message); else { setStatus(data?.cycle as CycleStatus); setMessage(null); }
   }
 
   async function runCycle() {
@@ -40,9 +40,9 @@ export default function AICyclePanel() {
     <>
       <AIAutopilotPanel />
       <section className="ai-gateway-panel panel-card">
-        <div className="portal-game-panel-head"><div><span className="section-kicker">PPD AI Control Cycle</span><h3>Main operating loop</h3></div><div className="maintenance-bridge-buttons"><button className="maintenance-bridge-refresh" type="button" onClick={load} disabled={busy}>Refresh</button><button className="maintenance-bridge-refresh" type="button" onClick={runCycle} disabled={busy}>Run Full Cycle</button></div></div>
-        <div className="maintenance-bridge-stats clickable-stats"><button type="button" onClick={() => setView("cycles")}><span>Health</span><strong>{state.health_score ?? 0}</strong><em>Open cycles</em></button><button type="button" onClick={() => setView("steps")}><span>Owner Attention</span><strong>{state.owner_attention_count ?? 0}</strong><em>Open steps</em></button><button type="button" onClick={() => setView("tools")}><span>Tools Active</span><strong>{counts.tools_active ?? 0}/{counts.tools_configured ?? 0}</strong><em>Open tools</em></button><button type="button" onClick={() => setView("counts")}><span>Learning</span><strong>{counts.learning_events ?? 0}</strong><em>Open counts</em></button></div>
-        <p className="maintenance-bridge-message">{state.next_recommended_action || "Run the controlled AI cycle to refresh system state."}</p>
+        <div className="portal-game-panel-head"><div><span className="section-kicker">PPD AI Control Cycle</span><h3>Main operating loop</h3></div><div className="maintenance-bridge-buttons"><button className="maintenance-bridge-refresh" type="button" onClick={load} disabled={busy}>Refresh</button><button className="maintenance-bridge-refresh" type="button" disabled title="The main AI schedule is paused.">Full Cycle Held</button></div></div>
+        <div className="maintenance-bridge-stats clickable-stats"><button type="button" onClick={() => setView("cycles")}><span>Last Health</span><strong>{state.last_cycle_at ? state.health_score ?? "Unknown" : "Not measured"}</strong><em>Open cycles</em></button><button type="button" onClick={() => setView("steps")}><span>Owner Attention</span><strong>{state.owner_attention_count ?? 0}</strong><em>Open steps</em></button><button type="button" onClick={() => setView("tools")}><span>Tools Active</span><strong>{counts.tools_active ?? 0}/{counts.tools_configured ?? 0}</strong><em>Open tools</em></button><button type="button" onClick={() => setView("counts")}><span>Learning</span><strong>{counts.learning_events ?? 0}</strong><em>Open counts</em></button></div>
+        <p className="maintenance-bridge-message">{state.last_cycle_at ? state.next_recommended_action : "No controlled cycle has run. Execution is held while gateway and action gates are validated."}</p>
         {message && <p className="maintenance-bridge-message">{message}</p>}
         <div className="maintenance-bridge-grid">
           {view === "cycles" && <article className="maintenance-bridge-card"><h4>Recent cycles</h4>{cycles.length === 0 && <p>No cycles yet.</p>}{cycles.slice(0,8).map((c:any)=><div className="maintenance-bridge-row" key={c.id}><strong>{c.cycle_key}</strong><span>{c.cycle_status} · {c.main_brain_version}</span><small>{c.actions_created} created · {c.actions_completed} completed · {c.owner_exceptions} owner attention</small></div>)}</article>}

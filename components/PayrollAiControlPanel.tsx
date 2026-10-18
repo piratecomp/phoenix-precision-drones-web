@@ -18,7 +18,7 @@ function money(value: unknown) {
 }
 
 function dateText(date: Date) {
-  return date.toISOString().slice(0, 10);
+  return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
 }
 
 function currentPeriodDates() {
@@ -55,8 +55,11 @@ export default function PayrollAiControlPanel() {
   const workers: JsonMap[] = panel?.workers || [];
   const batches: JsonMap[] = drafts?.batches || [];
   const activePeriodId = panel?.active_period?.id as string | undefined;
-  const latestBatchId = batches?.[0]?.id as string | undefined;
+  const currentBatch = batches.find((batch) => batch.payroll_period_id === activePeriodId);
+  const latestBatchId = currentBatch?.id as string | undefined;
   const blockers = Number(counts.blockers || 0);
+  const canDraft = panel?.can_prepare_draft === true;
+  const canExport = panel?.can_export_for_review === true && Boolean(latestBatchId);
 
   async function loadPanel() {
     if (!configured) {
@@ -66,7 +69,7 @@ export default function PayrollAiControlPanel() {
     setError(null);
     try {
       const [payrollPanel, draftPanel] = await Promise.all([
-        rpc<JsonMap>("ppd_get_payroll_control_panel"),
+        rpc<JsonMap>("ppd_get_payroll_dashboard_state"),
         rpc<JsonMap>("ppd_get_payroll_draft_batches"),
       ]);
       setPanel(payrollPanel);
@@ -89,7 +92,8 @@ export default function PayrollAiControlPanel() {
       p_end_date: dates.end,
       p_scope: "mixed",
     });
-    return result?.payroll_period_id as string | undefined;
+    if (result?.ok === false || !result?.payroll_period_id) throw new Error(result?.error || "Unable to open the current payroll period.");
+    return result.payroll_period_id as string;
   }
 
   async function runAction(action: string) {
@@ -97,25 +101,20 @@ export default function PayrollAiControlPanel() {
     setError(null);
     try {
       let result: JsonMap | null = null;
-      if (action === "refresh") {
-        result = await rpc<JsonMap>("ppd_sync_payroll_role_operations");
-      }
+      if (action === "refresh") result = { ok: true, message: "Dashboard data refreshed without changing payroll records." };
       if (action === "period") {
         const periodId = await openCurrentPeriod();
         result = { ok: true, payroll_period_id: periodId };
       }
       if (action === "draft") {
-        const periodId = activePeriodId || await openCurrentPeriod();
-        result = await rpc<JsonMap>("ppd_generate_payroll_draft_batch", { p_payroll_period_id: periodId });
-      }
-      if (action === "tax") {
-        if (!activePeriodId) throw new Error("Open a payroll period first.");
-        result = await rpc<JsonMap>("ppd_apply_draft_tax_rates_to_period", { p_payroll_period_id: activePeriodId });
+        if (!activePeriodId || !canDraft) throw new Error("Complete worker and timecard setup for a current period before drafting.");
+        result = await rpc<JsonMap>("ppd_generate_payroll_draft_batch", { p_payroll_period_id: activePeriodId });
       }
       if (action === "export") {
-        if (!latestBatchId) throw new Error("Generate a draft batch first.");
+        if (!latestBatchId || !canExport) throw new Error("A nonempty current-period draft is required for a review export.");
         result = await rpc<JsonMap>("ppd_create_payroll_provider_export", { p_payment_batch_id: latestBatchId });
       }
+      if (result?.ok === false) throw new Error(result?.error || "Payroll action was blocked.");
       setLastResult(result || { ok: true });
       await loadPanel();
     } catch (err: any) {
@@ -131,7 +130,7 @@ export default function PayrollAiControlPanel() {
         <div>
           <span className="section-kicker">Finance Payroll AI</span>
           <h2>W-2 / 1099 Payroll Control Window</h2>
-          <p>Control payroll readiness, timecards, draft batches, tax review, and provider-safe exports.</p>
+          <p>Review company setup, workers, timecards, and draft records. Payment execution stays gated.</p>
         </div>
       </div>
 
@@ -142,9 +141,9 @@ export default function PayrollAiControlPanel() {
       ) : (
         <>
           <div className={styles.statusBar}>
-            <span className={blockers > 0 ? styles.warn : styles.good}><ShieldCheck size={15} /> Payroll {blockers > 0 ? "Blocked" : "Ready for Review"}</span>
-            <span>{clean(panel?.preflight?.preflight_status)}</span>
-            <span>Provider: {clean(panel?.company?.payroll_provider_status)}</span>
+            <span className={blockers > 0 ? styles.warn : styles.good}><ShieldCheck size={15} /> {blockers > 0 ? "Setup blocked" : "Ready for review"}</span>
+            <span>{activePeriodId ? `${panel?.active_period?.start_date} to ${panel?.active_period?.end_date}` : "No current payroll period"}</span>
+            <span>Provider: {panel?.provider?.production_connected ? "production connected" : "not connected"}</span>
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
@@ -152,35 +151,35 @@ export default function PayrollAiControlPanel() {
           <div className={styles.metricsGrid}>
             <div><span>W-2 Ready</span><strong>{counts.w2_ready || 0}/{counts.w2_workers || 0}</strong></div>
             <div><span>1099 Ready</span><strong>{counts.contract_ready || 0}/{counts.contract_workers || 0}</strong></div>
-            <div><span>Blockers</span><strong>{counts.blockers || 0}</strong></div>
-            <div><span>Warnings</span><strong>{counts.warnings || 0}</strong></div>
+            <div><span>Setup Items</span><strong>{counts.blockers || 0}</strong></div>
+            <div><span>Tax method</span><strong>{panel?.tax?.method_verified ? "Verified" : "Review"}</strong></div>
             <div><span>Draft Batches</span><strong>{draftCounts.draft_batches || 0}</strong></div>
             <div><span>Held Items</span><strong>{draftCounts.held_items || 0}</strong></div>
-            <div><span>Open Timecards</span><strong>{(counts.open_w2_timecards || 0) + (counts.open_contract_timecards || 0)}</strong></div>
-            <div><span>Unapproved Cards</span><strong>{(counts.unapproved_w2_timecards || 0) + (counts.unapproved_contract_timecards || 0)}</strong></div>
-            <div><span>Latest Net</span><strong>{money(batches?.[0]?.net_total)}</strong></div>
-            <div><span>Batch Status</span><strong>{clean(batches?.[0]?.batch_status)}</strong></div>
+            <div><span>Open Timecards</span><strong>{counts.open_timecards || 0}</strong></div>
+            <div><span>Unapproved Cards</span><strong>{counts.unapproved_timecards || 0}</strong></div>
+            <div><span>Current Draft Net</span><strong>{currentBatch ? money(currentBatch.net_total) : "None"}</strong></div>
+            <div><span>Current Batch</span><strong>{currentBatch ? clean(currentBatch.batch_status) : "None"}</strong></div>
             <div><span>EIN</span><strong>{clean(panel?.company?.ein_status)}</strong></div>
             <div><span>AZ Withholding</span><strong>{clean(panel?.company?.state_withholding_status)}</strong></div>
           </div>
 
           <div className={styles.actions}>
-            <button className="primary-btn" type="button" onClick={() => runAction("period")} disabled={Boolean(busy)}>{busy === "period" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Open Period</button>
-            <button className="primary-btn" type="button" onClick={() => runAction("draft")} disabled={Boolean(busy)}>{busy === "draft" ? <Loader2 className={styles.spin} size={16} /> : <FileText size={16} />} Draft Batch</button>
-            <button className="ghost-btn" type="button" onClick={() => runAction("tax")} disabled={Boolean(busy) || !activePeriodId}>Apply Draft Taxes</button>
-            <button className="ghost-btn" type="button" onClick={() => runAction("export")} disabled={Boolean(busy) || !latestBatchId}>Provider-Safe Export</button>
+            <button className="primary-btn" type="button" onClick={() => runAction("period")} disabled={Boolean(busy) || Boolean(activePeriodId) || (counts.w2_workers || 0) + (counts.contract_workers || 0) === 0}>{busy === "period" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Open Current Period</button>
+            <button className="primary-btn" type="button" onClick={() => runAction("draft")} disabled={Boolean(busy) || !canDraft}>{busy === "draft" ? <Loader2 className={styles.spin} size={16} /> : <FileText size={16} />} Draft Batch</button>
+            <button className="ghost-btn" type="button" disabled title="Federal withholding calculation and company setup require verification.">Tax Engine Pending</button>
+            <button className="ghost-btn" type="button" onClick={() => runAction("export")} disabled={Boolean(busy) || !canExport}>Review Export</button>
             <button className="ghost-btn" type="button" onClick={() => runAction("refresh")} disabled={Boolean(busy)}>{busy === "refresh" ? <Loader2 className={styles.spin} size={16} /> : <RefreshCw size={16} />} Refresh</button>
           </div>
 
           <section className={styles.sectionBlock}>
-            <div className={styles.sectionHead}><h3>Readiness Blockers</h3><span>{checks.length}</span></div>
+            <div className={styles.sectionHead}><h3>Setup and Readiness</h3><span>{checks.length}</span></div>
             {checks.length ? checks.slice(0, 8).map((check) => (
-              <p className={styles.queueItem} key={check.id}>
+              <p className={styles.queueItem} key={check.check_key}>
                 <strong>{check.title}</strong>
                 <span>{clean(check.severity)}</span>
-                <em>{check.summary}<br />Next: {check.next_step}</em>
+                <em>{check.summary && <>{check.summary}<br /></>}Next: {check.next_step}</em>
               </p>
-            )) : <p className={styles.compactItem}><strong>No open blockers.</strong><span>Payroll can move forward when draft totals and provider readiness are verified.</span></p>}
+            )) : <p className={styles.compactItem}><strong>No current setup blockers.</strong><span>Review draft totals and approvals before any provider step.</span></p>}
           </section>
 
           <section className={styles.twoColumn}>
@@ -190,7 +189,7 @@ export default function PayrollAiControlPanel() {
             </div>
             <div className={styles.sectionBlock}>
               <div className={styles.sectionHead}><h3>Draft Batches</h3><span>{batches.length}</span></div>
-              {batches.slice(0, 6).map((batch) => <p className={styles.compactItem} key={batch.id}><strong>{clean(batch.batch_status)}</strong><span>{clean(batch.batch_type)} · Net {money(batch.net_total)} · Items {batch.item_count || 0}</span></p>)}
+              {batches.slice(0, 6).map((batch) => <p className={styles.compactItem} key={batch.id}><strong>{clean(batch.batch_status)} {batch.payroll_period_id !== activePeriodId ? "· historical" : "· current"}</strong><span>{clean(batch.batch_type)} · Net {money(batch.net_total)} · Items {batch.item_count || 0}</span></p>)}
             </div>
           </section>
 
