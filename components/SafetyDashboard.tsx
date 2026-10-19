@@ -66,10 +66,10 @@ export default function SafetyDashboard() {
     setBusy(false);
   }
   const weather = data?.weather || [];
-  const shown = filter === "all" ? weather : weather.filter(w => (w.assessment || "review") === filter);
+  const shown = filter === "all" ? weather : weather.filter(w => filter === "unsafe" ? (w.assessment || "").startsWith("unsafe") : (w.assessment || "review") === filter);
   const stale = weather.filter(w => w.assessment === "stale").length;
-  const review = weather.filter(w => !w.assessment || w.assessment === "review" || w.assessment === "review_missing_weather").length;
-  const unsafe = weather.filter(w => w.assessment === "unsafe").length;
+  const review = weather.filter(w => !w.assessment || w.assessment.startsWith("review")).length;
+  const unsafe = weather.filter(w => (w.assessment || "").startsWith("unsafe")).length;
   const ready = weather.filter(w => w.assessment === "safe").length;
   return <section className={styles.root} aria-label="Safety control dashboard">
     <div className={styles.header}><div><span className="section-kicker">Safety operations</span><h2>Safety control dashboard</h2><p>Live regional weather, mission holds, reviews, and checklist evidence. Regional data is advisory; the pilot makes the final flight decision.</p></div><button type="button" onClick={() => void load()} disabled={loading || busy}>Refresh dashboard</button></div>
