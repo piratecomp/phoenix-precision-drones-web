@@ -9,6 +9,7 @@
 | Area | Finding | Action / current state |
 | --- | --- | --- |
 | Weather ingestion | Five Phoenix-area zone caches had expired for months; new NOAA refresh runs at :10/:40 and prebrief. | 19:10 UTC cron completed. Source and observation time retained. Five zones refreshed; gust was null in all five. Chandler and Glendale station observations were >60 minutes old at 19:10. |
+| Partial refresh failure | Cron reported success when the NOAA fetch failed for a location, leaving its old cache valid for a short time. | Checked wrapper expires failed locations and records a high-severity operational event. At 19:46 UTC, Glendale failed, four zones updated, Glendale was marked stale and an event was recorded. The first wrapper revision used an invalid event severity and rolled back; a full replacement corrected it and passed the failure-path test. |
 | Weather classification | Null wind gust/precipitation previously allowed a safe label; missing briefing values rendered as zero. The legacy Edge sync also substituted zero or wind speed for absent readings. | Missing critical readings return `review_missing_weather`. Known unsafe wind remains unsafe. The briefing shows missing readings and provenance. `sync_job_weather` v46 preserves nulls and labels cached rows as forecasts. |
 | Job safety | `evaluate_job_weather_safety` accepted any non-`unsafe` text as safe, even stale. Active jobs were not refreshed when zone cache refreshed. | Requires a recent NOAA station observation and all critical values. Scheduled cache refresh now propagates status to active jobs, including stale/missing states. No active job exists to demonstrate propagation. |
 | Legacy weather APIs | Five boolean functions returned true for missing weather or used an arbitrary job's forecast. `weather_safe_for_mission` referenced nonexistent limit columns. | All now fail closed where location, date, or trustworthy data are absent. Legacy date-only APIs cannot establish flight weather. |
@@ -33,6 +34,7 @@
 ## Checks run
 
 - At 19:10 UTC, cron `ppd_weather_refresh_30m` reported `succeeded` and refreshed five zones. Its job propagation has no active jobs to test.
+- At 19:40 UTC, cron ran; a manual checked refresh at 19:46 UTC returned `updated: 4` and one Glendale error. Glendale's cache was expired and a high-severity event inserted. Cron scheduling now calls the checked wrapper.
 - Unknown job/mission, absent forecast, absent telemetry and undirected date checks returned `unknown`, `false`, or a human-review status; no safe result.
 - Known 29 mph wind returned `unsafe_wind` even with a missing gust; missing gust with otherwise benign values returned `review_missing_weather`.
 - A test `takeoff` command was blocked by the database trigger and no command row was persisted.
@@ -45,5 +47,7 @@
 - `20261019193000_hold_unverified_flight_commands.sql`
 - `20261019193500_propagate_weather_review_to_jobs.sql`
 - `20261019194500_safety_checklist_evidence_gate.sql`
+- `20261019195000_invalidate_failed_weather_refresh.sql`
+- `20261019195500_correct_weather_refresh_event_severity.sql`
 - `supabase/functions/sync_job_weather/index.ts`
 - `supabase/functions/Execute-mission-/index.ts`
