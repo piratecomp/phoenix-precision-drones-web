@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getSupabaseBrowserClient } from "@/lib/supabaseClient";
 import styles from "./SafetyDashboard.module.css";
+import SafetyCompliancePanel from "./SafetyCompliancePanel";
 
 type Weather = { location_name: string; source_kind: string | null; observation_time: string | null; forecast_period_start: string | null; fetched_at: string | null; valid_until: string | null; wind_mph: number | null; wind_gust_mph: number | null; temperature_f: number | null; precip_probability: number | null; assessment: string | null };
 type Job = { id: string; status: string; job_address: string | null; scheduled_start: string | null; weather_status: string | null; safety_status: string | null; requires_manual_approval: boolean };
@@ -95,6 +96,7 @@ export default function SafetyDashboard() {
         {checklistId && <form className={styles.evidence} onSubmit={e => { e.preventDefault(); void clearChecklist(checklistId); }}><h4>Checklist {checklistId.slice(0,8)}</h4><label>Airspace evidence<textarea value={airspace} onChange={e => setAirspace(e.target.value)} minLength={10} maxLength={2000} required /></label><label>Site weather evidence<textarea value={siteWeather} onChange={e => setSiteWeather(e.target.value)} minLength={10} maxLength={2000} required /></label><label>Site observation time<input type="datetime-local" value={observedAt} onChange={e => setObservedAt(e.target.value)} required /></label><label>Reviewer note<textarea value={reason} onChange={e => setReason(e.target.value)} maxLength={2000} /></label><div className={styles.actions}><button disabled={busy} type="submit">{busy ? "Checking…" : "Check and clear"}</button><button type="button" onClick={() => setChecklistId(null)}>Cancel</button></div></form>}
       </article>
       <article className={styles.panel}><h3>Open safety and weather alerts</h3>{!data.events.length && <p className={styles.empty}>No open events recorded. Inspect live evidence before authorizing work.</p>}{data.events.map(e => <div key={e.id} className={styles.item}><div className={styles.row}><strong>{e.title}</strong><b className={styles.badge}>{readable(e.severity)}</b></div><p>{e.summary}</p><small>{readable(e.module_key)} · {stamp(e.created_at)}</small></div>)}</article>
+      <SafetyCompliancePanel jobs={data.jobs} />
       <p className={styles.timestamp}>Snapshot generated {stamp(data.generated_at)}. Refresh after a field change.</p>
     </>}
   </section>;
