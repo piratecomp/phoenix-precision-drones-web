@@ -16,6 +16,7 @@
 | Auto scheduler | Unbounded loop could continue forever after safe weather became unavailable and inserted rejected mission days. | Disabled with an explicit exception pending a bounded, human-reviewed scheduling proposal. |
 | Mission evaluator | Referenced deleted `ai_safety_control`, then cleared mission for any weather status other than `unsafe`. | Requires current job weather `safe` and a recent human-cleared checklist with weather, airspace, pilot, aircraft, insurance and site flags. Missing mission returns `unknown_mission`. |
 | Telemetry | Absent or old records, missing battery/signal/coordinates, or altitude below zero could yield `safe`. | Freshness and required fields enforced. The output is `telemetry_checks_passed`, deliberately short of flight clearance. Empty telemetry returns `no_current_telemetry`. |
+| Low-battery monitor | Scanned historical telemetry below 25% and could queue repeated return-to-home commands for inactive drones. | Now only considers the newest reading within two minutes for an active mission and skips a drone with a pending RTH. Empty-system invocation created zero commands. Aircraft behavior remains untested. |
 | Drone decision | Weighted decision could choose `continue` from partial inputs, or `reroute` for unrelated failures. | Returns `human_review_required`; no autonomous continuation/reroute decision. |
 | Checklist clearance | Six booleans and risk score could approve a job with no reviewer or current evidence. | Clearance now requires an active owner/admin reviewer, recent site observation evidence, airspace evidence, matching pilot/drone, and current safe weather. Unknown checklist test returned `checklist not found`. The portal still needs a way to record and review this evidence. |
 | Checklist invalidation | Cleared status could remain after changing the site, pilot, aircraft, schedule, or weather status. | An enabled job update trigger reopens the checklist and review item when those fields change or weather loses its safe state. No actual job existed for a transition test. |
@@ -29,6 +30,7 @@
 3. **Airspace:** The local `no_fly_zones` table is not proof of current FAA authorization, TFRs, LAANC or site restrictions. Review must capture current authorization evidence and time bounds.
 4. **Checklist workflow:** The database now requires reviewer identity and evidence fields before clearance, and invalidates on important job/weather changes. The portal still needs controlled evidence capture and verification, including airspace authorization expiry and live field changes. A service-role caller can still supply a reviewer ID; this must be tied to authenticated owner/admin action at the API boundary.
 5. **Scheduling and dispatch:** Replace the disabled unbounded auto scheduler with a finite proposal workflow. Prove every dispatch/mission command path consults one common safety gate; do not enable ordinary command publishing until then.
+   The low-battery monitor is bounded and deduplicated in the database, but its aircraft-side behavior and delivery path have not been field-tested.
 6. **End-to-end tests:** Create isolated nonflight fixtures for safe, unsafe, null, stale, provider failure, manual override, changed mission, expired insurance/certificate, command rejection and concurrent changes. Then perform supervised field trials. No active records exist to validate live transitions.
 7. **Weather forecast integration:** `sync_job_weather` v46 preserves missing values and labels hourly forecasts. It has not been exercised with a real authenticated job request after deployment. Forecasts do not establish current site weather for flight clearance.
 
@@ -51,5 +53,6 @@
 - `20261019195000_invalidate_failed_weather_refresh.sql`
 - `20261019195500_correct_weather_refresh_event_severity.sql`
 - `20261019200000_invalidate_changed_job_safety.sql`
+- `20261019200500_bound_low_battery_rth_monitor.sql`
 - `supabase/functions/sync_job_weather/index.ts`
 - `supabase/functions/Execute-mission-/index.ts`
