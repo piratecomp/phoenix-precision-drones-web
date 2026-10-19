@@ -56,11 +56,13 @@ export default function PayrollAiControlPanel() {
   const workers: JsonMap[] = panel?.workers || [];
   const batches: JsonMap[] = drafts?.batches || [];
   const activePeriodId = panel?.active_period?.id as string | undefined;
+  const currentDates = currentPeriodDates();
+  const activeIsCurrent = panel?.active_period?.start_date === currentDates.start && panel?.active_period?.end_date === currentDates.end;
   const currentBatch = batches.find((batch) => batch.payroll_period_id === activePeriodId);
   const latestBatchId = currentBatch?.id as string | undefined;
   const blockers = Number(counts.blockers || 0);
-  const canDraft = panel?.can_prepare_draft === true;
-  const canExport = panel?.can_export_for_review === true && Boolean(latestBatchId);
+  const canDraft = activeIsCurrent && panel?.can_prepare_draft === true;
+  const canExport = activeIsCurrent && panel?.can_export_for_review === true && Boolean(latestBatchId);
 
   async function loadPanel() {
     if (!configured) {
@@ -108,7 +110,7 @@ export default function PayrollAiControlPanel() {
         result = { ok: true, payroll_period_id: periodId };
       }
       if (action === "schedule") {
-        if (!activePeriodId || !payDate) throw new Error("Choose a pay date after the workweek ends.");
+        if (!activePeriodId || !activeIsCurrent || !payDate) throw new Error("Open the current workweek and choose a pay date after it ends.");
         result = await rpc<JsonMap>("ppd_set_weekly_pay_schedule", {
           p_payroll_period_id: activePeriodId,
           p_pay_date: payDate,
@@ -150,7 +152,7 @@ export default function PayrollAiControlPanel() {
         <>
           <div className={styles.statusBar}>
             <span className={blockers > 0 ? styles.warn : styles.good}><ShieldCheck size={15} /> {blockers > 0 ? "Setup blocked" : "Ready for review"}</span>
-            <span>{activePeriodId ? `${panel?.active_period?.start_date} to ${panel?.active_period?.end_date}` : "No current payroll period"}</span>
+            <span>{activePeriodId ? `${panel?.active_period?.start_date} to ${panel?.active_period?.end_date}${activeIsCurrent ? "" : " · historical"}` : "No current payroll period"}</span>
             <span>Payroll operator: PPD AI · Bank rail: {panel?.provider?.production_connected ? "connected" : "not connected"}</span>
           </div>
 
@@ -172,9 +174,9 @@ export default function PayrollAiControlPanel() {
           </div>
 
           <div className={styles.actions}>
-            <button className="primary-btn" type="button" onClick={() => runAction("period")} disabled={Boolean(busy) || Boolean(activePeriodId) || (counts.w2_workers || 0) + (counts.contract_workers || 0) === 0}>{busy === "period" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Open Current Period</button>
-            <label>Pay date <input aria-label="Weekly pay date" type="date" value={payDate} onChange={(event) => setPayDate(event.target.value)} disabled={Boolean(busy) || !activePeriodId} /></label>
-            <button className="ghost-btn" type="button" onClick={() => runAction("schedule")} disabled={Boolean(busy) || !activePeriodId || !payDate}>Set Weekly Schedule</button>
+            <button className="primary-btn" type="button" onClick={() => runAction("period")} disabled={Boolean(busy) || activeIsCurrent || (counts.w2_workers || 0) + (counts.contract_workers || 0) === 0}>{busy === "period" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Open Current Period</button>
+            <label>Pay date <input aria-label="Weekly pay date" type="date" value={payDate} onChange={(event) => setPayDate(event.target.value)} disabled={Boolean(busy) || !activeIsCurrent} /></label>
+            <button className="ghost-btn" type="button" onClick={() => runAction("schedule")} disabled={Boolean(busy) || !activeIsCurrent || !payDate}>Set Weekly Schedule</button>
             <button className="primary-btn" type="button" onClick={() => runAction("draft")} disabled={Boolean(busy) || !canDraft}>{busy === "draft" ? <Loader2 className={styles.spin} size={16} /> : <FileText size={16} />} Draft Batch</button>
             <button className="ghost-btn" type="button" disabled title="The 2026 federal and Arizona draft tax calculations require verified worker tax forms and wage bases.">Tax Calculation Gated</button>
             <button className="ghost-btn" type="button" onClick={() => runAction("export")} disabled={Boolean(busy) || !canExport}>Review Export</button>
