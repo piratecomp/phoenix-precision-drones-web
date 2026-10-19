@@ -1,6 +1,7 @@
 import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
+import Link from "next/link";
 import FundingAiControlPanel from "@/components/FundingAiControlPanel";
-import PayrollAiControlPanel from "@/components/PayrollAiControlPanel";
+import PayrollFinanceSummary from "@/components/PayrollFinanceSummary";
 import PortalDashboardChrome from "@/components/PortalDashboardChrome";
 import styles from "./page.module.css";
 
@@ -12,14 +13,15 @@ export default function PortalDashboardPage() {
       <section className={styles.aiPanelsSection} aria-label="Finance AI control panels">
         <div className={styles.aiPanelsHeader}>
           <span className="section-kicker">Finance AI Command Center</span>
-          <h2>Funding + Payroll Intelligence</h2>
+          <h2>Funding and payroll</h2>
           <p>
-            Embedded finance-dashboard controls for grant/contract funding and payroll readiness. These panels are dashboard-only and do not change the public website.
+            Finance AI tracks funding and payroll readiness. Open the payroll department to review timecards, changes, pay runs, tax calculations, and authorizations.
           </p>
+          <Link className={styles.payrollLink} href="/portal/finance/payroll">Open payroll dashboard →</Link>
         </div>
 
         <div className={styles.aiPanelsGrid}>
-          <PayrollAiControlPanel />
+          <PayrollFinanceSummary />
           <FundingAiControlPanel />
         </div>
       </section>
