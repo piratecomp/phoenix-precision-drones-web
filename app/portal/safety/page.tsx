@@ -1,10 +1,6 @@
-import DashboardCommandWorkspace from "@/components/DashboardCommandWorkspace";
+import SafetyDashboard from "@/components/SafetyDashboard";
 import PortalDashboardChrome from "@/components/PortalDashboardChrome";
 
 export default function PortalDashboardPage() {
-  return (
-    <PortalDashboardChrome dashboardKey="safety">
-      <DashboardCommandWorkspace dashboardKey="safety" />
-    </PortalDashboardChrome>
-  );
+  return <PortalDashboardChrome dashboardKey="safety"><SafetyDashboard /></PortalDashboardChrome>;
 }
