@@ -48,6 +48,7 @@ export default function PayrollAiControlPanel() {
   const [loading, setLoading] = useState(configured);
   const [error, setError] = useState<string | null>(null);
   const [lastResult, setLastResult] = useState<JsonMap | null>(null);
+  const [payDate, setPayDate] = useState("");
 
   const counts = panel?.counts || {};
   const draftCounts = drafts?.counts || {};
@@ -55,11 +56,13 @@ export default function PayrollAiControlPanel() {
   const workers: JsonMap[] = panel?.workers || [];
   const batches: JsonMap[] = drafts?.batches || [];
   const activePeriodId = panel?.active_period?.id as string | undefined;
+  const currentDates = currentPeriodDates();
+  const activeIsCurrent = panel?.active_period?.start_date === currentDates.start && panel?.active_period?.end_date === currentDates.end;
   const currentBatch = batches.find((batch) => batch.payroll_period_id === activePeriodId);
   const latestBatchId = currentBatch?.id as string | undefined;
   const blockers = Number(counts.blockers || 0);
-  const canDraft = panel?.can_prepare_draft === true;
-  const canExport = panel?.can_export_for_review === true && Boolean(latestBatchId);
+  const canDraft = activeIsCurrent && panel?.can_prepare_draft === true;
+  const canExport = activeIsCurrent && panel?.can_export_for_review === true && Boolean(latestBatchId);
 
   async function loadPanel() {
     if (!configured) {
@@ -106,6 +109,13 @@ export default function PayrollAiControlPanel() {
         const periodId = await openCurrentPeriod();
         result = { ok: true, payroll_period_id: periodId };
       }
+      if (action === "schedule") {
+        if (!activePeriodId || !activeIsCurrent || !payDate) throw new Error("Open the current workweek and choose a pay date after it ends.");
+        result = await rpc<JsonMap>("ppd_set_weekly_pay_schedule", {
+          p_payroll_period_id: activePeriodId,
+          p_pay_date: payDate,
+        });
+      }
       if (action === "draft") {
         if (!activePeriodId || !canDraft) throw new Error("Complete worker and timecard setup for a current period before drafting.");
         result = await rpc<JsonMap>("ppd_generate_payroll_draft_batch", { p_payroll_period_id: activePeriodId });
@@ -130,7 +140,7 @@ export default function PayrollAiControlPanel() {
         <div>
           <span className="section-kicker">Finance Payroll AI</span>
           <h2>W-2 / 1099 Payroll Control Window</h2>
-          <p>Review company setup, workers, timecards, and draft records. Payment execution stays gated.</p>
+          <p>PPD AI prepares in-house payroll and check records. PPD’s bank handles ACH deposits or check clearing; tax payments use agency payment systems. Payment execution stays gated.</p>
         </div>
       </div>
 
@@ -142,8 +152,8 @@ export default function PayrollAiControlPanel() {
         <>
           <div className={styles.statusBar}>
             <span className={blockers > 0 ? styles.warn : styles.good}><ShieldCheck size={15} /> {blockers > 0 ? "Setup blocked" : "Ready for review"}</span>
-            <span>{activePeriodId ? `${panel?.active_period?.start_date} to ${panel?.active_period?.end_date}` : "No current payroll period"}</span>
-            <span>Provider: {panel?.provider?.production_connected ? "production connected" : "not connected"}</span>
+            <span>{activePeriodId ? `${panel?.active_period?.start_date} to ${panel?.active_period?.end_date}${activeIsCurrent ? "" : " · historical"}` : "No current payroll period"}</span>
+            <span>Payroll operator: PPD AI · Bank rail: {panel?.provider?.production_connected ? "connected" : "not connected"}</span>
           </div>
 
           {error && <p className={styles.error}>{error}</p>}
@@ -164,9 +174,11 @@ export default function PayrollAiControlPanel() {
           </div>
 
           <div className={styles.actions}>
-            <button className="primary-btn" type="button" onClick={() => runAction("period")} disabled={Boolean(busy) || Boolean(activePeriodId) || (counts.w2_workers || 0) + (counts.contract_workers || 0) === 0}>{busy === "period" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Open Current Period</button>
+            <button className="primary-btn" type="button" onClick={() => runAction("period")} disabled={Boolean(busy) || activeIsCurrent || (counts.w2_workers || 0) + (counts.contract_workers || 0) === 0}>{busy === "period" ? <Loader2 className={styles.spin} size={16} /> : <Rocket size={16} />} Open Current Period</button>
+            <label>Pay date <input aria-label="Weekly pay date" type="date" value={payDate} onChange={(event) => setPayDate(event.target.value)} disabled={Boolean(busy) || !activeIsCurrent} /></label>
+            <button className="ghost-btn" type="button" onClick={() => runAction("schedule")} disabled={Boolean(busy) || !activeIsCurrent || !payDate}>Set Weekly Schedule</button>
             <button className="primary-btn" type="button" onClick={() => runAction("draft")} disabled={Boolean(busy) || !canDraft}>{busy === "draft" ? <Loader2 className={styles.spin} size={16} /> : <FileText size={16} />} Draft Batch</button>
-            <button className="ghost-btn" type="button" disabled title="Federal withholding calculation and company setup require verification.">Tax Engine Pending</button>
+            <button className="ghost-btn" type="button" disabled title="The 2026 federal and Arizona draft tax calculations require verified worker tax forms and wage bases.">Tax Calculation Gated</button>
             <button className="ghost-btn" type="button" onClick={() => runAction("export")} disabled={Boolean(busy) || !canExport}>Review Export</button>
             <button className="ghost-btn" type="button" onClick={() => runAction("refresh")} disabled={Boolean(busy)}>{busy === "refresh" ? <Loader2 className={styles.spin} size={16} /> : <RefreshCw size={16} />} Refresh</button>
           </div>

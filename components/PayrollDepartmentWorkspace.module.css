@@ -1,0 +1,29 @@
+.workspace { display:grid; gap:16px; padding:22px; border:1px solid rgba(255,173,82,.28); border-radius:24px; background:rgba(6,10,17,.9); color:var(--text); }
+.header { display:flex; align-items:start; justify-content:space-between; gap:18px; }
+.header h2 { margin:8px 0; font-size:clamp(28px,3vw,42px); }
+.header p,.cards p { color:var(--muted); line-height:1.55; }
+.periodRow,.tabs,.rowActions { display:flex; align-items:center; flex-wrap:wrap; gap:10px; }
+.periodRow { padding:12px; border:1px solid rgba(255,255,255,.12); border-radius:14px; }
+.periodRow span { color:var(--soft); }
+.tabs { border-bottom:1px solid rgba(255,255,255,.14); padding-bottom:10px; }
+.workspace button,.workspace select,.workspace input,.workspace textarea { font:inherit; color:var(--text); border:1px solid rgba(255,173,82,.35); border-radius:10px; background:#151d29; padding:9px 12px; }
+.workspace button { cursor:pointer; }
+.workspace button:hover:not(:disabled),.tabs button[aria-current="page"] { border-color:var(--gold); background:rgba(255,148,31,.16); }
+.workspace button:disabled { cursor:not-allowed; opacity:.48; }
+.workspace select option { color:#fff; background:#151d29; }
+.workspace label { display:grid; gap:7px; color:var(--soft); }
+.workspace textarea { min-height:92px; width:100%; resize:vertical; }
+.notice { padding:12px; border-radius:12px; background:rgba(255,148,31,.13); color:var(--gold); }
+.cards { display:grid; gap:12px; }
+.cards h3 { margin:10px 0 0; }
+.cards h3 small { font-size:13px; color:var(--soft); }
+.row { display:flex; justify-content:space-between; align-items:center; gap:20px; padding:14px; border:1px solid rgba(255,255,255,.12); border-radius:14px; background:rgba(255,255,255,.04); }
+.row strong,.row span,.row small { display:block; }
+.row span,.row small { color:var(--soft); margin-top:5px; overflow-wrap:anywhere; }
+.rowActions { justify-content:flex-end; }
+.rowActions input { max-width:230px; }
+.formGrid,.taxGrid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }
+.taxGrid { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); }
+.taxGrid div { padding:14px; border:1px solid rgba(255,173,82,.18); border-radius:12px; }
+.taxGrid strong { display:block; margin-top:7px; font-size:20px; color:var(--gold); }
+@media(max-width:760px) { .header,.row { flex-direction:column; align-items:stretch; } .formGrid { grid-template-columns:1fr; } .rowActions { justify-content:flex-start; } }
