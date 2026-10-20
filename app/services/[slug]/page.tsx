@@ -3,7 +3,7 @@ import { serviceDefinitions, getService } from "@/lib/services";
 import { ServicePageTemplate } from "@/components/ServicePageTemplate";
 
 type ServicePageProps = {
-  params: Promise<{ slug: string }> | { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export function generateStaticParams() {
